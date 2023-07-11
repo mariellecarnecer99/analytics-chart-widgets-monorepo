@@ -1,15 +1,22 @@
 <template>
-  <EChart :option="options" />
+  <EChart v-if="chartLib === 'eCharts'" :option="options" />
+  <ApexCharts v-if="chartLib === 'apexCharts'" />
+  <ChartJS v-if="chartLib === 'chartjs'" />
 </template>
 
 <script>
 import EChart from "./EChart.vue";
+import ApexCharts from "./ApexChart.vue";
+import ChartJS from "./ChartJS.vue";
 export default {
   components: {
     EChart,
+    ApexCharts,
+    ChartJS,
   },
   props: {
     chartType: String,
+    chartLib: String,
   },
   data: () => {
     return {
