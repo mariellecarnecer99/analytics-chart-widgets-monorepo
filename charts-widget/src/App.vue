@@ -22,8 +22,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 import { ref, provide } from "vue";
-// import { state } from "../../shared/shared";
-// console.log("remote got message:", state.message);
+
 use([
   CanvasRenderer,
   PieChart,
