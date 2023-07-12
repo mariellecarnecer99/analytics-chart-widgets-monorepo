@@ -25,23 +25,212 @@
           <span class="remove" @click="removeItem(item.i)"
             ><v-icon size="small">mdi-close</v-icon></span
           >
+          <div class="custom-toolbox">
+            <v-icon color="#676767" @click="editDialog = !editDialog"
+              >mdi-pencil-outline</v-icon
+            >
+            <v-icon color="#676767">mdi-download-outline</v-icon>
+            <v-icon color="#676767" @click="embedDialog = !embedDialog"
+              >mdi-import</v-icon
+            >
+          </div>
         </grid-item>
       </grid-layout>
     </div>
+  </div>
+  <div class="toolbox-dialog">
+    <v-dialog v-model="editDialog" width="500px">
+      <v-card>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col cols="6">
+              <v-sheet class="my-2"><h3>Parameter Area</h3></v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2"
+                ><v-icon @click="editDialog = !editDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p class="text-center mb-2">x-Axis</p>
+              <v-select
+                v-model="xAxisData"
+                label="Select x-axis data"
+                :items="xCategories"
+                variant="solo"
+                @update:modelValue="selectedXaxisData"
+              ></v-select>
+            </v-col>
+            <v-col>
+              <p class="text-center mb-2">y-Axis</p>
+              <v-select
+                v-model="yAxisData"
+                label="Select y-axis data"
+                :items="yCategories"
+                variant="solo"
+                @update:modelValue="selectedYaxisData"
+              ></v-select>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog v-model="embedDialog" width="500px">
+      <v-card>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col cols="8">
+              <v-sheet class="my-2"
+                ><h3>Add the widget to your website</h3>
+              </v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2"
+                ><v-icon @click="embedDialog = !embedDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-textarea
+            id="tocopy"
+            variant="outlined"
+            density="compact"
+            append-inner-icon="mdi-content-copy"
+            @click:append-inner="copyText"
+          ></v-textarea>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
 <script setup>
 import ChartData from "./components/charts/ChartData";
+import { ref } from "vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
 const store = useStore();
 const { selectedCharts } = storeToRefs(store);
+const editDialog = ref(false);
+const embedDialog = ref(false);
+const xAxisData = ref([]);
+const yAxisData = ref([]);
+const xCategories = ref(["Days", "Number", "Category", "Time"]);
+const yCategories = ref([
+  "Default",
+  "Days",
+  "Precipitation",
+  "Temperature",
+  "Category",
+]);
 
 // functions
 function removeItem(i) {
   const index = this.selectedCharts.map((item) => item.i).indexOf(i);
   this.selectedCharts.splice(index, 1);
+}
+
+function selectedXaxisData(x) {
+  if (x === "Days") {
+    const daysItem = {
+      categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      values: {
+        data: [60, 35, 110, 80, 95, 140, 185],
+      },
+    };
+    this.selectedCharts.xAxis.data = daysItem.categories;
+    this.selectedCharts.series = daysItem.values;
+  } else if (x === "Number") {
+    const numberItem = {
+      categories: [1, 2, 3, 4, 5],
+      values: {
+        data: [50, 100, 150, 200, 250],
+      },
+    };
+    this.selectedCharts.xAxis.data = numberItem.categories;
+    this.selectedCharts.series = numberItem.values;
+  } else if (x === "Category") {
+    const categoryItem = [
+      "Direct",
+      "Email",
+      "Ad Networks",
+      "Video Ads",
+      "Search Engines",
+    ];
+    this.selectedCharts.xAxis.data = categoryItem;
+  } else if (x === "Time") {
+    const timeItem = {
+      categories: [10, 40, 70, 100, 130],
+      values: {
+        data: [55, 75, 95, 115, 135],
+      },
+    };
+    this.selectedCharts.xAxis.data = timeItem.categories;
+    this.selectedCharts.series = timeItem.values;
+  }
+}
+
+function selectedYaxisData(y) {
+  if (y === "Default") {
+    const defaultItem = {
+      type: "value",
+      min: 0,
+      max: 200,
+      interval: 50,
+      axisLabel: {
+        formatter: "{value}",
+      },
+    };
+    this.selectedCharts.yAxis = defaultItem;
+  } else if (y === "Days") {
+    const daysItem = {
+      type: "category",
+      data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    };
+    this.selectedCharts.yAxis = daysItem;
+  } else if (y === "Precipitation") {
+    const precipitationItem = {
+      type: "value",
+      name: "Precipitation",
+      min: 0,
+      max: 250,
+      interval: 50,
+      axisLabel: {
+        formatter: "{value} ml",
+      },
+    };
+    this.selectedCharts.yAxis = precipitationItem;
+  } else if (y === "Temperature") {
+    const tempItem = {
+      type: "value",
+      name: "Temperature",
+      min: 0,
+      max: 25,
+      interval: 5,
+      axisLabel: {
+        formatter: "{value} °C",
+      },
+    };
+    this.selectedCharts.yAxis = tempItem;
+  } else if (y === "Category") {
+    const categoryItem = {
+      type: "category",
+      data: ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
+    };
+    this.selectedCharts.yAxis = categoryItem;
+  }
+}
+
+function copyText() {
+  const input = document.getElementById("tocopy");
+  input.select();
+  document.execCommand("copy");
 }
 </script>
 
@@ -117,6 +306,13 @@ function removeItem(i) {
   position: absolute;
   right: 2px;
   top: 0;
+  cursor: pointer;
+}
+
+.custom-toolbox {
+  position: absolute;
+  right: 2px;
+  top: 30px;
   cursor: pointer;
 }
 </style>

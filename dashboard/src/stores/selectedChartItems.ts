@@ -12,8 +12,8 @@ export const useStore = defineStore("store", {
       const item = {
         x: 0,
         y: 0,
-        w: 2,
-        h: 2,
+        w: 6,
+        h: 3,
         i: this.index + "",
         chart: i,
         selectedLib: selectedChartLibrary,

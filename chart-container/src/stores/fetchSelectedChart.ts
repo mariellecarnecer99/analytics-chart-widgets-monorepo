@@ -8,7 +8,6 @@ export const useSelectedChart = defineStore("selectedChart", {
   actions: {
     getChartOptions(val: {}){
       this.fetchChartOptions = val;
-      console.log('fetchChartOptions', this.fetchChartOptions)
     }
   },
 });

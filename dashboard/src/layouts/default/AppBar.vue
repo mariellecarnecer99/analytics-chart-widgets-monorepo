@@ -399,8 +399,8 @@
   </v-navigation-drawer>
 
   <v-main>
-    <PluggableWidget />
     <ChartContainer />
+    <!-- <PluggableWidget /> -->
     <Home />
   </v-main>
 </template>

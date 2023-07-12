@@ -1,7 +1,6 @@
 <template>
   <!-- <router-view /> -->
   <div id="app">
-    <h1>Pluggable Chart</h1>
     <v-chart class="chart" :option="option" autoresize />
   </div>
 </template>
