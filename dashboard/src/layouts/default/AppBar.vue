@@ -399,7 +399,7 @@
   </v-navigation-drawer>
 
   <v-main>
-    <!-- <PluggableWidget /> -->
+    <PluggableWidget />
     <ChartContainer />
     <Home />
   </v-main>

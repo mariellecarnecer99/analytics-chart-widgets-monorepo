@@ -16,7 +16,7 @@ import { registerPlugins } from '@/plugins'
 import VueGridLayout from 'vue-grid-layout'
 
 import { createPinia } from "pinia";
-import "./stores/selectedChartItems";
+import "./stores/fetchSelectedChart";
 
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core"

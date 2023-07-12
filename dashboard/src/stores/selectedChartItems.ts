@@ -8,10 +8,6 @@ export const useStore = defineStore("store", {
     },
   },
   actions: {
-    fetchSelectedCharts() {
-      this.selectedCharts
-    },
-
     increment(i: [], selectedChartLibrary: string) {
       const item = {
         x: 0,

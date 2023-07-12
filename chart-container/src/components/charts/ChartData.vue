@@ -8,6 +8,8 @@
 import EChart from "./EChart.vue";
 import ApexCharts from "./ApexChart.vue";
 import ChartJS from "./ChartJS.vue";
+import { useSelectedChart } from "../../stores/fetchSelectedChart";
+const store = useSelectedChart();
 export default {
   components: {
     EChart,
@@ -68,6 +70,7 @@ export default {
           },
         ],
       };
+      store.getChartOptions(this.options);
     },
   },
 };

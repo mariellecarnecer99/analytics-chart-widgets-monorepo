@@ -17,6 +17,9 @@ export default defineConfig({
   preview: {
     port: APPLICATION_PORT,
   },
+  build: {
+    target: 'esnext'
+  },
   plugins: [
     vue({ 
       template: { transformAssetUrls }
