@@ -5,10 +5,10 @@
       <span class="ml-3" style="color: white">Charts Widget</span>
     </v-app-bar-title>
     <v-spacer></v-spacer>
-    <!-- <p v-if="mainTitle" style="color: white">
+    <p v-if="mainTitle" style="color: white">
       {{ mainTitle }}
       <v-icon size="small" color="white">mdi-pencil</v-icon>
-    </p> -->
+    </p>
     <v-spacer></v-spacer>
     <v-btn class="mr-3" variant="outlined" size="small" color="primary"
       >Preview Changes</v-btn
@@ -399,9 +399,9 @@
   </v-navigation-drawer>
 
   <v-main>
+    <Home :title="mainTitle" :desc="description" />
     <ChartContainer />
     <!-- <PluggableWidget /> -->
-    <Home />
   </v-main>
 </template>
 
@@ -443,7 +443,7 @@ export default {
           value: "chartData",
           icon: "mdi-chart-box-outline",
         },
-        { title: "Look & Feel", value: "lookfeel", icon: "mdi-palette" },
+        // { title: "Look & Feel", value: "lookfeel", icon: "mdi-palette" },
         { title: "Settings", value: "settings", icon: "mdi-cog" },
         { title: "Analytics", value: "analytics", icon: "mdi-chart-bar" },
       ],

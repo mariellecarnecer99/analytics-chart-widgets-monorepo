@@ -6,6 +6,9 @@
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
     >
+    <v-icon color="#676767" @click="appearanceDialog = !appearanceDialog"
+      >mdi-palette</v-icon
+    >
     <v-icon color="#676767">mdi-download-outline</v-icon>
     <v-icon color="#676767" @click="embedDialog = !embedDialog"
       >mdi-import</v-icon
@@ -47,6 +50,78 @@
                 variant="solo"
                 @update:modelValue="selectedYaxisData"
               ></v-select>
+            </v-col>
+          </v-row>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
+    <v-dialog
+      v-model="appearanceDialog"
+      persistent
+      width="500px"
+      style="z-index: 0"
+    >
+      <v-card>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col cols="6">
+              <v-sheet class="my-2"><h3>Look & Feel</h3></v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2"
+                ><v-icon @click="appearanceDialog = !appearanceDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p>Font Type</p>
+            </v-col>
+            <v-col>
+              <v-select
+                v-model="fontType"
+                :items="fonts"
+                label="Select font type"
+                variant="solo"
+                @update:modelValue="selectedXaxisData"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p>Color Scheme</p>
+            </v-col>
+            <v-col>
+              <div class="d-flex justify-center">
+                <v-text-field
+                  v-model="color"
+                  hide-details
+                  class="ma-0 pa-0"
+                  variant="solo"
+                >
+                  <template v-slot:append-inner>
+                    <v-menu
+                      v-model="menu"
+                      location="end"
+                      nudge-bottom="105"
+                      nudge-left="16"
+                      :close-on-content-click="false"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div :style="swatchStyle" v-bind="props"></div>
+                      </template>
+                      <v-card>
+                        <v-card-text class="pa-0">
+                          <v-color-picker v-model="color" flat></v-color-picker>
+                        </v-card-text>
+                      </v-card>
+                    </v-menu>
+                  </template>
+                </v-text-field>
+              </div>
             </v-col>
           </v-row>
         </v-card-text>
@@ -104,6 +179,10 @@ export default {
       options: null,
       editDialog: false,
       embedDialog: false,
+      appearanceDialog: false,
+      menu: false,
+      color: "#1976D2FF",
+      fontType: null,
       xAxisData: [],
       xCategories: ["Days", "Number", "Category", "Time"],
       yAxisData: [],
@@ -114,7 +193,35 @@ export default {
         "Temperature",
         "Category",
       ],
+      fonts: [
+        "Arial",
+        "Arial Black",
+        "Comic Sans MS",
+        "Courier New",
+        "Georgia",
+        "Impact",
+        "Lucida Console",
+        "Lucida Sans Unicode",
+        "Palatino Linotype",
+        "Tahoma",
+        "Times New Roman",
+        "Trebuchet MS",
+        "Verdana",
+      ],
     };
+  },
+  computed: {
+    swatchStyle() {
+      const { color, menu } = this;
+      return {
+        backgroundColor: color,
+        cursor: "pointer",
+        height: "30px",
+        width: "30px",
+        borderRadius: menu ? "50%" : "4px",
+        transition: "border-radius 200ms ease-in-out",
+      };
+    },
   },
   mounted() {
     this.handleOptions();
