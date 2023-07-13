@@ -86,7 +86,6 @@
                 :items="fonts"
                 label="Select font type"
                 variant="solo"
-                @update:modelValue="selectedXaxisData"
               ></v-select>
             </v-col>
           </v-row>
@@ -193,26 +192,13 @@ export default {
         "Temperature",
         "Category",
       ],
-      fonts: [
-        "Arial",
-        "Arial Black",
-        "Comic Sans MS",
-        "Courier New",
-        "Georgia",
-        "Impact",
-        "Lucida Console",
-        "Lucida Sans Unicode",
-        "Palatino Linotype",
-        "Tahoma",
-        "Times New Roman",
-        "Trebuchet MS",
-        "Verdana",
-      ],
+      fonts: ["sans-serif", "serif", "monospace", "Arial", "Courier New"],
     };
   },
   computed: {
     swatchStyle() {
       const { color, menu } = this;
+      this.handleOptions(color);
       return {
         backgroundColor: color,
         cursor: "pointer",
@@ -224,11 +210,23 @@ export default {
     },
   },
   mounted() {
-    this.handleOptions();
+    this.handleOptions(this.color);
   },
   methods: {
-    handleOptions() {
+    handleOptions(color) {
       this.options = {
+        title: {
+          text: "Main Title",
+          subtext: "Sub Title",
+          left: "center",
+          textStyle: {
+            fontSize: 20,
+            fontFamily: this.fontType,
+          },
+          subtextStyle: {
+            fontSize: 15,
+          },
+        },
         xAxis: {
           type: "category",
           data: [
@@ -238,12 +236,16 @@ export default {
             "Video Ads",
             "Search Engines",
           ],
+          nameTextStyle: {
+            fontFamily: this.fontType,
+          },
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
+            color: color,
             data: [120, 200, 150, 80, 70],
             type: this.chartType,
           },
