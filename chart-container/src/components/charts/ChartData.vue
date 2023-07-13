@@ -78,6 +78,28 @@
           </v-row>
           <v-row>
             <v-col>
+              <p>Main Title</p>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="mainTitle"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p>Sub Title</p>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="subTitle"
+                variant="outlined"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
               <p>Font Type</p>
             </v-col>
             <v-col>
@@ -85,7 +107,7 @@
                 v-model="fontType"
                 :items="fonts"
                 label="Select font type"
-                variant="solo"
+                variant="outlined"
               ></v-select>
             </v-col>
           </v-row>
@@ -99,7 +121,7 @@
                   v-model="color"
                   hide-details
                   class="ma-0 pa-0"
-                  variant="solo"
+                  variant="outlined"
                 >
                   <template v-slot:append-inner>
                     <v-menu
@@ -182,6 +204,8 @@ export default {
       menu: false,
       color: "#1976D2FF",
       fontType: null,
+      mainTitle: null,
+      subTitle: null,
       xAxisData: [],
       xCategories: ["Days", "Number", "Category", "Time"],
       yAxisData: [],
@@ -216,8 +240,8 @@ export default {
     handleOptions(color) {
       this.options = {
         title: {
-          text: "Main Title",
-          subtext: "Sub Title",
+          text: this.mainTitle,
+          subtext: this.subTitle,
           left: "center",
           textStyle: {
             fontSize: 20,
