@@ -1,5 +1,5 @@
 <template>
-  <Line id="my-chart-id" :options="chartOptions" :data="chartData" />
+  <Line :id="'chart' + id" :options="chartOptions" :data="chartData" />
 </template>
 
 <script>
@@ -28,6 +28,9 @@ ChartJS.register(
 export default {
   name: "LineChart",
   components: { Line },
+  props: {
+    id: String,
+  },
   data() {
     return {
       chartData: {

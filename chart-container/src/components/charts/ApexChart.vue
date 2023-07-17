@@ -1,6 +1,11 @@
 <template>
   <div>
-    <apexchart type="line" :options="chartOptions" :series="series"></apexchart>
+    <apexchart
+      :id="'chart' + id"
+      type="line"
+      :options="chartOptions"
+      :series="series"
+    ></apexchart>
   </div>
 </template>
 
@@ -9,6 +14,9 @@ import VueApexCharts from "vue3-apexcharts";
 export default {
   components: {
     apexchart: VueApexCharts,
+  },
+  props: {
+    id: String,
   },
   data() {
     return {

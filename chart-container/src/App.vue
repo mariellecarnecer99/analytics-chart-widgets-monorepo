@@ -17,7 +17,11 @@
         :h="item.h"
         :i="item.i"
       >
-        <ChartData :chartType="item.chart.value" :chartLib="item.selectedLib" />
+        <ChartData
+          :chartType="item.chart.value"
+          :chartLib="item.selectedLib"
+          :chartId="item.i"
+        />
         <span class="remove" @click="removeItem(item.i)"
           ><v-icon size="small">mdi-close</v-icon></span
         >

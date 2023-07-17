@@ -1,7 +1,7 @@
 <template>
-  <EChart v-if="chartLib === 'eCharts'" :option="options" />
-  <ApexCharts v-if="chartLib === 'apexCharts'" />
-  <ChartJS v-if="chartLib === 'chartjs'" />
+  <EChart v-if="chartLib === 'eCharts'" :option="options" :id="chartId" />
+  <ApexCharts v-if="chartLib === 'apexCharts'" :id="chartId" />
+  <ChartJS v-if="chartLib === 'chartjs'" :id="chartId" />
   <div class="custom-toolbox">
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
@@ -9,7 +9,9 @@
     <v-icon color="#676767" @click="appearanceDialog = !appearanceDialog"
       >mdi-palette</v-icon
     >
-    <v-icon color="#676767">mdi-download-outline</v-icon>
+    <v-icon color="#676767" @click="handleChartDom(chartId)"
+      >mdi-download-outline</v-icon
+    >
     <v-icon color="#676767" @click="embedDialog = !embedDialog"
       >mdi-import</v-icon
     >
@@ -145,6 +147,31 @@
               </div>
             </v-col>
           </v-row>
+          <v-row>
+            <v-col>
+              <p>Date range</p>
+            </v-col>
+            <v-col>
+              <v-menu
+                v-model="datemenu"
+                :close-on-content-click="false"
+                :nudge-right="40"
+                transition="scale-transition"
+                offset-y
+                min-width="290px"
+              >
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-bind="props"
+                    v-model="dateValue"
+                    variant="outlined"
+                    append-inner-icon="mdi-calendar"
+                  ></v-text-field>
+                </template>
+                <v-date-picker color="primary"></v-date-picker>
+              </v-menu>
+            </v-col>
+          </v-row>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -177,6 +204,7 @@
       </v-card>
     </v-dialog>
   </div>
+  <div :id="'chart' + chartId"></div>
 </template>
 
 <script>
@@ -184,16 +212,21 @@ import EChart from "./EChart.vue";
 import ApexCharts from "./ApexChart.vue";
 import ChartJS from "./ChartJS.vue";
 import { useSelectedChart } from "../../stores/fetchSelectedChart";
+import { VDatePicker } from "vuetify/labs/VDatePicker";
+import domtoimage from "dom-to-image";
+import { saveAs } from "file-saver";
 const store = useSelectedChart();
 export default {
   components: {
     EChart,
     ApexCharts,
     ChartJS,
+    VDatePicker,
   },
   props: {
     chartType: String,
     chartLib: String,
+    chartId: String,
   },
   data: () => {
     return {
@@ -202,6 +235,8 @@ export default {
       embedDialog: false,
       appearanceDialog: false,
       menu: false,
+      dateValue: null,
+      datemenu: false,
       color: "#1976D2FF",
       fontType: null,
       mainTitle: null,
@@ -276,6 +311,14 @@ export default {
         ],
       };
       store.getChartOptions(this.options);
+    },
+
+    handleChartDom(id) {
+      domtoimage
+        .toBlob(document.getElementById("chart" + id))
+        .then(function (blob) {
+          window.saveAs(blob, "my-chart.png");
+        });
     },
 
     copyText() {
