@@ -21,7 +21,7 @@
       <v-card>
         <v-card-text>
           <v-row justify="space-between">
-            <v-col cols="6">
+            <v-col>
               <v-sheet class="my-2"><h3>Parameter Area</h3></v-sheet>
             </v-col>
             <v-col cols="1">
@@ -34,24 +34,91 @@
           </v-row>
           <v-row>
             <v-col>
-              <p class="text-center mb-2">x-Axis</p>
+              <p>Type</p>
+            </v-col>
+            <v-col>
+              <v-dialog transition="dialog-bottom-transition" width="auto">
+                <template v-slot:activator="{ props }">
+                  <v-text-field
+                    v-model="modifiedType"
+                    hide-details
+                    class="ma-0 pa-0"
+                    variant="outlined"
+                    v-bind="props"
+                  ></v-text-field>
+                </template>
+                <template v-slot:default="{ isActive }">
+                  <v-card>
+                    <v-toolbar color="primary" title="Select Chart Type">
+                      <v-spacer></v-spacer>
+                      <v-icon
+                        class="mr-3"
+                        @click="isActive.value = !isActive.value"
+                        >mdi-close</v-icon
+                      >
+                    </v-toolbar>
+                    <v-card-text>
+                      <div class="text-h2 pa-4">
+                        <v-row class="mb-6" no-gutters>
+                          <v-col
+                            cols="3"
+                            v-for="item in charts"
+                            class="mb-5 d-flex justify-center"
+                            @click="isActive.value = !isActive.value"
+                          >
+                            <img
+                              :src="item.img"
+                              style="width: 40px; height: 40px"
+                              @click="handleSelectedChart(item.value)"
+                            />
+                          </v-col>
+                        </v-row>
+                      </div>
+                    </v-card-text>
+                  </v-card>
+                </template>
+              </v-dialog>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p class="mb-2">X</p>
+            </v-col>
+            <v-col>
               <v-select
                 v-model="xAxisData"
                 :items="xCategories"
-                label="Select x-axis data"
+                label="Choose data..."
                 variant="solo"
                 @update:modelValue="selectedXaxisData"
               ></v-select>
             </v-col>
+          </v-row>
+          <v-row>
             <v-col>
-              <p class="text-center mb-2">y-Axis</p>
+              <p class="mb-2">Y</p>
+            </v-col>
+            <v-col>
               <v-select
                 v-model="yAxisData"
                 :items="yCategories"
-                label="Select y-axis data"
+                label="Choose data..."
                 variant="solo"
                 @update:modelValue="selectedYaxisData"
               ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <p>Series</p>
+            </v-col>
+            <v-col>
+              <v-text-field
+                v-model="numofseries"
+                type="number"
+                variant="outlined"
+                @update:modelValue="handleNumberOfSeries"
+              ></v-text-field>
             </v-col>
           </v-row>
         </v-card-text>
@@ -204,7 +271,6 @@
       </v-card>
     </v-dialog>
   </div>
-  <div :id="'chart' + chartId"></div>
 </template>
 
 <script>
@@ -215,6 +281,15 @@ import { useSelectedChart } from "../../stores/fetchSelectedChart";
 import { VDatePicker } from "vuetify/labs/VDatePicker";
 import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
+import line from "@/assets/line.png";
+import bar from "@/assets/bar.png";
+import column from "@/assets/column.png";
+import combination from "@/assets/combination.png";
+import area from "@/assets/area.png";
+import pie from "@/assets/pie.png";
+import rose from "@/assets/rose.png";
+import vertical_combination from "@/assets/vertical_combination.png";
+import doughnut from "@/assets/doughnut.png";
 const store = useSelectedChart();
 export default {
   components: {
@@ -237,6 +312,8 @@ export default {
       menu: false,
       dateValue: null,
       datemenu: false,
+      modifiedType: null,
+      numofseries: 1,
       color: "#1976D2FF",
       fontType: null,
       mainTitle: null,
@@ -252,6 +329,53 @@ export default {
         "Category",
       ],
       fonts: ["sans-serif", "serif", "monospace", "Arial", "Courier New"],
+      charts: [
+        {
+          type: "Column Chart",
+          value: "column",
+          img: column,
+        },
+        {
+          type: "Line Chart",
+          value: "line",
+          img: line,
+        },
+        {
+          type: "Bar Chart",
+          value: "bar",
+          img: bar,
+        },
+        {
+          type: "Pie Chart",
+          value: "pie",
+          img: pie,
+        },
+        {
+          type: "Doughnut Chart",
+          value: "doughnut",
+          img: doughnut,
+        },
+        {
+          type: "Combination Chart",
+          value: "combination",
+          img: combination,
+        },
+        {
+          type: "Area Chart",
+          value: "area",
+          img: area,
+        },
+        {
+          type: "Vertical Combination Chart",
+          value: "vertical_combination",
+          img: vertical_combination,
+        },
+        {
+          type: "Nightingale Chart",
+          value: "nightingale",
+          img: rose,
+        },
+      ],
     };
   },
   computed: {
@@ -272,6 +396,11 @@ export default {
     this.handleOptions(this.color);
   },
   methods: {
+    handleSelectedChart(val) {
+      this.modifiedType = val;
+      this.handleOptions();
+    },
+
     handleOptions(color) {
       this.options = {
         title: {
@@ -306,7 +435,7 @@ export default {
           {
             color: color,
             data: [120, 200, 150, 80, 70],
-            type: this.chartType,
+            type: this.modifiedType ? this.modifiedType : this.chartType,
           },
         ],
       };
@@ -421,6 +550,17 @@ export default {
           ],
         };
         this.options.yAxis = categoryItem;
+      }
+    },
+
+    handleNumberOfSeries(val) {
+      if (val) {
+        const seriesData = {
+          // color: color,
+          data: [120, 200, 150, 80, 70],
+          type: this.modifiedType ? this.modifiedType : this.chartType,
+        };
+        this.options.series.push(seriesData);
       }
     },
   },
