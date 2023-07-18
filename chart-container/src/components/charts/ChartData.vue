@@ -17,12 +17,12 @@
     >
   </div>
   <div class="toolbox-dialog">
-    <v-dialog v-model="editDialog" persistent width="500px" style="z-index: 0">
+    <v-dialog v-model="editDialog" width="500px" style="z-index: 0">
       <v-card>
         <v-card-text>
           <v-row justify="space-between">
             <v-col>
-              <v-sheet class="my-2"><h3>Parameter Area</h3></v-sheet>
+              <v-sheet class="my-2"><h3>Structure</h3></v-sheet>
             </v-col>
             <v-col cols="1">
               <v-sheet class="my-2"
@@ -32,108 +32,287 @@
               >
             </v-col>
           </v-row>
-          <v-row>
-            <v-col>
-              <p>Type</p>
-            </v-col>
-            <v-col>
-              <v-dialog transition="dialog-bottom-transition" width="auto">
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-model="modifiedType"
-                    hide-details
-                    class="ma-0 pa-0"
-                    variant="outlined"
-                    v-bind="props"
-                  ></v-text-field>
-                </template>
-                <template v-slot:default="{ isActive }">
-                  <v-card>
-                    <v-toolbar color="primary" title="Select Chart Type">
-                      <v-spacer></v-spacer>
-                      <v-icon
-                        class="mr-3"
-                        @click="isActive.value = !isActive.value"
-                        >mdi-close</v-icon
-                      >
-                    </v-toolbar>
-                    <v-card-text>
-                      <div class="text-h2 pa-4">
-                        <v-row class="mb-6" no-gutters>
-                          <v-col
-                            cols="3"
-                            v-for="item in charts"
-                            class="mb-5 d-flex justify-center"
-                            @click="isActive.value = !isActive.value"
-                          >
-                            <img
-                              :src="item.img"
-                              style="width: 40px; height: 40px"
-                              @click="handleSelectedChart(item.value)"
-                            />
-                          </v-col>
-                        </v-row>
-                      </div>
-                    </v-card-text>
-                  </v-card>
-                </template>
-              </v-dialog>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <p class="mb-2">X</p>
-            </v-col>
-            <v-col>
-              <v-select
-                v-model="xAxisData"
-                :items="xCategories"
-                label="Choose data..."
-                variant="solo"
-                @update:modelValue="selectedXaxisData"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <p class="mb-2">Y</p>
-            </v-col>
-            <v-col>
-              <v-select
-                v-model="yAxisData"
-                :items="yCategories"
-                label="Choose data..."
-                variant="solo"
-                @update:modelValue="selectedYaxisData"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <p>Series</p>
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="numofseries"
-                type="number"
-                variant="outlined"
-                @update:modelValue="handleNumberOfSeries"
-              ></v-text-field>
-            </v-col>
-          </v-row>
+          <v-divider></v-divider>
+          <v-container>
+            <v-row>
+              <v-col>
+                <p class="pa-3">Type</p>
+              </v-col>
+              <v-col>
+                <v-dialog transition="dialog-bottom-transition" width="auto">
+                  <template v-slot:activator="{ props }">
+                    <v-text-field
+                      v-model="modifiedType"
+                      hide-details
+                      class="ma-0 pa-0"
+                      variant="outlined"
+                      density="compact"
+                      v-bind="props"
+                    ></v-text-field>
+                  </template>
+                  <template v-slot:default="{ isActive }">
+                    <v-card>
+                      <v-toolbar color="primary" title="Select Chart Type">
+                        <v-spacer></v-spacer>
+                        <v-icon
+                          class="mr-3"
+                          @click="isActive.value = !isActive.value"
+                          >mdi-close</v-icon
+                        >
+                      </v-toolbar>
+                      <v-card-text>
+                        <div class="text-h2 pa-4">
+                          <v-row class="mb-6" no-gutters>
+                            <v-col
+                              cols="3"
+                              v-for="item in charts"
+                              class="mb-5 d-flex justify-center"
+                              @click="isActive.value = !isActive.value"
+                            >
+                              <img
+                                :src="item.img"
+                                style="width: 40px; height: 40px"
+                                @click="handleSelectedChart(item.value)"
+                              />
+                            </v-col>
+                          </v-row>
+                        </div>
+                      </v-card-text>
+                    </v-card>
+                  </template>
+                </v-dialog>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <p class="pa-3">X</p>
+              </v-col>
+              <v-col>
+                <v-select
+                  v-model="xAxisData"
+                  :items="xCategories"
+                  label="Choose data..."
+                  variant="solo"
+                  density="compact"
+                  @update:modelValue="selectedXaxisData"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <p class="pa-3">Y</p>
+              </v-col>
+              <v-col>
+                <v-select
+                  v-model="yAxisData"
+                  :items="yCategories"
+                  label="Choose data..."
+                  variant="solo"
+                  density="compact"
+                  @update:modelValue="selectedYaxisData"
+                ></v-select>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <p>Series</p>
+              </v-col>
+              <v-col>
+                <v-text-field
+                  v-model="numofseries"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                  @update:modelValue="handleNumberOfSeries"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+
+          <!-- <v-btn size="small" color="primary"
+            ><v-icon size="large">mdi-plus</v-icon> Add Series</v-btn
+          > -->
+          <!-- <v-expansion-panels variant="popout" class="my-4">
+            <v-expansion-panel>
+              <v-expansion-panel-title>Type</v-expansion-panel-title>
+              <v-expansion-panel-text> </v-expansion-panel-text>
+            </v-expansion-panel>
+          </v-expansion-panels> -->
         </v-card-text>
       </v-card>
     </v-dialog>
 
-    <v-dialog
-      v-model="appearanceDialog"
-      persistent
-      width="500px"
-      style="z-index: 0"
-    >
+    <v-dialog v-model="appearanceDialog" width="750px" style="z-index: 0">
       <v-card>
         <v-card-text>
-          <v-row justify="space-between">
+          <v-row>
+            <v-col>
+              <v-sheet class="my-2"><h3>Style</h3></v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2 ml-3"
+                ><v-icon @click="appearanceDialog = !appearanceDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-container>
+            <h4>Defaults</h4>
+            <v-row justify="start">
+              <v-col cols="3">
+                <p class="pa-3">Plot Background</p>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="gridColor"
+                  hide-details
+                  class="ma-0 pa-0"
+                  variant="outlined"
+                  density="compact"
+                >
+                  <template v-slot:append-inner>
+                    <v-menu
+                      v-model="gridColorMenu"
+                      location="end"
+                      nudge-bottom="105"
+                      nudge-left="16"
+                      :close-on-content-click="false"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div
+                          v-bind="props"
+                          :style="{
+                            backgroundColor: gridColor,
+                            cursor: 'pointer',
+                            width: '30px',
+                            height: '30px',
+                            borderRadius: gridColorMenu ? '50%' : '4px',
+                            transition: 'border-radius 200ms ease-in-out',
+                          }"
+                        ></div>
+                      </template>
+                      <v-card>
+                        <v-card-text class="pa-0">
+                          <v-color-picker
+                            v-model="gridColor"
+                            flat
+                          ></v-color-picker>
+                        </v-card-text>
+                      </v-card>
+                    </v-menu>
+                  </template>
+                </v-text-field>
+              </v-col>
+
+              <v-col cols="3">
+                <p class="pa-3 ml-15">Color</p>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="color"
+                  hide-details
+                  class="ma-0 pa-0"
+                  variant="outlined"
+                  density="compact"
+                >
+                  <template v-slot:append-inner>
+                    <v-menu
+                      v-model="menu"
+                      location="end"
+                      nudge-bottom="105"
+                      nudge-left="16"
+                      :close-on-content-click="false"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div v-bind="props" :style="swatchStyle"></div>
+                      </template>
+                      <v-card>
+                        <v-card-text class="pa-0">
+                          <v-color-picker v-model="color" flat></v-color-picker>
+                        </v-card-text>
+                      </v-card>
+                    </v-menu>
+                  </template>
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="3">
+                <p class="pa-3">Font Type</p>
+              </v-col>
+              <v-col cols="3">
+                <v-select
+                  v-model="fontType"
+                  :items="fonts"
+                  label="Select ..."
+                  variant="outlined"
+                  density="compact"
+                ></v-select>
+              </v-col>
+
+              <v-col cols="3">
+                <p class="pa-3 ml-10">Font Size</p>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="xFontSize"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                ></v-text-field>
+              </v-col>
+            </v-row>
+            <v-row justify="start">
+              <v-col cols="3">
+                <p class="pa-3">Font Color</p>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="xColor"
+                  hide-details
+                  class="ma-0 pa-0"
+                  variant="outlined"
+                  density="compact"
+                >
+                  <template v-slot:append-inner>
+                    <v-menu
+                      v-model="menuXColor"
+                      location="end"
+                      nudge-bottom="105"
+                      nudge-left="16"
+                      :close-on-content-click="false"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div
+                          v-bind="props"
+                          :style="{
+                            backgroundColor: xColor,
+                            cursor: 'pointer',
+                            width: '30px',
+                            height: '30px',
+                            borderRadius: menuXColor ? '50%' : '4px',
+                            transition: 'border-radius 200ms ease-in-out',
+                          }"
+                        ></div>
+                      </template>
+                      <v-card>
+                        <v-card-text class="pa-0">
+                          <v-color-picker
+                            v-model="xColor"
+                            flat
+                          ></v-color-picker>
+                        </v-card-text>
+                      </v-card>
+                    </v-menu>
+                  </template>
+                </v-text-field>
+              </v-col>
+            </v-row>
+          </v-container>
+
+          <!-- <v-row justify="space-between">
             <v-col cols="6">
               <v-sheet class="my-2"><h3>Look & Feel</h3></v-sheet>
             </v-col>
@@ -144,8 +323,8 @@
                 ></v-sheet
               >
             </v-col>
-          </v-row>
-          <v-row>
+          </v-row> -->
+          <!-- <v-row>
             <v-col>
               <p>Main Title</p>
             </v-col>
@@ -238,7 +417,37 @@
                 <v-date-picker color="primary"></v-date-picker>
               </v-menu>
             </v-col>
+          </v-row> -->
+          <!-- <hr />
+          <v-row>
+            <v-col cols="12">
+              <v-sheet class="my-2"><h3>Visibility</h3></v-sheet>
+              <v-row v-for="i in visibility" :key="i">
+                <v-col cols="10">
+                  <p>{{ i.name }}</p>
+                </v-col>
+                <v-col cols="2">
+                  <v-switch
+                    v-model="i.toogleSwitch"
+                    @update:modelValue="handleToogleSwitches(i)"
+                  ></v-switch>
+                </v-col>
+              </v-row>
+            </v-col>
           </v-row>
+          <v-row>
+            <v-col cols="6">
+              <p>Legend Position</p>
+            </v-col>
+            <v-col cols="6">
+              <v-select
+                label="Select"
+                :items="legendPosition"
+                density="compact"
+                variant="outlined"
+              ></v-select>
+            </v-col>
+          </v-row> -->
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -310,15 +519,22 @@ export default {
       embedDialog: false,
       appearanceDialog: false,
       menu: false,
+      gridColorMenu: false,
+      menuXColor: false,
       dateValue: null,
       datemenu: false,
       modifiedType: null,
       numofseries: 1,
       color: "#1976D2FF",
+      gridColor: "#ccc",
       fontType: null,
       mainTitle: null,
       subTitle: null,
+      isShow: false,
       xAxisData: [],
+      toogleSwitch: false,
+      xFontSize: 12,
+      xColor: "#333",
       xCategories: ["Days", "Number", "Category", "Time"],
       yAxisData: [],
       yCategories: [
@@ -376,6 +592,60 @@ export default {
           img: rose,
         },
       ],
+      // visibility: [
+      //   "Title",
+      //   "Subtitle",
+      //   "Grid Lines",
+      //   "Tooltips",
+      //   "Data Labels",
+      //   "Legend",
+      // ],
+      visibility: [
+        {
+          name: "Title",
+          value: "title",
+        },
+        {
+          name: "Subtitle",
+          value: "subtitle",
+        },
+        {
+          name: "Grid Lines",
+          value: "gridLines",
+        },
+        {
+          name: "Tooltips",
+          value: "tooltips",
+        },
+        {
+          name: "Data Labels",
+          value: "dataLabels",
+        },
+        {
+          name: "Legend",
+          value: "legend",
+        },
+      ],
+      legendPosition: [
+        "Top Center",
+        "Top Left",
+        "Top Right",
+        "Middle Left",
+        "Middle Right",
+        "Bottom Center",
+        "Bottom Left",
+        "Bottom Right",
+      ],
+      stylingOptions: [
+        {
+          title: "Defaults",
+          value: "default",
+        },
+        {
+          title: "Title",
+          value: "title",
+        },
+      ],
     };
   },
   computed: {
@@ -393,7 +663,7 @@ export default {
     },
   },
   mounted() {
-    this.handleOptions(this.color);
+    this.handleOptions();
   },
   methods: {
     handleSelectedChart(val) {
@@ -401,7 +671,14 @@ export default {
       this.handleOptions();
     },
 
-    handleOptions(color) {
+    handleToogleSwitches(val) {
+      console.log(val);
+      // if (val) {
+      //   this.isShow = true;
+      // }
+    },
+
+    handleOptions() {
       this.options = {
         title: {
           text: this.mainTitle,
@@ -415,6 +692,10 @@ export default {
             fontSize: 15,
           },
         },
+        grid: {
+          backgroundColor: this.gridColor,
+          show: true,
+        },
         xAxis: {
           type: "category",
           data: [
@@ -424,16 +705,23 @@ export default {
             "Video Ads",
             "Search Engines",
           ],
-          nameTextStyle: {
+          axisLabel: {
+            fontSize: this.xFontSize,
+            color: this.xColor,
             fontFamily: this.fontType,
           },
         },
         yAxis: {
           type: "value",
+          axisLabel: {
+            fontSize: this.xFontSize,
+            color: this.xColor,
+            fontFamily: this.fontType,
+          },
         },
         series: [
           {
-            color: color,
+            color: this.color,
             data: [120, 200, 150, 80, 70],
             type: this.modifiedType ? this.modifiedType : this.chartType,
           },

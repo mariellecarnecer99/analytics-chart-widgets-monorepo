@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar color="rgba(233, 73, 93)" class="flex-grow-0" app dark>
+  <v-app-bar color="rgba(233, 73, 93)" class="flex-grow-0" dark>
     <v-app-bar-title>
       <v-icon icon="mdi-chart-box" color="white" />
       <span class="ml-3" style="color: white">Charts Widget</span>
@@ -115,7 +115,7 @@
             @input="handleDescChange"
           ></v-textarea>
         </div>
-        <hr />
+        <!-- <hr />
         <v-container fluid>
           <v-row>
             <v-col cols="12">
@@ -143,7 +143,7 @@
               ></v-select>
             </v-col>
           </v-row>
-        </v-container>
+        </v-container> -->
       </div>
     </div>
   </v-navigation-drawer>
