@@ -115,7 +115,7 @@
             </v-row>
             <v-row>
               <v-col>
-                <p>Series</p>
+                <p class="pa-3">Series</p>
               </v-col>
               <v-col>
                 <v-text-field
@@ -128,16 +128,6 @@
               </v-col>
             </v-row>
           </v-container>
-
-          <!-- <v-btn size="small" color="primary"
-            ><v-icon size="large">mdi-plus</v-icon> Add Series</v-btn
-          > -->
-          <!-- <v-expansion-panels variant="popout" class="my-4">
-            <v-expansion-panel>
-              <v-expansion-panel-title>Type</v-expansion-panel-title>
-              <v-expansion-panel-text> </v-expansion-panel-text>
-            </v-expansion-panel>
-          </v-expansion-panels> -->
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -159,7 +149,7 @@
           </v-row>
           <v-divider></v-divider>
           <v-container>
-            <h4>Defaults</h4>
+            <h4 class="my-5">Defaults</h4>
             <v-row justify="start">
               <v-col cols="3">
                 <p class="pa-3">Plot Background</p>
@@ -397,13 +387,48 @@
               </v-col>
             </v-row>
 
-            <v-row>
-              <v-col cols="3">
-                <p class="pa-3">Horizontal Position</p>
+            <h4 class="my-5">Visibility</h4>
+            <v-row column>
+              <v-col cols="">
+                <p class="pa-3">Plot Title</p>
               </v-col>
               <v-col>
-                <v-slider v-model="positionSlider" thumb-label></v-slider>
+                <v-switch v-model="titleSwitch"></v-switch>
               </v-col>
+
+              <v-col>
+                <p class="pa-3">Grid Lines</p>
+              </v-col>
+              <v-col>
+                <v-switch v-model="gridLinesSwitch"></v-switch>
+              </v-col>
+
+              <v-col cols="">
+                <p class="pa-3">Tick Labels</p>
+              </v-col>
+              <v-col>
+                <v-switch v-model="tickLabelsSwitch"></v-switch>
+              </v-col>
+
+              <v-col cols="">
+                <p class="pa-3">Tick Markers</p>
+              </v-col>
+              <v-col>
+                <v-switch v-model="tickMarkersSwitch"></v-switch>
+              </v-col>
+
+              <!-- <v-col>
+                <p class="pa-3">Tooltips</p>
+              </v-col>
+              <v-col>
+                <v-switch v-model="toogleSwitch"></v-switch>
+              </v-col>
+              <v-col>
+                <p class="pa-3">Legend</p>
+              </v-col>
+              <v-col>
+                <v-switch v-model="toogleSwitch"></v-switch>
+              </v-col> -->
             </v-row>
           </v-container>
 
@@ -430,36 +455,6 @@
                 </template>
                 <v-date-picker color="primary"></v-date-picker>
               </v-menu>
-            </v-col>
-          </v-row> -->
-          <!-- <hr />
-          <v-row>
-            <v-col cols="12">
-              <v-sheet class="my-2"><h3>Visibility</h3></v-sheet>
-              <v-row v-for="i in visibility" :key="i">
-                <v-col cols="10">
-                  <p>{{ i.name }}</p>
-                </v-col>
-                <v-col cols="2">
-                  <v-switch
-                    v-model="i.toogleSwitch"
-                    @update:modelValue="handleToogleSwitches(i)"
-                  ></v-switch>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="6">
-              <p>Legend Position</p>
-            </v-col>
-            <v-col cols="6">
-              <v-select
-                label="Select"
-                :items="legendPosition"
-                density="compact"
-                variant="outlined"
-              ></v-select>
             </v-col>
           </v-row> -->
         </v-card-text>
@@ -536,7 +531,6 @@ export default {
       gridColorMenu: false,
       menuLabelColor: false,
       menuTitleColor: false,
-      positionSlider: 50,
       dateValue: null,
       datemenu: false,
       modifiedType: null,
@@ -545,12 +539,14 @@ export default {
       gridColor: "#ccc",
       fontType: "sans-serif",
       titleFontType: "sans-serif",
-      titleFontSize: 12,
+      titleFontSize: 18,
       titlePosition: "right",
       mainTitle: "My Chart",
-      isShow: false,
       xAxisData: [],
-      toogleSwitch: false,
+      titleSwitch: false,
+      tickLabelsSwitch: false,
+      tickMarkersSwitch: false,
+      gridLinesSwitch: false,
       fontSize: 12,
       labelColor: "#333",
       titleColor: "#333",
@@ -611,38 +607,6 @@ export default {
           img: rose,
         },
       ],
-      visibility: [
-        {
-          name: "Title",
-          value: "title",
-        },
-        {
-          name: "Grid Lines",
-          value: "gridLines",
-        },
-        {
-          name: "Tooltips",
-          value: "tooltips",
-        },
-        {
-          name: "Data Labels",
-          value: "dataLabels",
-        },
-        {
-          name: "Legend",
-          value: "legend",
-        },
-      ],
-      legendPosition: [
-        "Top Center",
-        "Top Left",
-        "Top Right",
-        "Middle Left",
-        "Middle Right",
-        "Bottom Center",
-        "Bottom Left",
-        "Bottom Right",
-      ],
     };
   },
   computed: {
@@ -668,18 +632,11 @@ export default {
       this.handleOptions();
     },
 
-    handleToogleSwitches(val) {
-      console.log(val);
-      // if (val) {
-      //   this.isShow = true;
-      // }
-    },
-
     handleOptions() {
       this.options = {
         title: {
-          text: this.mainTitle,
-          left: this.positionSlider,
+          text: this.titleSwitch === true ? this.mainTitle : null,
+          left: "center",
           textStyle: {
             fontSize: this.titleFontSize,
             fontFamily: this.titleFontType,
@@ -688,10 +645,11 @@ export default {
         },
         grid: {
           backgroundColor: this.gridColor,
-          show: true,
+          show: this.gridLinesSwitch,
         },
         xAxis: {
           type: "category",
+          show: this.tickLabelsSwitch,
           data: [
             "Direct",
             "Email",
@@ -704,13 +662,20 @@ export default {
             color: this.labelColor,
             fontFamily: this.fontType,
           },
+          axisTick: {
+            show: this.tickMarkersSwitch,
+          },
         },
         yAxis: {
           type: "value",
+          show: this.tickLabelsSwitch,
           axisLabel: {
             fontSize: this.fontSize,
             color: this.labelColor,
             fontFamily: this.fontType,
+          },
+          axisTick: {
+            show: this.tickMarkersSwitch,
           },
         },
         series: [
@@ -839,7 +804,7 @@ export default {
       if (val) {
         const seriesData = {
           // color: color,
-          data: [120, 200, 150, 80, 70],
+          data: [30, 67, 96, 85, 105],
           type: this.modifiedType ? this.modifiedType : this.chartType,
         };
         this.options.series.push(seriesData);
