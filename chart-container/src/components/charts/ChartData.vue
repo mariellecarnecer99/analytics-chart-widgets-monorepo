@@ -238,6 +238,7 @@
                 </v-text-field>
               </v-col>
             </v-row>
+
             <v-row>
               <v-col cols="3">
                 <p class="pa-3">Font Type</p>
@@ -257,20 +258,21 @@
               </v-col>
               <v-col cols="3">
                 <v-text-field
-                  v-model="xFontSize"
+                  v-model="fontSize"
                   type="number"
                   variant="outlined"
                   density="compact"
                 ></v-text-field>
               </v-col>
             </v-row>
-            <v-row justify="start">
+
+            <v-row justify="start" class="mt-0">
               <v-col cols="3">
                 <p class="pa-3">Font Color</p>
               </v-col>
               <v-col cols="3">
                 <v-text-field
-                  v-model="xColor"
+                  v-model="labelColor"
                   hide-details
                   class="ma-0 pa-0"
                   variant="outlined"
@@ -278,7 +280,7 @@
                 >
                   <template v-slot:append-inner>
                     <v-menu
-                      v-model="menuXColor"
+                      v-model="menuLabelColor"
                       location="end"
                       nudge-bottom="105"
                       nudge-left="16"
@@ -288,11 +290,11 @@
                         <div
                           v-bind="props"
                           :style="{
-                            backgroundColor: xColor,
+                            backgroundColor: labelColor,
                             cursor: 'pointer',
                             width: '30px',
                             height: '30px',
-                            borderRadius: menuXColor ? '50%' : '4px',
+                            borderRadius: menuLabelColor ? '50%' : '4px',
                             transition: 'border-radius 200ms ease-in-out',
                           }"
                         ></div>
@@ -300,7 +302,7 @@
                       <v-card>
                         <v-card-text class="pa-0">
                           <v-color-picker
-                            v-model="xColor"
+                            v-model="labelColor"
                             flat
                           ></v-color-picker>
                         </v-card-text>
@@ -310,90 +312,102 @@
                 </v-text-field>
               </v-col>
             </v-row>
-          </v-container>
 
-          <!-- <v-row justify="space-between">
-            <v-col cols="6">
-              <v-sheet class="my-2"><h3>Look & Feel</h3></v-sheet>
-            </v-col>
-            <v-col cols="1">
-              <v-sheet class="my-2"
-                ><v-icon @click="appearanceDialog = !appearanceDialog"
-                  >mdi-close</v-icon
-                ></v-sheet
-              >
-            </v-col>
-          </v-row> -->
-          <!-- <v-row>
-            <v-col>
-              <p>Main Title</p>
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="mainTitle"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <p>Sub Title</p>
-            </v-col>
-            <v-col>
-              <v-text-field
-                v-model="subTitle"
-                variant="outlined"
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <p>Font Type</p>
-            </v-col>
-            <v-col>
-              <v-select
-                v-model="fontType"
-                :items="fonts"
-                label="Select font type"
-                variant="outlined"
-              ></v-select>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col>
-              <p>Color Scheme</p>
-            </v-col>
-            <v-col>
-              <div class="d-flex justify-center">
+            <h4 class="my-5">Title</h4>
+            <v-row justify="start">
+              <v-col cols="3">
+                <p class="pa-3">Plot Title</p>
+              </v-col>
+              <v-col cols="3">
                 <v-text-field
-                  v-model="color"
+                  v-model="mainTitle"
+                  variant="outlined"
+                  density="compact"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <p class="pa-3 ml-10">Font Type</p>
+              </v-col>
+              <v-col cols="3">
+                <v-select
+                  v-model="titleFontType"
+                  :items="fonts"
+                  label="Select ..."
+                  variant="outlined"
+                  density="compact"
+                ></v-select>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="3">
+                <p class="pa-3">Font Size</p>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="titleFontSize"
+                  type="number"
+                  variant="outlined"
+                  density="compact"
+                ></v-text-field>
+              </v-col>
+              <v-col cols="3">
+                <p class="pa-3 ml-10">Font Color</p>
+              </v-col>
+              <v-col cols="3">
+                <v-text-field
+                  v-model="titleColor"
                   hide-details
                   class="ma-0 pa-0"
                   variant="outlined"
+                  density="compact"
                 >
                   <template v-slot:append-inner>
                     <v-menu
-                      v-model="menu"
+                      v-model="menuTitleColor"
                       location="end"
                       nudge-bottom="105"
                       nudge-left="16"
                       :close-on-content-click="false"
                     >
                       <template v-slot:activator="{ props }">
-                        <div :style="swatchStyle" v-bind="props"></div>
+                        <div
+                          v-bind="props"
+                          :style="{
+                            backgroundColor: titleColor,
+                            cursor: 'pointer',
+                            width: '30px',
+                            height: '30px',
+                            borderRadius: menuTitleColor ? '50%' : '4px',
+                            transition: 'border-radius 200ms ease-in-out',
+                          }"
+                        ></div>
                       </template>
                       <v-card>
                         <v-card-text class="pa-0">
-                          <v-color-picker v-model="color" flat></v-color-picker>
+                          <v-color-picker
+                            v-model="titleColor"
+                            flat
+                          ></v-color-picker>
                         </v-card-text>
                       </v-card>
                     </v-menu>
                   </template>
                 </v-text-field>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="3">
+                <p class="pa-3">Horizontal Position</p>
+              </v-col>
+              <v-col>
+                <v-slider v-model="positionSlider" thumb-label></v-slider>
+              </v-col>
+            </v-row>
+          </v-container>
+
+          <!-- <v-row>
             <v-col>
               <p>Date range</p>
             </v-col>
@@ -520,21 +534,26 @@ export default {
       appearanceDialog: false,
       menu: false,
       gridColorMenu: false,
-      menuXColor: false,
+      menuLabelColor: false,
+      menuTitleColor: false,
+      positionSlider: 50,
       dateValue: null,
       datemenu: false,
       modifiedType: null,
       numofseries: 1,
       color: "#1976D2FF",
       gridColor: "#ccc",
-      fontType: null,
-      mainTitle: null,
-      subTitle: null,
+      fontType: "sans-serif",
+      titleFontType: "sans-serif",
+      titleFontSize: 12,
+      titlePosition: "right",
+      mainTitle: "My Chart",
       isShow: false,
       xAxisData: [],
       toogleSwitch: false,
-      xFontSize: 12,
-      xColor: "#333",
+      fontSize: 12,
+      labelColor: "#333",
+      titleColor: "#333",
       xCategories: ["Days", "Number", "Category", "Time"],
       yAxisData: [],
       yCategories: [
@@ -592,22 +611,10 @@ export default {
           img: rose,
         },
       ],
-      // visibility: [
-      //   "Title",
-      //   "Subtitle",
-      //   "Grid Lines",
-      //   "Tooltips",
-      //   "Data Labels",
-      //   "Legend",
-      // ],
       visibility: [
         {
           name: "Title",
           value: "title",
-        },
-        {
-          name: "Subtitle",
-          value: "subtitle",
         },
         {
           name: "Grid Lines",
@@ -635,16 +642,6 @@ export default {
         "Bottom Center",
         "Bottom Left",
         "Bottom Right",
-      ],
-      stylingOptions: [
-        {
-          title: "Defaults",
-          value: "default",
-        },
-        {
-          title: "Title",
-          value: "title",
-        },
       ],
     };
   },
@@ -682,14 +679,11 @@ export default {
       this.options = {
         title: {
           text: this.mainTitle,
-          subtext: this.subTitle,
-          left: "center",
+          left: this.positionSlider,
           textStyle: {
-            fontSize: 20,
-            fontFamily: this.fontType,
-          },
-          subtextStyle: {
-            fontSize: 15,
+            fontSize: this.titleFontSize,
+            fontFamily: this.titleFontType,
+            color: this.titleColor,
           },
         },
         grid: {
@@ -706,16 +700,16 @@ export default {
             "Search Engines",
           ],
           axisLabel: {
-            fontSize: this.xFontSize,
-            color: this.xColor,
+            fontSize: this.fontSize,
+            color: this.labelColor,
             fontFamily: this.fontType,
           },
         },
         yAxis: {
           type: "value",
           axisLabel: {
-            fontSize: this.xFontSize,
-            color: this.xColor,
+            fontSize: this.fontSize,
+            color: this.labelColor,
             fontFamily: this.fontType,
           },
         },
