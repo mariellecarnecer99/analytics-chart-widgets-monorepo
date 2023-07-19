@@ -17,7 +17,7 @@
     >
   </div>
   <div class="toolbox-dialog">
-    <v-dialog v-model="editDialog" width="500px" style="z-index: 0">
+    <v-dialog v-model="editDialog" width="750px" style="z-index: 0">
       <v-card>
         <v-card-text>
           <v-row justify="space-between">
@@ -35,10 +35,8 @@
           <v-divider></v-divider>
           <v-container>
             <v-row>
-              <v-col>
-                <p class="pa-3">Type</p>
-              </v-col>
-              <v-col>
+              <v-col cols="4">
+                <p class="mb-3">Type</p>
                 <v-dialog transition="dialog-bottom-transition" width="auto">
                   <template v-slot:activator="{ props }">
                     <v-text-field
@@ -82,51 +80,109 @@
                   </template>
                 </v-dialog>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <p class="pa-3">X</p>
-              </v-col>
-              <v-col>
+
+              <v-col cols="4">
+                <p class="mb-3">X</p>
                 <v-select
                   v-model="xAxisData"
                   :items="xCategories"
                   label="Choose data..."
-                  variant="solo"
+                  variant="outlined"
                   density="compact"
                   @update:modelValue="selectedXaxisData"
                 ></v-select>
               </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
-                <p class="pa-3">Y</p>
-              </v-col>
-              <v-col>
+
+              <v-col cols="4">
+                <p class="mb-3">Y</p>
                 <v-select
                   v-model="yAxisData"
                   :items="yCategories"
                   label="Choose data..."
-                  variant="solo"
+                  variant="outlined"
                   density="compact"
                   @update:modelValue="selectedYaxisData"
                 ></v-select>
               </v-col>
             </v-row>
+
+            <p class="mb-3">Date Range</p>
             <v-row>
-              <v-col>
-                <p class="pa-3">Series</p>
-              </v-col>
-              <v-col>
+              <v-col cols="4">
                 <v-text-field
-                  v-model="numofseries"
-                  type="number"
+                  v-model="start"
+                  label="Start date"
+                  type="date"
                   variant="outlined"
                   density="compact"
-                  @update:modelValue="handleNumberOfSeries"
+                ></v-text-field>
+              </v-col>
+
+              <v-col cols="4">
+                <v-text-field
+                  v-model="end"
+                  label="End date"
+                  type="date"
+                  variant="outlined"
+                  density="compact"
                 ></v-text-field>
               </v-col>
             </v-row>
+
+            <v-row class="mt-0">
+              <v-col>
+                <p class="pa-2">Series</p>
+              </v-col>
+              <v-col>
+                <v-btn color="primary" @click="handleNumberOfSeries"
+                  ><v-icon>mdi-plus</v-icon> Add Series</v-btn
+                >
+              </v-col>
+            </v-row>
+
+            <v-table fixed-header height="300px" theme="dark" class="mt-5">
+              <thead>
+                <tr>
+                  <th class="text-left">Series</th>
+                  <th class="text-left">Data</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="item in this.options.series" :key="item.name">
+                  <td>Series _</td>
+                  <td>
+                    <v-row>
+                      <v-col cols="5">
+                        <v-text-field
+                          v-for="idx in item.data"
+                          :model-value="idx"
+                          variant="outlined"
+                          density="compact"
+                        >
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                  </td>
+                </tr>
+              </tbody>
+            </v-table>
+
+            <!-- <v-card>
+              <div v-if="this.options.series.length != 0" class="mt-4">
+                <v-row v-for="i in this.options.series">
+                  <v-col>
+                    Series _
+                    <v-text-field
+                      v-for="idx in i.data"
+                      :model-value="idx"
+                      variant="outlined"
+                      density="compact"
+                    >
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+              </div>
+            </v-card> -->
           </v-container>
         </v-card-text>
       </v-card>
@@ -607,6 +663,8 @@ export default {
           img: rose,
         },
       ],
+      start: null,
+      end: null,
     };
   },
   computed: {
@@ -802,6 +860,7 @@ export default {
 
     handleNumberOfSeries(val) {
       if (val) {
+        // console.log(val);
         const seriesData = {
           // color: color,
           data: [30, 67, 96, 85, 105],
