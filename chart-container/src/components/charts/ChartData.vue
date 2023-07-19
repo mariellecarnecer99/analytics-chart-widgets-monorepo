@@ -156,27 +156,43 @@
                 <tr v-for="(item, index) in this.options.series" :key="item">
                   <td>Series {{ index + 1 }}</td>
                   <td>
-                    <div
-                      :style="{
-                        background: item.color,
-                        cursor: 'pointer',
-                        width: '30px',
-                        height: '30px',
-                      }"
-                    ></div>
-                    <!-- <v-row>
-                      <v-col cols="4">
-                        <v-text-field
-                          v-model="seriesData"
-                          v-for="idx in item.data"
-                          :model-value="idx"
-                          variant="outlined"
-                          density="compact"
-                          @update:modelValue="handleSeriesData"
-                        >
-                        </v-text-field>
-                      </v-col>
-                    </v-row> -->
+                    <v-dialog
+                      transition="dialog-bottom-transition"
+                      width="250px"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <div
+                          v-bind="props"
+                          :style="{
+                            background: item.color,
+                            cursor: 'pointer',
+                            width: '30px',
+                            height: '30px',
+                          }"
+                        ></div>
+                      </template>
+                      <template v-slot:default="{ isActive }">
+                        <v-card>
+                          <v-toolbar color="primary" title="Edit Data">
+                            <v-spacer></v-spacer>
+                            <v-icon
+                              class="mr-3"
+                              @click="isActive.value = !isActive.value"
+                              >mdi-close</v-icon
+                            >
+                          </v-toolbar>
+                          <v-card-text>
+                            <v-text-field
+                              v-for="(itm, index) in item.data"
+                              :model-value="itm"
+                              variant="outlined"
+                              density="compact"
+                            >
+                            </v-text-field>
+                          </v-card-text>
+                        </v-card>
+                      </template>
+                    </v-dialog>
                   </td>
                   <td>
                     <v-icon @click="deleteSeries(index)">mdi-delete</v-icon>
@@ -184,23 +200,6 @@
                 </tr>
               </tbody>
             </v-table>
-
-            <!-- <v-card>
-              <div v-if="this.options.series.length != 0" class="mt-4">
-                <v-row v-for="i in this.options.series">
-                  <v-col>
-                    Series _
-                    <v-text-field
-                      v-for="idx in i.data"
-                      :model-value="idx"
-                      variant="outlined"
-                      density="compact"
-                    >
-                    </v-text-field>
-                  </v-col>
-                </v-row>
-              </div>
-            </v-card> -->
           </v-container>
         </v-card-text>
       </v-card>
@@ -505,32 +504,6 @@
               </v-col> -->
             </v-row>
           </v-container>
-
-          <!-- <v-row>
-            <v-col>
-              <p>Date range</p>
-            </v-col>
-            <v-col>
-              <v-menu
-                v-model="datemenu"
-                :close-on-content-click="false"
-                :nudge-right="40"
-                transition="scale-transition"
-                offset-y
-                min-width="290px"
-              >
-                <template v-slot:activator="{ props }">
-                  <v-text-field
-                    v-bind="props"
-                    v-model="dateValue"
-                    variant="outlined"
-                    append-inner-icon="mdi-calendar"
-                  ></v-text-field>
-                </template>
-                <v-date-picker color="primary"></v-date-picker>
-              </v-menu>
-            </v-col>
-          </v-row> -->
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -885,6 +858,11 @@ export default {
     getRandomColor() {
       this.randomColor = Math.floor(Math.random() * 16777215).toString(16);
     },
+
+    // handleSeriesData(val, item) {
+    //   console.log(val);
+    //   console.log(item);
+    // },
 
     handleNumberOfSeries() {
       this.getRandomColor();
