@@ -129,39 +129,49 @@
               </v-col>
             </v-row>
 
-            <v-row class="mt-0">
+            <v-row>
               <v-col>
-                <p class="pa-2">Series</p>
-              </v-col>
-              <v-col>
+                <p class="mb-3">Series</p>
                 <v-btn color="primary" @click="handleNumberOfSeries"
                   ><v-icon>mdi-plus</v-icon> Add Series</v-btn
                 >
               </v-col>
             </v-row>
 
-            <v-table fixed-header height="300px" theme="dark" class="mt-5">
+            <v-table
+              v-if="this.options.series.length != 0"
+              fixed-header
+              height="300px"
+              theme="dark"
+              class="mt-5"
+            >
               <thead>
                 <tr>
                   <th class="text-left">Series</th>
                   <th class="text-left">Data</th>
+                  <th class="text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="item in this.options.series" :key="item.name">
-                  <td>Series _</td>
+                <tr v-for="(item, index) in this.options.series" :key="item">
+                  <td>Series {{ index + 1 }}</td>
                   <td>
-                    <v-row>
-                      <v-col cols="5">
+                    <!-- <v-row>
+                      <v-col cols="4">
                         <v-text-field
+                          v-model="seriesData"
                           v-for="idx in item.data"
                           :model-value="idx"
                           variant="outlined"
                           density="compact"
+                          @update:modelValue="handleSeriesData"
                         >
                         </v-text-field>
                       </v-col>
-                    </v-row>
+                    </v-row> -->
+                  </td>
+                  <td>
+                    <v-icon @click="deleteSeries(index)">mdi-delete</v-icon>
                   </td>
                 </tr>
               </tbody>
@@ -665,6 +675,7 @@ export default {
       ],
       start: null,
       end: null,
+      seriesData: [],
     };
   },
   computed: {
@@ -690,7 +701,7 @@ export default {
       this.handleOptions();
     },
 
-    handleOptions() {
+    handleOptions(val) {
       this.options = {
         title: {
           text: this.titleSwitch === true ? this.mainTitle : null,
@@ -744,6 +755,9 @@ export default {
           },
         ],
       };
+      if (val) {
+        this.options.series = val;
+      }
       store.getChartOptions(this.options);
     },
 
@@ -858,16 +872,26 @@ export default {
       }
     },
 
-    handleNumberOfSeries(val) {
-      if (val) {
-        // console.log(val);
-        const seriesData = {
-          // color: color,
-          data: [30, 67, 96, 85, 105],
-          type: this.modifiedType ? this.modifiedType : this.chartType,
-        };
-        this.options.series.push(seriesData);
-      }
+    handleNumberOfSeries() {
+      const seriesData = {
+        // color: color,
+        data: [30, 67, 96, 85, 105],
+        type: this.modifiedType ? this.modifiedType : this.chartType,
+      };
+      this.options.series.push(seriesData);
+    },
+
+    // handleSeriesData(val) {
+    //   // this.seriesData.push(val);
+    //   console.log(val);
+    // },
+
+    deleteSeries(val) {
+      const index = this.options.series
+        .map((item, index) => index)
+        .indexOf(val);
+      this.options.series.splice(index, 1);
+      this.handleOptions(this.options.series);
     },
   },
 };
