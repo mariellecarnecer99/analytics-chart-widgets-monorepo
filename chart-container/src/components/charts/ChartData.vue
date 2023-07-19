@@ -141,7 +141,7 @@
             <v-table
               v-if="this.options.series.length != 0"
               fixed-header
-              height="300px"
+              height="250px"
               theme="dark"
               class="mt-5"
             >
@@ -156,6 +156,14 @@
                 <tr v-for="(item, index) in this.options.series" :key="item">
                   <td>Series {{ index + 1 }}</td>
                   <td>
+                    <div
+                      :style="{
+                        background: item.color,
+                        cursor: 'pointer',
+                        width: '30px',
+                        height: '30px',
+                      }"
+                    ></div>
                     <!-- <v-row>
                       <v-col cols="4">
                         <v-text-field
@@ -676,6 +684,7 @@ export default {
       start: null,
       end: null,
       seriesData: [],
+      randomColor: null,
     };
   },
   computed: {
@@ -755,6 +764,7 @@ export default {
           },
         ],
       };
+
       if (val) {
         this.options.series = val;
       }
@@ -872,19 +882,19 @@ export default {
       }
     },
 
+    getRandomColor() {
+      this.randomColor = Math.floor(Math.random() * 16777215).toString(16);
+    },
+
     handleNumberOfSeries() {
+      this.getRandomColor();
       const seriesData = {
-        // color: color,
+        color: "#" + this.randomColor,
         data: [30, 67, 96, 85, 105],
         type: this.modifiedType ? this.modifiedType : this.chartType,
       };
       this.options.series.push(seriesData);
     },
-
-    // handleSeriesData(val) {
-    //   // this.seriesData.push(val);
-    //   console.log(val);
-    // },
 
     deleteSeries(val) {
       const index = this.options.series
