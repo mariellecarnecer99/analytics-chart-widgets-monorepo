@@ -129,7 +129,7 @@
               </v-col>
             </v-row>
 
-            <v-row>
+            <v-row justify="end">
               <v-col>
                 <p class="mb-3">Series</p>
                 <v-btn color="primary" @click="handleNumberOfSeries"
@@ -140,7 +140,6 @@
 
             <v-table
               v-if="this.options.series.length != 0"
-              theme="dark"
               fixed-header
               height="250px"
               class="mt-5"
@@ -192,14 +191,14 @@
                   <td>
                     <v-dialog
                       transition="dialog-bottom-transition"
-                      width="250px"
+                      width="400px"
                     >
                       <template v-slot:activator="{ props }">
                         <v-icon v-bind="props">mdi-pencil</v-icon>
                       </template>
                       <template v-slot:default="{ isActive }">
                         <v-card>
-                          <v-toolbar color="primary" title="Edit Data">
+                          <v-toolbar color="primary" title="Chart Data">
                             <v-spacer></v-spacer>
                             <v-icon
                               class="mr-3"
@@ -208,13 +207,14 @@
                             >
                           </v-toolbar>
                           <v-card-text>
-                            <v-text-field
-                              v-for="(itm, index) in item.data"
-                              :model-value="itm"
-                              variant="outlined"
-                              density="compact"
-                            >
-                            </v-text-field>
+                            <div v-for="(s, idx) in item.data">
+                              <v-text-field
+                                v-model="s.value"
+                                variant="outlined"
+                                density="compact"
+                              >
+                              </v-text-field>
+                            </div>
                           </v-card-text>
                         </v-card>
                       </template>
@@ -294,51 +294,7 @@
               </v-col>
 
               <v-col cols="3">
-                <p class="pa-3 ml-15">Color</p>
-              </v-col>
-              <v-col cols="3">
-                <v-text-field
-                  v-model="color"
-                  hide-details
-                  class="ma-0 pa-0"
-                  variant="outlined"
-                  density="compact"
-                >
-                  <template v-slot:append-inner>
-                    <v-menu
-                      v-model="menu"
-                      location="end"
-                      nudge-bottom="105"
-                      nudge-left="16"
-                      :close-on-content-click="false"
-                    >
-                      <template v-slot:activator="{ props }">
-                        <div
-                          v-bind="props"
-                          :style="{
-                            backgroundColor: color,
-                            cursor: 'pointer',
-                            width: '30px',
-                            height: '30px',
-                            borderRadius: menu ? '50%' : '4px',
-                            transition: 'border-radius 200ms ease-in-out',
-                          }"
-                        ></div>
-                      </template>
-                      <v-card>
-                        <v-card-text class="pa-0">
-                          <v-color-picker v-model="color" flat></v-color-picker>
-                        </v-card-text>
-                      </v-card>
-                    </v-menu>
-                  </template>
-                </v-text-field>
-              </v-col>
-            </v-row>
-
-            <v-row>
-              <v-col cols="3">
-                <p class="pa-3">Font Type</p>
+                <p class="pa-3 ml-10">Font Type</p>
               </v-col>
               <v-col cols="3">
                 <v-select
@@ -349,9 +305,11 @@
                   density="compact"
                 ></v-select>
               </v-col>
+            </v-row>
 
+            <v-row>
               <v-col cols="3">
-                <p class="pa-3 ml-10">Font Size</p>
+                <p class="pa-3">Font Size</p>
               </v-col>
               <v-col cols="3">
                 <v-text-field
@@ -361,11 +319,9 @@
                   density="compact"
                 ></v-text-field>
               </v-col>
-            </v-row>
 
-            <v-row justify="start" class="mt-0">
               <v-col cols="3">
-                <p class="pa-3">Font Color</p>
+                <p class="pa-3 ml-10">Font Color</p>
               </v-col>
               <v-col cols="3">
                 <v-text-field
@@ -624,8 +580,8 @@ export default {
       titlePosition: "right",
       mainTitle: "My Chart",
       xAxisData: [],
-      titleSwitch: false,
-      tickLabelsSwitch: false,
+      titleSwitch: true,
+      tickLabelsSwitch: true,
       tickMarkersSwitch: false,
       gridLinesSwitch: false,
       fontSize: 12,
@@ -692,6 +648,7 @@ export default {
       end: null,
       seriesData: [],
       randomColor: null,
+      seriesName: null,
     };
   },
   computed: {
@@ -710,6 +667,11 @@ export default {
       this.handleOptions();
     },
 
+    // handleSeriesName(val) {
+    //   console.log(val);
+    //   this.seriesName = val;
+    // },
+
     handleOptions(val) {
       this.options = {
         title: {
@@ -725,15 +687,17 @@ export default {
           backgroundColor: this.gridColor,
           show: this.gridLinesSwitch,
         },
+        tooltip: {},
+        legend: {},
         xAxis: {
           type: "category",
           show: this.tickLabelsSwitch,
           data: [
-            "Direct",
-            "Email",
-            "Ad Networks",
-            "Video Ads",
-            "Search Engines",
+            { value: "Direct", label: "Direct" },
+            { value: "Email", label: "Email" },
+            { value: "Ad Networks", label: "Ad Networks" },
+            { value: "Video Ads", label: "Video Ads" },
+            { value: "Search Engines", label: "Search Engines" },
           ],
           axisLabel: {
             fontSize: this.fontSize,
@@ -758,8 +722,15 @@ export default {
         },
         series: [
           {
+            name: this.seriesName,
             color: this.color,
-            data: [120, 200, 150, 80, 70],
+            data: [
+              { value: 120 },
+              { value: 200 },
+              { value: 150 },
+              { value: 80 },
+              { value: 70 },
+            ],
             type: this.modifiedType ? this.modifiedType : this.chartType,
           },
         ],
@@ -886,16 +857,18 @@ export default {
       this.randomColor = Math.floor(Math.random() * 16777215).toString(16);
     },
 
-    // handleSeriesData(val, item) {
-    //   console.log(val);
-    //   console.log(item);
-    // },
-
     handleNumberOfSeries() {
       this.getRandomColor();
       const seriesData = {
+        name: this.seriesName,
         color: "#" + this.randomColor,
-        data: [30, 67, 96, 85, 105],
+        data: [
+          { value: 30 },
+          { value: 67 },
+          { value: 96 },
+          { value: 85 },
+          { value: 105 },
+        ],
         type: this.modifiedType ? this.modifiedType : this.chartType,
       };
       this.options.series.push(seriesData);
