@@ -41,6 +41,7 @@
                   <template v-slot:activator="{ props }">
                     <v-text-field
                       v-model="modifiedType"
+                      placeholder="Select Chart"
                       hide-details
                       class="ma-0 pa-0"
                       variant="outlined"
@@ -154,38 +155,46 @@
                 <tr v-for="(item, index) in this.options.series" :key="item">
                   <td>
                     <v-row>
-                      <v-col cols="1">
-                        <v-menu
-                          v-model="item.menu"
-                          location="end"
-                          nudge-bottom="105"
-                          nudge-left="16"
-                          :close-on-content-click="false"
+                      <v-col class="mt-3">
+                        <v-text-field
+                          v-model="item.name"
+                          variant="outlined"
+                          density="compact"
                         >
-                          <template v-slot:activator="{ props }">
-                            <div
-                              v-bind="props"
-                              :style="{
-                                backgroundColor: item.color,
-                                cursor: 'pointer',
-                                width: '25px',
-                                height: '25px',
-                                borderRadius: item.menu ? '50%' : '4px',
-                                transition: 'border-radius 200ms ease-in-out',
-                              }"
-                            ></div>
+                          <template v-slot:append-inner>
+                            <v-menu
+                              v-model="item.menu"
+                              location="end"
+                              nudge-bottom="105"
+                              nudge-left="16"
+                              :close-on-content-click="false"
+                            >
+                              <template v-slot:activator="{ props }">
+                                <div
+                                  v-bind="props"
+                                  :style="{
+                                    backgroundColor: item.color,
+                                    cursor: 'pointer',
+                                    width: '30px',
+                                    height: '30px',
+                                    borderRadius: item.menu ? '50%' : '4px',
+                                    transition:
+                                      'border-radius 200ms ease-in-out',
+                                  }"
+                                ></div>
+                              </template>
+                              <v-card>
+                                <v-card-text class="pa-0">
+                                  <v-color-picker
+                                    v-model="item.color"
+                                    flat
+                                  ></v-color-picker>
+                                </v-card-text>
+                              </v-card>
+                            </v-menu>
                           </template>
-                          <v-card>
-                            <v-card-text class="pa-0">
-                              <v-color-picker
-                                v-model="item.color"
-                                flat
-                              ></v-color-picker>
-                            </v-card-text>
-                          </v-card>
-                        </v-menu>
+                        </v-text-field>
                       </v-col>
-                      <v-col> Series {{ index + 1 }} </v-col>
                     </v-row>
                   </td>
                   <td>
@@ -666,11 +675,6 @@ export default {
       this.modifiedType = val;
       this.handleOptions();
     },
-
-    // handleSeriesName(val) {
-    //   console.log(val);
-    //   this.seriesName = val;
-    // },
 
     handleOptions(val) {
       this.options = {
