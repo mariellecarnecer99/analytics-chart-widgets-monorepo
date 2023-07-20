@@ -132,10 +132,27 @@
 
             <v-row justify="end">
               <v-col>
-                <p class="mb-3">Series</p>
-                <v-btn color="primary" @click="handleNumberOfSeries"
+                <p class="mb-3">Data source</p>
+                <v-btn
+                  class="mr-3"
+                  color="primary"
+                  @click="handleNumberOfSeries"
                   ><v-icon>mdi-plus</v-icon> Add Series</v-btn
                 >
+                <v-btn
+                  color="primary"
+                  :loading="isSelecting"
+                  @click="handleFileImport"
+                  ><v-icon>mdi-plus</v-icon> Blend Data</v-btn
+                >
+
+                <!-- Create a File Input that will be hidden but triggered with JavaScript -->
+                <input
+                  ref="uploader"
+                  class="d-none"
+                  type="file"
+                  @change="onFileChanged"
+                />
               </v-col>
             </v-row>
 
@@ -659,6 +676,8 @@ export default {
       seriesData: [],
       randomColor: null,
       seriesName: null,
+      isSelecting: false,
+      selectedFile: null,
     };
   },
   computed: {
@@ -885,6 +904,27 @@ export default {
         .indexOf(val);
       this.options.series.splice(index, 1);
       this.handleOptions(this.options.series);
+    },
+
+    handleFileImport() {
+      this.isSelecting = true;
+
+      // After obtaining the focus when closing the FilePicker, return the button state to normal
+      window.addEventListener(
+        "focus",
+        () => {
+          this.isSelecting = false;
+        },
+        { once: true }
+      );
+
+      // Trigger click on the FileInput
+      this.$refs.uploader.click();
+    },
+    onFileChanged(e) {
+      this.selectedFile = e.target.files[0];
+
+      // Do whatever you need with the file, liek reading it with FileReader
     },
   },
 };
