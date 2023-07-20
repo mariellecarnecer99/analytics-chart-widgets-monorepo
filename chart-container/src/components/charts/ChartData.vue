@@ -155,9 +155,10 @@
                 <tr v-for="(item, index) in this.options.series" :key="item">
                   <td>
                     <v-row>
-                      <v-col class="mt-3">
+                      <v-col cols="8" class="mt-3">
                         <v-text-field
                           v-model="item.name"
+                          :placeholder="'Series ' + (index + 1)"
                           variant="outlined"
                           density="compact"
                         >
@@ -589,7 +590,7 @@ export default {
       titlePosition: "right",
       mainTitle: "My Chart",
       xAxisData: [],
-      titleSwitch: true,
+      titleSwitch: false,
       tickLabelsSwitch: true,
       tickMarkersSwitch: false,
       gridLinesSwitch: false,
