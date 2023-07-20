@@ -140,6 +140,7 @@
 
             <v-table
               v-if="this.options.series.length != 0"
+              theme="dark"
               fixed-header
               height="250px"
               class="mt-5"
@@ -147,28 +148,54 @@
               <thead>
                 <tr>
                   <th class="text-left">Series</th>
-                  <th class="text-left">Data</th>
                   <th class="text-left">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(item, index) in this.options.series" :key="item">
-                  <td>Series {{ index + 1 }}</td>
+                  <td>
+                    <v-row>
+                      <v-col cols="1">
+                        <v-menu
+                          v-model="item.menu"
+                          location="end"
+                          nudge-bottom="105"
+                          nudge-left="16"
+                          :close-on-content-click="false"
+                        >
+                          <template v-slot:activator="{ props }">
+                            <div
+                              v-bind="props"
+                              :style="{
+                                backgroundColor: item.color,
+                                cursor: 'pointer',
+                                width: '25px',
+                                height: '25px',
+                                borderRadius: item.menu ? '50%' : '4px',
+                                transition: 'border-radius 200ms ease-in-out',
+                              }"
+                            ></div>
+                          </template>
+                          <v-card>
+                            <v-card-text class="pa-0">
+                              <v-color-picker
+                                v-model="item.color"
+                                flat
+                              ></v-color-picker>
+                            </v-card-text>
+                          </v-card>
+                        </v-menu>
+                      </v-col>
+                      <v-col> Series {{ index + 1 }} </v-col>
+                    </v-row>
+                  </td>
                   <td>
                     <v-dialog
                       transition="dialog-bottom-transition"
                       width="250px"
                     >
                       <template v-slot:activator="{ props }">
-                        <div
-                          v-bind="props"
-                          :style="{
-                            background: item.color,
-                            cursor: 'pointer',
-                            width: '30px',
-                            height: '30px',
-                          }"
-                        ></div>
+                        <v-icon v-bind="props">mdi-pencil</v-icon>
                       </template>
                       <template v-slot:default="{ isActive }">
                         <v-card>
@@ -192,8 +219,6 @@
                         </v-card>
                       </template>
                     </v-dialog>
-                  </td>
-                  <td>
                     <v-icon @click="deleteSeries(index)">mdi-delete</v-icon>
                   </td>
                 </tr>
