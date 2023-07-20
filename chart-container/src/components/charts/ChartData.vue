@@ -151,6 +151,7 @@
                   ref="uploader"
                   class="d-none"
                   type="file"
+                  accept="application/json"
                   @change="onFileChanged"
                 />
               </v-col>
@@ -909,7 +910,6 @@ export default {
     handleFileImport() {
       this.isSelecting = true;
 
-      // After obtaining the focus when closing the FilePicker, return the button state to normal
       window.addEventListener(
         "focus",
         () => {
@@ -918,13 +918,17 @@ export default {
         { once: true }
       );
 
-      // Trigger click on the FileInput
       this.$refs.uploader.click();
     },
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
 
-      // Do whatever you need with the file, liek reading it with FileReader
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        this.selectedFile = JSON.parse(e.target.result);
+        console.log(this.selectedFile);
+      };
+      reader.readAsText(e.target.files[0]);
     },
   },
 };
