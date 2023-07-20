@@ -142,7 +142,6 @@
               v-if="this.options.series.length != 0"
               fixed-header
               height="250px"
-              theme="dark"
               class="mt-5"
             >
               <thead>
@@ -247,7 +246,7 @@
                         <div
                           v-bind="props"
                           :style="{
-                            backgroundColor: gridColor,
+                            backgroundColor: getGridColor,
                             cursor: 'pointer',
                             width: '30px',
                             height: '30px',
@@ -289,7 +288,17 @@
                       :close-on-content-click="false"
                     >
                       <template v-slot:activator="{ props }">
-                        <div v-bind="props" :style="swatchStyle"></div>
+                        <div
+                          v-bind="props"
+                          :style="{
+                            backgroundColor: color,
+                            cursor: 'pointer',
+                            width: '30px',
+                            height: '30px',
+                            borderRadius: menu ? '50%' : '4px',
+                            transition: 'border-radius 200ms ease-in-out',
+                          }"
+                        ></div>
                       </template>
                       <v-card>
                         <v-card-text class="pa-0">
@@ -661,17 +670,10 @@ export default {
     };
   },
   computed: {
-    swatchStyle() {
-      const { color, menu } = this;
-      this.handleOptions(color);
-      return {
-        backgroundColor: color,
-        cursor: "pointer",
-        height: "30px",
-        width: "30px",
-        borderRadius: menu ? "50%" : "4px",
-        transition: "border-radius 200ms ease-in-out",
-      };
+    getGridColor() {
+      const { gridColor } = this;
+      this.handleOptions();
+      return gridColor;
     },
   },
   mounted() {
