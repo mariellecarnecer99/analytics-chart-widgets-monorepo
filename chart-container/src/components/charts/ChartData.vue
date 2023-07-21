@@ -920,13 +920,22 @@ export default {
 
       this.$refs.uploader.click();
     },
+
     onFileChanged(e) {
       this.selectedFile = e.target.files[0];
-
+      this.getRandomColor();
       const reader = new FileReader();
-      reader.onload = function (e) {
+      reader.onload = (e) => {
         this.selectedFile = JSON.parse(e.target.result);
-        console.log(this.selectedFile);
+        this.options.xAxis.data = this.selectedFile.map((row) => row["label"]);
+
+        const blendData = {
+          name: this.seriesName,
+          color: "#" + this.randomColor,
+          data: this.selectedFile,
+          type: this.modifiedType ? this.modifiedType : this.chartType,
+        };
+        this.options.series.push(blendData);
       };
       reader.readAsText(e.target.files[0]);
     },
