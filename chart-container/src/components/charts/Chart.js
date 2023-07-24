@@ -1,5 +1,5 @@
 export const planetChartData = {
-  type: "bar",
+  type: "",
   data: {
     labels: ["Mercury", "Venus", "Earth", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune"],
     datasets: [
