@@ -1,6 +1,11 @@
 <template>
   <EChart v-if="chartLib === 'eCharts'" :option="options" :id="chartId" />
-  <ApexCharts v-if="chartLib === 'apexCharts'" :id="chartId" />
+  <ApexCharts
+    v-if="chartLib === 'apexCharts'"
+    :option="apexOptions"
+    :apexSeries="apexSeries"
+    :id="chartId"
+  />
   <ChartJS v-if="chartLib === 'chartjs'" :id="chartId" />
   <div class="custom-toolbox">
     <v-icon color="#676767" @click="editDialog = !editDialog"
@@ -589,6 +594,8 @@ export default {
   data: () => {
     return {
       options: null,
+      apexOptions: null,
+      apexSeries: [],
       editDialog: false,
       embedDialog: false,
       appearanceDialog: false,
@@ -690,6 +697,10 @@ export default {
   },
   mounted() {
     this.handleOptions();
+    this.handleApexOptions();
+    this.$nextTick(() => {
+      window.dispatchEvent(new Event("resize"));
+    });
   },
   methods: {
     handleSelectedChart(val) {
@@ -767,6 +778,49 @@ export default {
         this.options.series = val;
       }
       store.getChartOptions(this.options);
+    },
+
+    handleApexOptions() {
+      this.apexOptions = {
+        chart: {
+          type: this.modifiedType ? this.modifiedType : this.chartType,
+          toolbar: {
+            show: false,
+          },
+        },
+        dataLabels: {
+          enabled: false,
+        },
+        title: {
+          text: this.titleSwitch === true ? this.mainTitle : "",
+          align: "left",
+        },
+        grid: {
+          row: {
+            colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
+            opacity: 0.5,
+          },
+        },
+        xaxis: {
+          categories: [
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "May",
+            "Jun",
+            "Jul",
+            "Aug",
+            "Sep",
+          ],
+        },
+      };
+      this.apexSeries = [
+        {
+          name: "Desktops",
+          data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
+        },
+      ];
     },
 
     handleChartDom(id) {
