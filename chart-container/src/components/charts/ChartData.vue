@@ -6,7 +6,7 @@
     :apexSeries="apexSeries"
     :id="chartId"
   />
-  <ChartJS v-if="chartLib === 'chartjs'" :id="chartId" />
+  <ChartJS v-if="chartLib === 'chartjs'" :id="chartId" :chartType="chartType" />
   <div class="custom-toolbox">
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
@@ -596,6 +596,7 @@ export default {
       options: null,
       apexOptions: null,
       apexSeries: [],
+      datacollection: {},
       editDialog: false,
       embedDialog: false,
       appearanceDialog: false,
@@ -698,6 +699,7 @@ export default {
   mounted() {
     this.handleOptions();
     this.handleApexOptions();
+    this.fillData();
     this.$nextTick(() => {
       window.dispatchEvent(new Event("resize"));
     });
@@ -824,6 +826,18 @@ export default {
           data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
         },
       ];
+    },
+
+    fillData() {
+      this.datacollection = {
+        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        datasets: [
+          {
+            backgroundColor: "#f87979",
+            data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
+          },
+        ],
+      };
     },
 
     handleChartDom(id) {

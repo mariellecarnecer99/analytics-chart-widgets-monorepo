@@ -1,60 +1,25 @@
 <template>
-  <Line :id="'chart' + id" :options="chartOptions" :data="chartData" />
+  <canvas :id="'chart' + id"></canvas>
 </template>
 
 <script>
-import { Line } from "vue-chartjs";
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from "chart.js";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
+import { Chart } from "chart.js";
+import planetChartData from "./Chart";
 export default {
-  name: "LineChart",
-  components: { Line },
+  name: "ChartJS",
   props: {
     id: String,
+    chartType: String,
   },
-  data() {
+  data: () => {
     return {
-      chartData: {
-        labels: [
-          "January",
-          "February",
-          "March",
-          "April",
-          "May",
-          "June",
-          "July",
-        ],
-        datasets: [
-          {
-            label: "My First Dataset",
-            data: [65, 59, 80, 81, 56, 55, 40],
-            borderColor: "rgb(75, 192, 192)",
-          },
-        ],
-      },
-      chartOptions: {
-        responsive: true,
-      },
+      planetChartData: planetChartData,
     };
+  },
+  mounted() {
+    this.planetChartData.type = this.chartType;
+    const ctx = document.getElementById("chart" + this.id);
+    new Chart(ctx, this.planetChartData);
   },
 };
 </script>

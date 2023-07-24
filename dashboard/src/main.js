@@ -21,6 +21,33 @@ import "./stores/selectedChartItems";
 
 import VueApexCharts from "vue3-apexcharts";
 
+import { Line, Bar, Pie, Scatter } from "vue-chartjs";
+
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+} from "chart.js";
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  BarElement,
+  LineElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend
+);
+
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core"
 import {
