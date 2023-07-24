@@ -64,6 +64,7 @@
           >
           </v-select>
           <div v-if="selectedChartLibrary" class="chartType">
+            <h4 class="mb-4 ml-6">Simple</h4>
             <v-row class="mb-6" no-gutters>
               <v-col
                 cols="3"
@@ -115,35 +116,6 @@
             @input="handleDescChange"
           ></v-textarea>
         </div>
-        <!-- <hr />
-        <v-container fluid>
-          <v-row>
-            <v-col cols="12">
-              <h3 class="mb-3">Visibility</h3>
-              <v-row v-for="i in visibility" :key="i">
-                <v-col cols="10">
-                  <p>{{ i }}</p>
-                </v-col>
-                <v-col cols="2">
-                  <v-switch inset></v-switch>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="6">
-              <p>Legend Position</p>
-            </v-col>
-            <v-col cols="6">
-              <v-select
-                label="Select"
-                :items="legendPosition"
-                density="compact"
-                variant="outlined"
-              ></v-select>
-            </v-col>
-          </v-row>
-        </v-container> -->
       </div>
     </div>
   </v-navigation-drawer>
@@ -159,13 +131,8 @@
 import Home from "@/views/Home.vue";
 import line from "@/assets/line.png";
 import bar from "@/assets/bar.png";
-import column from "@/assets/column.png";
-import combination from "@/assets/combination.png";
-import area from "@/assets/area.png";
 import pie from "@/assets/pie.png";
-import rose from "@/assets/rose.png";
-import vertical_combination from "@/assets/vertical_combination.png";
-import doughnut from "@/assets/doughnut.png";
+import scatter from "@/assets/scatter.png";
 import { useStore } from "../../stores/selectedChartItems";
 const store = useStore();
 export default {
@@ -192,16 +159,10 @@ export default {
           value: "chartData",
           icon: "mdi-chart-box-outline",
         },
-        // { title: "Look & Feel", value: "lookfeel", icon: "mdi-palette" },
         { title: "Settings", value: "settings", icon: "mdi-cog" },
         { title: "Analytics", value: "analytics", icon: "mdi-chart-bar" },
       ],
       charts: [
-        {
-          type: "Column Chart",
-          value: "column",
-          img: column,
-        },
         {
           type: "Line Chart",
           value: "line",
@@ -218,45 +179,10 @@ export default {
           img: pie,
         },
         {
-          type: "Doughnut Chart",
-          value: "doughnut",
-          img: doughnut,
+          type: "Scatter Chart",
+          value: "scatter",
+          img: scatter,
         },
-        {
-          type: "Combination Chart",
-          value: "combination",
-          img: combination,
-        },
-        {
-          type: "Area Chart",
-          value: "area",
-          img: area,
-        },
-        {
-          type: "Vertical Combination Chart",
-          value: "vertical_combination",
-          img: vertical_combination,
-        },
-        {
-          type: "Nightingale Chart",
-          value: "nightingale",
-          img: rose,
-        },
-      ],
-      fonts: [
-        "Arial",
-        "Arial Black",
-        "Comic Sans MS",
-        "Courier New",
-        "Georgia",
-        "Impact",
-        "Lucida Console",
-        "Lucida Sans Unicode",
-        "Palatino Linotype",
-        "Tahoma",
-        "Times New Roman",
-        "Trebuchet MS",
-        "Verdana",
       ],
       chartData: [
         {
@@ -267,87 +193,6 @@ export default {
           dataType: "Remote Data(From a URL)",
           value: "remote",
         },
-      ],
-      customColors: [
-        "Title",
-        "Subtitle",
-        "Description",
-        "Data Labels",
-        "Tooltip Background",
-        "Tooltip Border",
-        "Tooltip Text",
-        "Legend Background",
-        "Legend Text",
-        "Legend Border",
-      ],
-      customSizes: ["Title", "Description", "Data Labels"],
-      sizes: [
-        "10px",
-        "12px",
-        "14px",
-        "16px",
-        "18px",
-        "20px",
-        "24px",
-        "28px",
-        "32px",
-      ],
-      imageBehavior: ["Cover", "Contain", "Stretch", "Center", "Original"],
-      autoRefresh: [
-        "Off",
-        "Every 5 minutes",
-        "Every 10 minutes",
-        "Every 15 minutes",
-        "Every 30 minutes",
-        "Every 1 hour",
-        "Every 2 hours",
-        "Every 3 hours",
-        "Every 4 hours",
-        "Every 5 hours",
-        "Every 6 hours",
-        "Every 7 hours",
-        "Every 8 hours",
-        "Every 9 hours",
-        "Every 10 hours",
-        "Every 11 hours",
-        "Every 12 hours",
-        "Every 13 hours",
-        "Every 14 hours",
-        "Every 15 hours",
-        "Every 16 hours",
-        "Every 17 hours",
-        "Every 18 hours",
-        "Every 19 hours",
-        "Every 20 hours",
-        "Every 21 hours",
-        "Every 22 hours",
-        "Every 23 hours",
-        "Every 24 hours",
-      ],
-      visibility: [
-        "Title",
-        "Subtitle",
-        "Description",
-        "Grid Lines",
-        "Tooltips",
-        "Data Labels",
-        "Legend",
-      ],
-      legendPosition: [
-        "Top Center",
-        "Top Left",
-        "Top Right",
-        "Middle Left",
-        "Middle Right",
-        "Bottom Center",
-        "Bottom Left",
-        "Bottom Right",
-      ],
-      displayType: ["Value", "Percentage"],
-      profileItems: [
-        { title: "Dashboard" },
-        { title: "Support" },
-        { title: "Logout" },
       ],
       chartLibraries: [
         // {

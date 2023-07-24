@@ -716,6 +716,7 @@ export default {
         legend: {},
         xAxis: {
           type: "category",
+          // boundaryGap: false,
           show: this.tickLabelsSwitch,
           data: [
             { value: "Direct", label: "Direct" },
@@ -757,6 +758,7 @@ export default {
               { value: 70 },
             ],
             type: this.modifiedType ? this.modifiedType : this.chartType,
+            // areaStyle: {}
           },
         ],
       };
