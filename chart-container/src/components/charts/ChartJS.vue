@@ -4,22 +4,33 @@
 
 <script>
 import { Chart } from "chart.js";
-import planetChartData from "./Chart";
+import chartData from "./Chart";
 export default {
   name: "ChartJS",
   props: {
     id: String,
     chartType: String,
+    option: Object,
   },
   data: () => {
     return {
-      planetChartData: planetChartData,
+      chartData: chartData,
     };
   },
+  computed: {
+    datacollectionComputed() {
+      return this.option;
+    },
+  },
+  watch: {
+    datacollectionComputed(newValue, oldValue) {
+      this.chartData.data = newValue;
+    },
+  },
   mounted() {
-    this.planetChartData.type = this.chartType;
+    this.chartData.type = this.chartType;
     const ctx = document.getElementById("chart" + this.id);
-    new Chart(ctx, this.planetChartData);
+    new Chart(ctx, this.chartData);
   },
 };
 </script>

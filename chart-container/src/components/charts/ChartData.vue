@@ -6,7 +6,12 @@
     :apexSeries="apexSeries"
     :id="chartId"
   />
-  <ChartJS v-if="chartLib === 'chartjs'" :id="chartId" :chartType="chartType" />
+  <ChartJS
+    v-if="chartLib === 'chartjs'"
+    :id="chartId"
+    :chartType="chartType"
+    :option="datacollection"
+  />
   <div class="custom-toolbox">
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
@@ -833,7 +838,10 @@ export default {
         labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         datasets: [
           {
-            backgroundColor: "#f87979",
+            label: this.titleSwitch === true ? this.mainTitle : null,
+            backgroundColor: "rgba(71, 183,132,.5)",
+            borderColor: "#47b784",
+            borderWidth: 3,
             data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
           },
         ],
