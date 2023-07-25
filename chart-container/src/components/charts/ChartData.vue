@@ -10,6 +10,7 @@
     v-if="chartLib === 'chartjs'"
     :id="chartId"
     :chartType="chartType"
+    :modifiedType="modifiedType"
     :option="datacollection"
   />
   <div class="custom-toolbox">
@@ -71,11 +72,10 @@
                       </v-toolbar>
                       <v-card-text>
                         <div class="text-h2 pa-4">
-                          <v-row class="mb-6" no-gutters>
+                          <v-row no-gutters>
                             <v-col
-                              cols="3"
                               v-for="item in charts"
-                              class="mb-5 d-flex justify-center"
+                              class="mr-5 d-flex justify-center"
                               @click="isActive.value = !isActive.value"
                             >
                               <img
@@ -180,7 +180,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(item, index) in this.options.series" :key="item">
+                <tr
+                  v-if="this.options.series"
+                  v-for="(item, index) in this.options.series"
+                  :key="item"
+                >
                   <td>
                     <v-row>
                       <v-col cols="8" class="mt-3">
@@ -248,6 +252,90 @@
                             <div v-for="(s, idx) in item.data">
                               <v-text-field
                                 v-model="s.value"
+                                variant="outlined"
+                                density="compact"
+                              >
+                              </v-text-field>
+                            </div>
+                          </v-card-text>
+                        </v-card>
+                      </template>
+                    </v-dialog>
+                    <v-icon @click="deleteSeries(index)">mdi-delete</v-icon>
+                  </td>
+                </tr>
+                <tr
+                  v-if="this.apexSeries"
+                  v-for="(item, index) in this.apexSeries"
+                  :key="item"
+                >
+                  <td>
+                    <v-row>
+                      <v-col cols="8" class="mt-3">
+                        <v-text-field
+                          v-model="item.name"
+                          :placeholder="'Series ' + (index + 1)"
+                          variant="outlined"
+                          density="compact"
+                        >
+                          <template v-slot:append-inner>
+                            <v-menu
+                              v-model="item.menu"
+                              location="end"
+                              nudge-bottom="105"
+                              nudge-left="16"
+                              :close-on-content-click="false"
+                            >
+                              <template v-slot:activator="{ props }">
+                                <div
+                                  v-bind="props"
+                                  :style="{
+                                    backgroundColor: item.color,
+                                    cursor: 'pointer',
+                                    width: '30px',
+                                    height: '30px',
+                                    borderRadius: item.menu ? '50%' : '4px',
+                                    transition:
+                                      'border-radius 200ms ease-in-out',
+                                  }"
+                                ></div>
+                              </template>
+                              <v-card>
+                                <v-card-text class="pa-0">
+                                  <v-color-picker
+                                    v-model="item.color"
+                                    flat
+                                  ></v-color-picker>
+                                </v-card-text>
+                              </v-card>
+                            </v-menu>
+                          </template>
+                        </v-text-field>
+                      </v-col>
+                    </v-row>
+                  </td>
+                  <td>
+                    <v-dialog
+                      transition="dialog-bottom-transition"
+                      width="400px"
+                    >
+                      <template v-slot:activator="{ props }">
+                        <v-icon v-bind="props">mdi-pencil</v-icon>
+                      </template>
+                      <template v-slot:default="{ isActive }">
+                        <v-card>
+                          <v-toolbar color="primary" title="Chart Data">
+                            <v-spacer></v-spacer>
+                            <v-icon
+                              class="mr-3"
+                              @click="isActive.value = !isActive.value"
+                              >mdi-close</v-icon
+                            >
+                          </v-toolbar>
+                          <v-card-text>
+                            <div v-for="(s, idx) in item.data">
+                              <v-text-field
+                                v-model="s[idx]"
                                 variant="outlined"
                                 density="compact"
                               >
@@ -576,13 +664,8 @@ import domtoimage from "dom-to-image";
 import { saveAs } from "file-saver";
 import line from "@/assets/line.png";
 import bar from "@/assets/bar.png";
-import column from "@/assets/column.png";
-import combination from "@/assets/combination.png";
-import area from "@/assets/area.png";
 import pie from "@/assets/pie.png";
-import rose from "@/assets/rose.png";
-import vertical_combination from "@/assets/vertical_combination.png";
-import doughnut from "@/assets/doughnut.png";
+import scatter from "@/assets/scatter.png";
 const store = useSelectedChart();
 export default {
   components: {
@@ -640,11 +723,6 @@ export default {
       fonts: ["sans-serif", "serif", "monospace", "Arial", "Courier New"],
       charts: [
         {
-          type: "Column Chart",
-          value: "column",
-          img: column,
-        },
-        {
           type: "Line Chart",
           value: "line",
           img: line,
@@ -660,29 +738,9 @@ export default {
           img: pie,
         },
         {
-          type: "Doughnut Chart",
-          value: "doughnut",
-          img: doughnut,
-        },
-        {
-          type: "Combination Chart",
-          value: "combination",
-          img: combination,
-        },
-        {
-          type: "Area Chart",
-          value: "area",
-          img: area,
-        },
-        {
-          type: "Vertical Combination Chart",
-          value: "vertical_combination",
-          img: vertical_combination,
-        },
-        {
-          type: "Nightingale Chart",
-          value: "nightingale",
-          img: rose,
+          type: "Scatter Chart",
+          value: "scatter",
+          img: scatter,
         },
       ],
       start: null,
@@ -704,7 +762,7 @@ export default {
   mounted() {
     this.handleOptions();
     this.handleApexOptions();
-    this.fillData();
+    this.handleChartjsOptions();
     this.$nextTick(() => {
       window.dispatchEvent(new Event("resize"));
     });
@@ -713,6 +771,8 @@ export default {
     handleSelectedChart(val) {
       this.modifiedType = val;
       this.handleOptions();
+      this.handleApexOptions();
+      this.handleChartjsOptions();
     },
 
     handleOptions(val) {
@@ -827,13 +887,12 @@ export default {
       };
       this.apexSeries = [
         {
-          name: "Desktops",
           data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
         },
       ];
     },
 
-    fillData() {
+    handleChartjsOptions() {
       this.datacollection = {
         labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
         datasets: [
@@ -978,6 +1037,21 @@ export default {
         type: this.modifiedType ? this.modifiedType : this.chartType,
       };
       this.options.series.push(seriesData);
+
+      const apexSeriesData = {
+        data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10],
+      };
+      this.apexSeries.push(apexSeriesData);
+
+      const chartDatasets = {
+        label: this.titleSwitch === true ? this.mainTitle : null,
+        backgroundColor: "#" + this.randomColor,
+        borderColor: "#" + this.randomColor,
+        borderWidth: 3,
+        data: [90, 10, 78, 44, 150, 98, 56, 23, 12, 76, 15, 111],
+      };
+      this.datacollection.datasets.push(chartDatasets);
+      console.log(this.datacollection);
     },
 
     deleteSeries(val) {

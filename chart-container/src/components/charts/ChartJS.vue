@@ -11,6 +11,7 @@ export default {
     id: String,
     chartType: String,
     option: Object,
+    modifiedType: String,
   },
   data: () => {
     return {
@@ -21,10 +22,18 @@ export default {
     datacollectionComputed() {
       return this.option;
     },
+
+    charttypeComputed() {
+      return this.modifiedType;
+    },
   },
   watch: {
     datacollectionComputed(newValue, oldValue) {
       this.chartData.data = newValue;
+    },
+
+    charttypeComputed(newValue, oldValue) {
+      console.log(newValue);
     },
   },
   mounted() {
