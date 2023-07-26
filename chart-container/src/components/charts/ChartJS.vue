@@ -10,9 +10,6 @@ export default {
     id: String,
     option: Object,
   },
-  data: () => {
-    return {};
-  },
   watch: {
     option: [
       {
@@ -20,15 +17,11 @@ export default {
       },
     ],
   },
-  mounted() {},
   methods: {
     getOptions(el) {
-      console.log(el);
       const ctx = document.getElementById("chart" + this.id);
-      // new Chart(ctx, el);
 
-      var chartExist = Chart.getChart("chart" + this.id); // <canvas> id
-      console.log(chartExist);
+      var chartExist = Chart.getChart("chart" + this.id);
       if (chartExist != undefined) {
         chartExist.destroy();
         chartExist = new Chart(ctx, el);
