@@ -9,8 +9,6 @@
   <ChartJS
     v-if="chartLib === 'chartjs'"
     :id="chartId"
-    :chartType="chartType"
-    :modifiedType="modifiedType"
     :option="datacollection"
   />
   <div class="custom-toolbox">
@@ -45,7 +43,7 @@
           </v-row>
           <v-divider></v-divider>
           <v-container>
-            <v-row>
+            <!-- <v-row>
               <v-col cols="4">
                 <p class="mb-3">Type</p>
                 <v-dialog transition="dialog-bottom-transition" width="auto">
@@ -115,9 +113,9 @@
                   @update:modelValue="selectedYaxisData"
                 ></v-select>
               </v-col>
-            </v-row>
+            </v-row> -->
 
-            <p class="mb-3">Date Range</p>
+            <!-- <p class="mb-3">Date Range</p>
             <v-row>
               <v-col cols="4">
                 <v-text-field
@@ -138,17 +136,20 @@
                   density="compact"
                 ></v-text-field>
               </v-col>
-            </v-row>
+            </v-row> -->
 
             <v-row justify="end">
               <v-col>
                 <p class="mb-3">Data source</p>
-                <v-btn
+                <v-btn class="mr-3" color="primary" @click=""
+                  ><v-icon>mdi-upload</v-icon> Upload Data</v-btn
+                >
+                <!-- <v-btn
                   class="mr-3"
                   color="primary"
                   @click="handleNumberOfSeries"
                   ><v-icon>mdi-plus</v-icon> Add Series</v-btn
-                >
+                > -->
                 <v-btn
                   color="primary"
                   :loading="isSelecting"
@@ -167,7 +168,7 @@
               </v-col>
             </v-row>
 
-            <v-table
+            <!-- <v-table
               v-if="this.options.series.length != 0"
               fixed-header
               height="250px"
@@ -349,7 +350,7 @@
                   </td>
                 </tr>
               </tbody>
-            </v-table>
+            </v-table> -->
           </v-container>
         </v-card-text>
       </v-card>
@@ -894,16 +895,19 @@ export default {
 
     handleChartjsOptions() {
       this.datacollection = {
-        labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        datasets: [
-          {
-            label: this.titleSwitch === true ? this.mainTitle : null,
-            backgroundColor: "rgba(71, 183,132,.5)",
-            borderColor: "#47b784",
-            borderWidth: 3,
-            data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
-          },
-        ],
+        type: this.modifiedType ? this.modifiedType : this.chartType,
+        data: {
+          labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          datasets: [
+            {
+              label: this.titleSwitch === true ? this.mainTitle : null,
+              backgroundColor: "rgba(71, 183,132,.5)",
+              borderColor: "#47b784",
+              borderWidth: 3,
+              data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
+            },
+          ],
+        },
       };
     },
 
@@ -1022,37 +1026,36 @@ export default {
       this.randomColor = Math.floor(Math.random() * 16777215).toString(16);
     },
 
-    handleNumberOfSeries() {
-      this.getRandomColor();
-      const seriesData = {
-        name: this.seriesName,
-        color: "#" + this.randomColor,
-        data: [
-          { value: 30 },
-          { value: 67 },
-          { value: 96 },
-          { value: 85 },
-          { value: 105 },
-        ],
-        type: this.modifiedType ? this.modifiedType : this.chartType,
-      };
-      this.options.series.push(seriesData);
+    // handleNumberOfSeries() {
+    //   this.getRandomColor();
+    //   const seriesData = {
+    //     name: this.seriesName,
+    //     color: "#" + this.randomColor,
+    //     data: [
+    //       { value: 30 },
+    //       { value: 67 },
+    //       { value: 96 },
+    //       { value: 85 },
+    //       { value: 105 },
+    //     ],
+    //     type: this.modifiedType ? this.modifiedType : this.chartType,
+    //   };
+    //   this.options.series.push(seriesData);
 
-      const apexSeriesData = {
-        data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10],
-      };
-      this.apexSeries.push(apexSeriesData);
+    //   const apexSeriesData = {
+    //     data: [45, 52, 38, 24, 33, 26, 21, 20, 6, 8, 15, 10],
+    //   };
+    //   this.apexSeries.push(apexSeriesData);
 
-      const chartDatasets = {
-        label: this.titleSwitch === true ? this.mainTitle : null,
-        backgroundColor: "#" + this.randomColor,
-        borderColor: "#" + this.randomColor,
-        borderWidth: 3,
-        data: [90, 10, 78, 44, 150, 98, 56, 23, 12, 76, 15, 111],
-      };
-      this.datacollection.datasets.push(chartDatasets);
-      console.log(this.datacollection);
-    },
+    //   const chartDatasets = {
+    //     label: this.titleSwitch === true ? this.mainTitle : null,
+    //     backgroundColor: "#" + this.randomColor,
+    //     borderColor: "#" + this.randomColor,
+    //     borderWidth: 3,
+    //     data: [90, 10, 78, 44, 150, 98, 56, 23, 12, 76, 15, 111],
+    //   };
+    //   this.datacollection.datasets.push(chartDatasets);
+    // },
 
     deleteSeries(val) {
       const index = this.options.series

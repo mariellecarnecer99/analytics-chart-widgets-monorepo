@@ -9,9 +9,7 @@ export default {
   name: "ChartJS",
   props: {
     id: String,
-    chartType: String,
     option: Object,
-    modifiedType: String,
   },
   data: () => {
     return {
@@ -22,22 +20,14 @@ export default {
     datacollectionComputed() {
       return this.option;
     },
-
-    charttypeComputed() {
-      return this.modifiedType;
-    },
   },
   watch: {
     datacollectionComputed(newValue, oldValue) {
-      this.chartData.data = newValue;
-    },
-
-    charttypeComputed(newValue, oldValue) {
-      console.log(newValue);
+      this.chartData.data = newValue.data;
+      this.chartData.type = newValue.type;
     },
   },
   mounted() {
-    this.chartData.type = this.chartType;
     const ctx = document.getElementById("chart" + this.id);
     new Chart(ctx, this.chartData);
   },
