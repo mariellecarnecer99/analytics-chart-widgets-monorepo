@@ -1145,10 +1145,11 @@ export default {
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
         this.dataUpload = this.uploadedFile.data;
-        this.uploadedFile.series.map((item) => {
-          return item;
-        });
-        this.seriesUpload = this.uploadedFile.series;
+        const mapped = this.uploadedFile.series.map((element) => ({
+          type: this.chartType,
+          ...element,
+        }));
+        this.seriesUpload = mapped;
         this.handleOptions();
         this.handleApexOptions();
         this.handleChartjsOptions();
