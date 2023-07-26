@@ -4,7 +4,6 @@
 
 <script>
 import { Chart } from "chart.js";
-import chartData from "./Chart";
 export default {
   name: "ChartJS",
   props: {
@@ -12,24 +11,22 @@ export default {
     option: Object,
   },
   data: () => {
-    return {
-      chartData: chartData,
-    };
-  },
-  computed: {
-    datacollectionComputed() {
-      return this.option;
-    },
+    return {};
   },
   watch: {
-    datacollectionComputed(newValue, oldValue) {
-      this.chartData.data = newValue.data;
-      this.chartData.type = newValue.type;
-    },
+    option: [
+      {
+        handler: "getOptions",
+      },
+    ],
   },
-  mounted() {
-    const ctx = document.getElementById("chart" + this.id);
-    new Chart(ctx, this.chartData);
+  mounted() {},
+  methods: {
+    getOptions(el) {
+      console.log(el);
+      const ctx = document.getElementById("chart" + this.id);
+      new Chart(ctx, el);
+    },
   },
 };
 </script>

@@ -34,7 +34,7 @@
               <v-sheet class="my-2"><h3>Structure</h3></v-sheet>
             </v-col>
             <v-col cols="1">
-              <v-sheet class="my-2"
+              <v-sheet class="my-2 ml-4"
                 ><v-icon @click="editDialog = !editDialog"
                   >mdi-close</v-icon
                 ></v-sheet
@@ -141,9 +141,22 @@
             <v-row justify="end">
               <v-col>
                 <p class="mb-3">Data source</p>
-                <v-btn class="mr-3" color="primary" @click=""
+                <v-btn
+                  class="mr-3"
+                  color="primary"
+                  :loading="isLoading"
+                  @click="handleUploadedFile"
                   ><v-icon>mdi-upload</v-icon> Upload Data</v-btn
                 >
+
+                <!-- Create a File Input that will be hidden but triggered with JavaScript -->
+                <input
+                  ref="uploadedFile"
+                  class="d-none"
+                  type="file"
+                  accept="application/json,.csv"
+                  @change="onUploadChange"
+                />
                 <!-- <v-btn
                   class="mr-3"
                   color="primary"
@@ -162,7 +175,7 @@
                   ref="uploader"
                   class="d-none"
                   type="file"
-                  accept="application/json"
+                  accept="application/json,.csv"
                   @change="onFileChanged"
                 />
               </v-col>
@@ -750,7 +763,11 @@ export default {
       randomColor: null,
       seriesName: null,
       isSelecting: false,
+      isLoading: false,
       selectedFile: null,
+      uploadedFile: null,
+      dataUpload: null,
+      seriesUpload: null,
     };
   },
   computed: {
@@ -797,13 +814,15 @@ export default {
           type: "category",
           // boundaryGap: false,
           show: this.tickLabelsSwitch,
-          data: [
-            { value: "Direct", label: "Direct" },
-            { value: "Email", label: "Email" },
-            { value: "Ad Networks", label: "Ad Networks" },
-            { value: "Video Ads", label: "Video Ads" },
-            { value: "Search Engines", label: "Search Engines" },
-          ],
+          data: this.dataUpload
+            ? this.dataUpload
+            : [
+                { value: "Direct", label: "Direct" },
+                { value: "Email", label: "Email" },
+                { value: "Ad Networks", label: "Ad Networks" },
+                { value: "Video Ads", label: "Video Ads" },
+                { value: "Search Engines", label: "Search Engines" },
+              ],
           axisLabel: {
             fontSize: this.fontSize,
             color: this.labelColor,
@@ -825,21 +844,23 @@ export default {
             show: this.tickMarkersSwitch,
           },
         },
-        series: [
-          {
-            name: this.seriesName,
-            color: this.color,
-            data: [
-              { value: 120 },
-              { value: 200 },
-              { value: 150 },
-              { value: 80 },
-              { value: 70 },
+        series: this.seriesUpload
+          ? this.seriesUpload
+          : [
+              {
+                name: this.seriesName,
+                color: this.color,
+                data: [
+                  { value: 120 },
+                  { value: 200 },
+                  { value: 150 },
+                  { value: 80 },
+                  { value: 70 },
+                ],
+                type: this.modifiedType ? this.modifiedType : this.chartType,
+                // areaStyle: {}
+              },
             ],
-            type: this.modifiedType ? this.modifiedType : this.chartType,
-            // areaStyle: {}
-          },
-        ],
       };
 
       if (val) {
@@ -873,40 +894,45 @@ export default {
           },
         },
         xaxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-          ],
+          categories: this.dataUpload
+            ? this.dataUpload
+            : ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
         },
       };
-      this.apexSeries = [
-        {
-          data: [10, 41, 35, 51, 49, 62, 69, 91, 148],
-        },
-      ];
+      this.apexSeries = this.seriesUpload
+        ? this.seriesUpload
+        : [
+            {
+              data: [10, 41, 35, 51, 49],
+            },
+          ];
     },
 
     handleChartjsOptions() {
       this.datacollection = {
         type: this.modifiedType ? this.modifiedType : this.chartType,
         data: {
-          labels: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-          datasets: [
-            {
-              label: this.titleSwitch === true ? this.mainTitle : null,
-              backgroundColor: "rgba(71, 183,132,.5)",
-              borderColor: "#47b784",
-              borderWidth: 3,
-              data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
-            },
-          ],
+          labels: this.dataUpload
+            ? this.dataUpload
+            : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+          datasets: this.seriesUpload
+            ? this.seriesUpload
+            : [
+                {
+                  label: this.titleSwitch === true ? this.mainTitle : null,
+                  backgroundColor: "rgba(71, 183,132,.5)",
+                  borderColor: "#47b784",
+                  borderWidth: 3,
+                  data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
+                },
+              ],
+        },
+        options: {
+          responsive: true,
+          lineTension: 1,
+          plugins: {
+            legend: false,
+          },
         },
       };
     },
@@ -1096,6 +1122,39 @@ export default {
         this.options.series.push(blendData);
       };
       reader.readAsText(e.target.files[0]);
+      this.editDialog = false;
+    },
+
+    handleUploadedFile() {
+      this.isLoading = true;
+
+      window.addEventListener(
+        "focus",
+        () => {
+          this.isLoading = false;
+        },
+        { once: true }
+      );
+
+      this.$refs.uploadedFile.click();
+    },
+
+    onUploadChange(e) {
+      this.uploadedFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.uploadedFile = JSON.parse(e.target.result);
+        this.dataUpload = this.uploadedFile.data;
+        this.uploadedFile.series.map((item) => {
+          return item;
+        });
+        this.seriesUpload = this.uploadedFile.series;
+        this.handleOptions();
+        this.handleApexOptions();
+        this.handleChartjsOptions();
+      };
+      reader.readAsText(e.target.files[0]);
+      this.editDialog = false;
     },
   },
 };
