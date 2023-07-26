@@ -25,7 +25,16 @@ export default {
     getOptions(el) {
       console.log(el);
       const ctx = document.getElementById("chart" + this.id);
-      new Chart(ctx, el);
+      // new Chart(ctx, el);
+
+      var chartExist = Chart.getChart("chart" + this.id); // <canvas> id
+      console.log(chartExist);
+      if (chartExist != undefined) {
+        chartExist.destroy();
+        chartExist = new Chart(ctx, el);
+      } else {
+        chartExist = new Chart(ctx, el);
+      }
     },
   },
 };
