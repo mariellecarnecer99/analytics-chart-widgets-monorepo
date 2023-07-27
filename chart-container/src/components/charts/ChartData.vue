@@ -95,7 +95,11 @@
                 v-if="chartType != 'pie' || modifiedType != 'pie'"
               >
                 <p class="mb-3">Orientation</p>
-                <v-tabs v-model="selectedOrientation" fixed-tabs>
+                <v-tabs
+                  v-model="selectedOrientation"
+                  fixed-tabs
+                  active-class="active-tab white--text"
+                >
                   <v-tab
                     v-for="item in chartOrientation"
                     :key="item.value"
@@ -753,7 +757,14 @@ export default {
         "Temperature",
         "Category",
       ],
-      fonts: ["sans-serif", "serif", "monospace", "Arial", "Courier New"],
+      fonts: [
+        "sans-serif",
+        "serif",
+        "monospace",
+        "Arial",
+        "Courier New",
+        "Helvetica",
+      ],
       charts: [
         {
           type: "Line Chart",
@@ -805,6 +816,7 @@ export default {
     getGridColor() {
       const { gridColor } = this;
       this.handleOptions();
+      this.handleApexOptions();
       return gridColor;
     },
   },
@@ -927,8 +939,23 @@ export default {
     handleApexOptions() {
       this.isDataReady = true;
       this.apexOptions = {
+        title: {
+          text: this.titleSwitch === true ? this.mainTitle : null,
+          align: "center",
+          margin: 10,
+          offsetX: 0,
+          offsetY: 0,
+          floating: false,
+          style: {
+            fontSize: this.titleFontSize,
+            fontFamily: this.titleFontType,
+            color: this.titleColor,
+          },
+        },
         chart: {
           type: this.modifiedType ? this.modifiedType : this.chartType,
+          background: this.gridLinesSwitch === true ? this.gridColor : "",
+          // fontFamily: this.fontFamily,
           toolbar: {
             show: false,
           },
@@ -943,7 +970,7 @@ export default {
           curve: "straight",
         },
         dataLabels: {
-          enabled: false,
+          enabled: true,
         },
         title: {
           text: this.titleSwitch === true ? this.mainTitle : "",
@@ -959,6 +986,20 @@ export default {
           categories: this.dataUpload
             ? this.dataUpload
             : ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
+          labels: {
+            style: {
+              colors: this.labelColor,
+              fontSize: this.fontSize,
+            },
+          },
+        },
+        yaxis: {
+          labels: {
+            style: {
+              colors: this.labelColor,
+              fontSize: this.fontSize,
+            },
+          },
         },
       };
       this.apexSeries = this.seriesUpload
@@ -971,6 +1012,19 @@ export default {
     },
 
     handleChartjsOptions() {
+      // Note: changes to the plugin code is not reflected to the chart, because the plugin is loaded at chart construction time and editor changes only trigger an chart.update().
+      const plugin = {
+        id: "customCanvasBackgroundColor",
+        beforeDraw: (chart, args, options) => {
+          const { ctx } = chart;
+          ctx.save();
+          ctx.globalCompositeOperation = "destination-over";
+          ctx.fillStyle =
+            this.gridLinesSwitch === true ? this.gridColor : "#fff";
+          ctx.fillRect(0, 0, chart.width, chart.height);
+          ctx.restore();
+        },
+      };
       this.datacollection = {
         type: this.modifiedType ? this.modifiedType : this.chartType,
         data: {
@@ -997,6 +1051,7 @@ export default {
             legend: false,
           },
         },
+        plugins: [plugin],
       };
     },
 
