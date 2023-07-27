@@ -90,7 +90,10 @@
                 </v-dialog>
               </v-col>
 
-              <v-col cols="5">
+              <v-col
+                cols="5"
+                v-if="chartType != 'pie' || modifiedType != 'pie'"
+              >
                 <p class="mb-3">Orientation</p>
                 <v-tabs v-model="selectedOrientation" fixed-tabs>
                   <v-tab
