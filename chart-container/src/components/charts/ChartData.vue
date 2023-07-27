@@ -1,7 +1,7 @@
 <template>
   <EChart v-if="chartLib === 'eCharts'" :option="options" :id="chartId" />
   <ApexCharts
-    v-if="chartLib === 'apexCharts'"
+    v-if="chartLib === 'apexCharts' && isDataReady === true"
     :option="apexOptions"
     :apexSeries="apexSeries"
     :id="chartId"
@@ -795,6 +795,7 @@ export default {
           value: "horizontal",
         },
       ],
+      isDataReady: false,
     };
   },
   computed: {
@@ -815,16 +816,6 @@ export default {
   methods: {
     handleSelectedChart(val) {
       this.modifiedType = val;
-      // if (this.seriesUpload) {
-      //   console.log("type:", val);
-      //   console.log("series:", this.seriesUpload);
-      //   const mapped = this.seriesUpload.map((element) => ({
-      //     type: val,
-      //     ...element,
-      //   }));
-      //   this.seriesUpload = mapped;
-      //   console.log("mapped: ", mapped);
-      // }
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
@@ -931,6 +922,7 @@ export default {
     },
 
     handleApexOptions() {
+      this.isDataReady = true;
       this.apexOptions = {
         chart: {
           type: this.modifiedType ? this.modifiedType : this.chartType,
