@@ -859,15 +859,18 @@ export default {
             this.selectedOrientation === "horizontal" ? "value" : "category",
           // boundaryGap: false,
           show: this.tickLabelsSwitch,
-          data: this.dataUpload
-            ? this.dataUpload
-            : [
-                { value: "Direct", label: "Direct" },
-                { value: "Email", label: "Email" },
-                { value: "Ad Networks", label: "Ad Networks" },
-                { value: "Video Ads", label: "Video Ads" },
-                { value: "Search Engines", label: "Search Engines" },
-              ],
+          data:
+            this.selectedOrientation === "horizontal"
+              ? ""
+              : this.dataUpload
+              ? this.dataUpload
+              : [
+                  { value: "Direct", label: "Direct" },
+                  { value: "Email", label: "Email" },
+                  { value: "Ad Networks", label: "Ad Networks" },
+                  { value: "Video Ads", label: "Video Ads" },
+                  { value: "Search Engines", label: "Search Engines" },
+                ],
           axisLabel: {
             fontSize: this.fontSize,
             color: this.labelColor,
@@ -881,6 +884,18 @@ export default {
           type:
             this.selectedOrientation === "horizontal" ? "category" : "value",
           show: this.tickLabelsSwitch,
+          data:
+            this.selectedOrientation === "horizontal"
+              ? this.dataUpload
+                ? this.dataUpload
+                : [
+                    { value: "Direct", label: "Direct" },
+                    { value: "Email", label: "Email" },
+                    { value: "Ad Networks", label: "Ad Networks" },
+                    { value: "Video Ads", label: "Video Ads" },
+                    { value: "Search Engines", label: "Search Engines" },
+                  ]
+              : "",
           axisLabel: {
             fontSize: this.fontSize,
             color: this.labelColor,
@@ -958,7 +973,6 @@ export default {
               data: [10, 41, 35, 51, 49],
             },
           ];
-      // console.log(this.apexOptions);
     },
 
     handleChartjsOptions() {
