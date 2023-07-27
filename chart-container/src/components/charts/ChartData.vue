@@ -43,7 +43,7 @@
           </v-row>
           <v-divider></v-divider>
           <v-container>
-            <!-- <v-row>
+            <v-row>
               <v-col cols="4">
                 <p class="mb-3">Type</p>
                 <v-dialog transition="dialog-bottom-transition" width="auto">
@@ -90,7 +90,23 @@
                 </v-dialog>
               </v-col>
 
-              <v-col cols="4">
+              <v-col cols="5">
+                <p class="mb-3">Orientation</p>
+                <v-tabs v-model="selectedOrientation" fixed-tabs>
+                  <v-tab
+                    v-for="item in chartOrientation"
+                    :key="item.value"
+                    :value="item.value"
+                    :border="true"
+                    color="primary"
+                    @click="handleGetOrientation(item.value)"
+                  >
+                    {{ item.type }}
+                  </v-tab>
+                </v-tabs>
+              </v-col>
+
+              <!-- <v-col cols="4">
                 <p class="mb-3">X</p>
                 <v-select
                   v-model="xAxisData"
@@ -112,8 +128,8 @@
                   density="compact"
                   @update:modelValue="selectedYaxisData"
                 ></v-select>
-              </v-col>
-            </v-row> -->
+              </v-col> -->
+            </v-row>
 
             <!-- <p class="mb-3">Date Range</p>
             <v-row>
@@ -768,6 +784,17 @@ export default {
       uploadedFile: null,
       dataUpload: null,
       seriesUpload: null,
+      selectedOrientation: null,
+      chartOrientation: [
+        {
+          type: "Vertical",
+          value: "vertical",
+        },
+        {
+          type: "Horizontal",
+          value: "horizontal",
+        },
+      ],
     };
   },
   computed: {
@@ -788,6 +815,23 @@ export default {
   methods: {
     handleSelectedChart(val) {
       this.modifiedType = val;
+      // if (this.seriesUpload) {
+      //   console.log("type:", val);
+      //   console.log("series:", this.seriesUpload);
+      //   const mapped = this.seriesUpload.map((element) => ({
+      //     type: val,
+      //     ...element,
+      //   }));
+      //   this.seriesUpload = mapped;
+      //   console.log("mapped: ", mapped);
+      // }
+      this.handleOptions();
+      this.handleApexOptions();
+      this.handleChartjsOptions();
+    },
+
+    handleGetOrientation(val) {
+      this.selectedOrientation = val;
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
@@ -811,7 +855,8 @@ export default {
         tooltip: {},
         legend: {},
         xAxis: {
-          type: "category",
+          type:
+            this.selectedOrientation === "horizontal" ? "value" : "category",
           // boundaryGap: false,
           show: this.tickLabelsSwitch,
           data: this.dataUpload
@@ -833,7 +878,8 @@ export default {
           },
         },
         yAxis: {
-          type: "value",
+          type:
+            this.selectedOrientation === "horizontal" ? "category" : "value",
           show: this.tickLabelsSwitch,
           axisLabel: {
             fontSize: this.fontSize,
@@ -877,6 +923,12 @@ export default {
             show: false,
           },
         },
+        plotOptions: {
+          bar: {
+            horizontal:
+              this.selectedOrientation === "horizontal" ? true : false,
+          },
+        },
         stroke: {
           curve: "straight",
         },
@@ -906,6 +958,7 @@ export default {
               data: [10, 41, 35, 51, 49],
             },
           ];
+      // console.log(this.apexOptions);
     },
 
     handleChartjsOptions() {
@@ -928,6 +981,7 @@ export default {
               ],
         },
         options: {
+          indexAxis: this.selectedOrientation === "horizontal" ? "y" : "x",
           responsive: true,
           lineTension: 1,
           plugins: {
@@ -1146,7 +1200,7 @@ export default {
         this.uploadedFile = JSON.parse(e.target.result);
         this.dataUpload = this.uploadedFile.data;
         const mapped = this.uploadedFile.series.map((element) => ({
-          type: this.chartType,
+          type: this.modifiedType ? this.modifiedType : this.chartType,
           ...element,
         }));
         this.seriesUpload = mapped;
