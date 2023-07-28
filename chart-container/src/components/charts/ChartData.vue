@@ -217,9 +217,11 @@
                   @update:modelValue="selectedCategory"
                 >
                   <template v-slot:prepend>
-                    <v-icon v-on:click="menuCat = !menuCat">mdi-pencil</v-icon>
+                    <v-icon v-on:click="dimensionMenu = !dimensionMenu"
+                      >mdi-pencil</v-icon
+                    >
                     <v-dialog
-                      v-model="menuCat"
+                      v-model="dimensionMenu"
                       transition="dialog-bottom-transition"
                       width="450px"
                       style="z-index: 0"
@@ -259,7 +261,57 @@
 
               <v-divider class="mt-5"></v-divider>
               <div class="mt-4">
-                <p>Metric</p>
+                <p class="mb-3">Metric</p>
+                <v-select
+                  v-model="defaultMetric"
+                  :items="categories"
+                  return-object
+                  density="compact"
+                  variant="outlined"
+                  @update:modelValue="selectedMetric"
+                >
+                  <template v-slot:prepend>
+                    <v-icon v-on:click="metricMenu = !metricMenu"
+                      >mdi-pencil</v-icon
+                    >
+                    <v-dialog
+                      v-model="metricMenu"
+                      transition="dialog-bottom-transition"
+                      width="450px"
+                      style="z-index: 0"
+                    >
+                      <v-card>
+                        <v-toolbar
+                          color="primary"
+                          :title="newMetricName ? newMetricName : defaultMetric"
+                        ></v-toolbar>
+                        <v-card-text>
+                          <v-text-field
+                            v-model="newMetricName"
+                            label="Name"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-3"
+                          ></v-text-field>
+                          <i v-if="newMetricName" class="mt-0"
+                            >Source field: {{ defaultMetric }}</i
+                          >
+                          <v-select
+                            :items="semanticTypes"
+                            item-title="type"
+                            item-value="value"
+                            multiple
+                            return-object
+                            label="Type"
+                            density="compact"
+                            variant="outlined"
+                          >
+                          </v-select>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+                  </template>
+                </v-select>
               </div>
             </div>
 
@@ -871,7 +923,9 @@ export default {
       isDataReady: false,
       categories: [],
       defaultCategory: null,
-      menuCat: false,
+      defaultMetric: null,
+      dimensionMenu: false,
+      metricMenu: false,
       newCatName: null,
       semanticTypes: [
         {
@@ -1372,8 +1426,8 @@ export default {
         this.categories = Object.keys(this.uploadedFile);
         this.defaultCategory = this.categories[0];
         this.dataUpload = this.uploadedFile[this.defaultCategory];
-        if (this.uploadedFile.series) {
-          const mapped = this.uploadedFile.series.map((element) => ({
+        if (this.uploadedFile.metrics) {
+          const mapped = this.uploadedFile.metrics.map((element) => ({
             type: this.modifiedType ? this.modifiedType : this.chartType,
             ...element,
           }));
@@ -1392,6 +1446,10 @@ export default {
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
+    },
+
+    selectedMetric(e) {
+      console.log(e);
     },
   },
 };
