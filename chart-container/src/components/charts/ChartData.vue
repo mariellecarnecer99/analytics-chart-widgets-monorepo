@@ -204,6 +204,65 @@
               </v-col>
             </v-row>
 
+            <div v-if="uploadedFile" class="concept-type">
+              <v-divider class="mt-5"></v-divider>
+              <div class="mt-4">
+                <p class="mb-3">Dimension</p>
+                <v-select
+                  v-model="defaultCategory"
+                  :items="categories"
+                  return-object
+                  density="compact"
+                  variant="outlined"
+                  @update:modelValue="selectedCategory"
+                >
+                  <template v-slot:prepend>
+                    <v-icon v-on:click="menuCat = !menuCat">mdi-pencil</v-icon>
+                    <v-dialog
+                      v-model="menuCat"
+                      transition="dialog-bottom-transition"
+                      width="450px"
+                      style="z-index: 0"
+                    >
+                      <v-card>
+                        <v-toolbar
+                          color="primary"
+                          :title="newCatName ? newCatName : defaultCategory"
+                        ></v-toolbar>
+                        <v-card-text>
+                          <v-text-field
+                            v-model="newCatName"
+                            label="Name"
+                            variant="outlined"
+                            density="compact"
+                            class="mt-3"
+                          ></v-text-field>
+                          <i v-if="newCatName" class="mt-0"
+                            >Source field: {{ defaultCategory }}</i
+                          >
+                          <v-select
+                            :items="semanticTypes"
+                            item-title="type"
+                            item-value="value"
+                            return-object
+                            label="Type"
+                            density="compact"
+                            variant="outlined"
+                          >
+                          </v-select>
+                        </v-card-text>
+                      </v-card>
+                    </v-dialog>
+                  </template>
+                </v-select>
+              </div>
+
+              <v-divider class="mt-5"></v-divider>
+              <div class="mt-4">
+                <p>Metric</p>
+              </div>
+            </div>
+
             <!-- <v-table
               v-if="this.options.series.length != 0"
               fixed-header
@@ -810,6 +869,40 @@ export default {
         },
       ],
       isDataReady: false,
+      categories: [],
+      defaultCategory: null,
+      menuCat: false,
+      newCatName: null,
+      semanticTypes: [
+        {
+          type: "Numeric",
+          value: "numeric",
+        },
+        {
+          type: "Text",
+          value: "text",
+        },
+        {
+          type: "Date & Time",
+          value: "datetime",
+        },
+        {
+          type: "Boolean",
+          value: "boolean",
+        },
+        {
+          type: "Geo",
+          value: "geo",
+        },
+        {
+          type: "Currency",
+          value: "currency",
+        },
+        {
+          type: "URL",
+          value: "url",
+        },
+      ],
     };
   },
   computed: {
@@ -970,7 +1063,7 @@ export default {
           curve: "straight",
         },
         dataLabels: {
-          enabled: true,
+          enabled: false,
         },
         title: {
           text: this.titleSwitch === true ? this.mainTitle : "",
@@ -1238,7 +1331,11 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.selectedFile = JSON.parse(e.target.result);
+        this.apexOptions.xaxis.categories = this.selectedFile.map(
+          (row) => row["label"]
+        );
         this.options.xAxis.data = this.selectedFile.map((row) => row["label"]);
+        console.log(this.selectedFile);
 
         const blendData = {
           name: this.seriesName,
@@ -1247,6 +1344,7 @@ export default {
           type: this.modifiedType ? this.modifiedType : this.chartType,
         };
         this.options.series.push(blendData);
+        this.apexSeries.push(blendData);
       };
       reader.readAsText(e.target.files[0]);
       this.editDialog = false;
@@ -1271,18 +1369,29 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
-        this.dataUpload = this.uploadedFile.data;
-        const mapped = this.uploadedFile.series.map((element) => ({
-          type: this.modifiedType ? this.modifiedType : this.chartType,
-          ...element,
-        }));
-        this.seriesUpload = mapped;
+        this.categories = Object.keys(this.uploadedFile);
+        this.defaultCategory = this.categories[0];
+        this.dataUpload = this.uploadedFile[this.defaultCategory];
+        if (this.uploadedFile.series) {
+          const mapped = this.uploadedFile.series.map((element) => ({
+            type: this.modifiedType ? this.modifiedType : this.chartType,
+            ...element,
+          }));
+          this.seriesUpload = mapped;
+        }
         this.handleOptions();
         this.handleApexOptions();
         this.handleChartjsOptions();
       };
       reader.readAsText(e.target.files[0]);
       this.editDialog = false;
+    },
+
+    selectedCategory(e) {
+      this.dataUpload = this.uploadedFile[e];
+      this.handleOptions();
+      this.handleApexOptions();
+      this.handleChartjsOptions();
     },
   },
 };
