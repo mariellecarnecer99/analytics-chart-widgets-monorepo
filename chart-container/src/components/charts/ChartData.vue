@@ -210,11 +210,13 @@
                 <p class="mb-3">Dimension</p>
                 <v-select
                   v-model="defaultCategory"
-                  :items="categories"
+                  :items="dimensions"
+                  item-title="type"
+                  item-value="value"
                   return-object
                   density="compact"
                   variant="outlined"
-                  @update:modelValue="selectedCategory"
+                  @update:modelValue="selectedDimension"
                 >
                   <template v-slot:prepend>
                     <v-icon v-on:click="dimensionMenu = !dimensionMenu"
@@ -264,7 +266,9 @@
                 <p class="mb-3">Metric</p>
                 <v-select
                   v-model="defaultMetric"
-                  :items="categories"
+                  :items="dimensions"
+                  item-title="type"
+                  item-value="value"
                   return-object
                   density="compact"
                   variant="outlined"
@@ -921,7 +925,7 @@ export default {
         },
       ],
       isDataReady: false,
-      categories: [],
+      dimensions: [],
       defaultCategory: null,
       defaultMetric: null,
       dimensionMenu: false,
@@ -1058,23 +1062,23 @@ export default {
             show: this.tickMarkersSwitch,
           },
         },
-        series: this.seriesUpload
-          ? this.seriesUpload
-          : [
-              {
-                name: this.seriesName,
-                color: this.color,
-                data: [
+        series: [
+          {
+            name: this.seriesName,
+            color: this.color,
+            data: this.seriesUpload
+              ? this.seriesUpload
+              : [
                   { value: 120 },
                   { value: 200 },
                   { value: 150 },
                   { value: 80 },
                   { value: 70 },
                 ],
-                type: this.modifiedType ? this.modifiedType : this.chartType,
-                // areaStyle: {}
-              },
-            ],
+            type: this.modifiedType ? this.modifiedType : this.chartType,
+            // areaStyle: {}
+          },
+        ],
       };
 
       if (val) {
@@ -1149,13 +1153,11 @@ export default {
           },
         },
       };
-      this.apexSeries = this.seriesUpload
-        ? this.seriesUpload
-        : [
-            {
-              data: [10, 41, 35, 51, 49],
-            },
-          ];
+      this.apexSeries = [
+        {
+          data: this.seriesUpload ? this.seriesUpload : [10, 41, 35, 51, 49],
+        },
+      ];
     },
 
     handleChartjsOptions() {
@@ -1178,17 +1180,17 @@ export default {
           labels: this.dataUpload
             ? this.dataUpload
             : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
-          datasets: this.seriesUpload
-            ? this.seriesUpload
-            : [
-                {
-                  label: this.titleSwitch === true ? this.mainTitle : null,
-                  backgroundColor: "rgba(71, 183,132,.5)",
-                  borderColor: "#47b784",
-                  borderWidth: 3,
-                  data: [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
-                },
-              ],
+          datasets: [
+            {
+              label: this.titleSwitch === true ? this.mainTitle : null,
+              backgroundColor: "rgba(71, 183,132,.5)",
+              borderColor: "#47b784",
+              borderWidth: 3,
+              data: this.seriesUpload
+                ? this.seriesUpload
+                : [70, 20, 12, 39, 100, 40, 95, 80, 80, 20, 12, 101],
+            },
+          ],
         },
         options: {
           indexAxis: this.selectedOrientation === "horizontal" ? "y" : "x",
@@ -1225,102 +1227,102 @@ export default {
       document.execCommand("copy");
     },
 
-    selectedXaxisData(x) {
-      if (x === "Days") {
-        const daysItem = {
-          categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-          values: {
-            data: [60, 35, 110, 80, 95, 140, 185],
-          },
-        };
-        this.options.xAxis.data = daysItem.categories;
-        this.options.series = daysItem.values;
-      } else if (x === "Number") {
-        const numberItem = {
-          categories: [1, 2, 3, 4, 5],
-          values: {
-            data: [50, 100, 150, 200, 250],
-          },
-        };
-        this.options.xAxis.data = numberItem.categories;
-        this.options.series = numberItem.values;
-      } else if (x === "Category") {
-        const categoryItem = [
-          "Direct",
-          "Email",
-          "Ad Networks",
-          "Video Ads",
-          "Search Engines",
-        ];
-        this.options.xAxis.data = categoryItem;
-      } else if (x === "Time") {
-        const timeItem = {
-          categories: [10, 40, 70, 100, 130],
-          values: {
-            data: [55, 75, 95, 115, 135],
-          },
-        };
-        this.options.xAxis.data = timeItem.categories;
-        this.options.series = timeItem.values;
-      }
-    },
+    // selectedXaxisData(x) {
+    //   if (x === "Days") {
+    //     const daysItem = {
+    //       categories: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    //       values: {
+    //         data: [60, 35, 110, 80, 95, 140, 185],
+    //       },
+    //     };
+    //     this.options.xAxis.data = daysItem.categories;
+    //     this.options.series = daysItem.values;
+    //   } else if (x === "Number") {
+    //     const numberItem = {
+    //       categories: [1, 2, 3, 4, 5],
+    //       values: {
+    //         data: [50, 100, 150, 200, 250],
+    //       },
+    //     };
+    //     this.options.xAxis.data = numberItem.categories;
+    //     this.options.series = numberItem.values;
+    //   } else if (x === "Category") {
+    //     const categoryItem = [
+    //       "Direct",
+    //       "Email",
+    //       "Ad Networks",
+    //       "Video Ads",
+    //       "Search Engines",
+    //     ];
+    //     this.options.xAxis.data = categoryItem;
+    //   } else if (x === "Time") {
+    //     const timeItem = {
+    //       categories: [10, 40, 70, 100, 130],
+    //       values: {
+    //         data: [55, 75, 95, 115, 135],
+    //       },
+    //     };
+    //     this.options.xAxis.data = timeItem.categories;
+    //     this.options.series = timeItem.values;
+    //   }
+    // },
 
-    selectedYaxisData(y) {
-      if (y === "Default") {
-        const defaultItem = {
-          type: "value",
-          min: 0,
-          max: 200,
-          interval: 50,
-          axisLabel: {
-            formatter: "{value}",
-          },
-        };
-        this.options.yAxis = defaultItem;
-      } else if (y === "Days") {
-        const daysItem = {
-          type: "category",
-          data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-        };
-        this.options.yAxis = daysItem;
-      } else if (y === "Precipitation") {
-        const precipitationItem = {
-          type: "value",
-          name: "Precipitation",
-          min: 0,
-          max: 250,
-          interval: 50,
-          axisLabel: {
-            formatter: "{value} ml",
-          },
-        };
-        this.options.yAxis = precipitationItem;
-      } else if (y === "Temperature") {
-        const tempItem = {
-          type: "value",
-          name: "Temperature",
-          min: 0,
-          max: 25,
-          interval: 5,
-          axisLabel: {
-            formatter: "{value} °C",
-          },
-        };
-        this.options.yAxis = tempItem;
-      } else if (y === "Category") {
-        const categoryItem = {
-          type: "category",
-          data: [
-            "Direct",
-            "Email",
-            "Ad Networks",
-            "Video Ads",
-            "Search Engines",
-          ],
-        };
-        this.options.yAxis = categoryItem;
-      }
-    },
+    // selectedYaxisData(y) {
+    //   if (y === "Default") {
+    //     const defaultItem = {
+    //       type: "value",
+    //       min: 0,
+    //       max: 200,
+    //       interval: 50,
+    //       axisLabel: {
+    //         formatter: "{value}",
+    //       },
+    //     };
+    //     this.options.yAxis = defaultItem;
+    //   } else if (y === "Days") {
+    //     const daysItem = {
+    //       type: "category",
+    //       data: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    //     };
+    //     this.options.yAxis = daysItem;
+    //   } else if (y === "Precipitation") {
+    //     const precipitationItem = {
+    //       type: "value",
+    //       name: "Precipitation",
+    //       min: 0,
+    //       max: 250,
+    //       interval: 50,
+    //       axisLabel: {
+    //         formatter: "{value} ml",
+    //       },
+    //     };
+    //     this.options.yAxis = precipitationItem;
+    //   } else if (y === "Temperature") {
+    //     const tempItem = {
+    //       type: "value",
+    //       name: "Temperature",
+    //       min: 0,
+    //       max: 25,
+    //       interval: 5,
+    //       axisLabel: {
+    //         formatter: "{value} °C",
+    //       },
+    //     };
+    //     this.options.yAxis = tempItem;
+    //   } else if (y === "Category") {
+    //     const categoryItem = {
+    //       type: "category",
+    //       data: [
+    //         "Direct",
+    //         "Email",
+    //         "Ad Networks",
+    //         "Video Ads",
+    //         "Search Engines",
+    //       ],
+    //     };
+    //     this.options.yAxis = categoryItem;
+    //   }
+    // },
 
     getRandomColor() {
       this.randomColor = Math.floor(Math.random() * 16777215).toString(16);
@@ -1423,16 +1425,27 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
-        this.categories = Object.keys(this.uploadedFile);
-        this.defaultCategory = this.categories[0];
-        this.dataUpload = this.uploadedFile[this.defaultCategory];
-        if (this.uploadedFile.metrics) {
-          const mapped = this.uploadedFile.metrics.map((element) => ({
-            type: this.modifiedType ? this.modifiedType : this.chartType,
-            ...element,
-          }));
-          this.seriesUpload = mapped;
+        console.log(this.uploadedFile);
+        const allKeysObject = {};
+        for (const obj of this.uploadedFile) {
+          const keys = Object.keys(obj);
+          Object.assign(
+            allKeysObject,
+            ...keys.map((key) => ({ [key]: obj[key] }))
+          );
         }
+        this.dimensions = Object.keys(allKeysObject);
+        this.defaultCategory = this.dimensions[0];
+        this.dataUpload = this.uploadedFile.map((item) => {
+          return item[this.defaultCategory];
+        });
+
+        this.defaultMetric = this.dimensions[1];
+        this.seriesUpload = this.uploadedFile.map((item) => {
+          console.log(item[this.defaultMetric]);
+          return item[this.defaultMetric];
+        });
+        console.log(this.seriesUpload);
         this.handleOptions();
         this.handleApexOptions();
         this.handleChartjsOptions();
@@ -1441,15 +1454,22 @@ export default {
       this.editDialog = false;
     },
 
-    selectedCategory(e) {
-      this.dataUpload = this.uploadedFile[e];
+    selectedDimension(e) {
+      this.dataUpload = this.uploadedFile.map((item) => {
+        return item[e];
+      });
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
     },
 
     selectedMetric(e) {
-      console.log(e);
+      this.seriesUpload = this.uploadedFile.map((item) => {
+        return item[e];
+      });
+      this.handleOptions();
+      this.handleApexOptions();
+      this.handleChartjsOptions();
     },
   },
 };
