@@ -304,7 +304,6 @@
                             :items="semanticTypes"
                             item-title="type"
                             item-value="value"
-                            multiple
                             return-object
                             label="Type"
                             density="compact"
@@ -931,6 +930,7 @@ export default {
       dimensionMenu: false,
       metricMenu: false,
       newCatName: null,
+      newMetricName: null,
       semanticTypes: [
         {
           type: "Numeric",
@@ -961,6 +961,7 @@ export default {
           value: "url",
         },
       ],
+      uniqueValues: [],
     };
   },
   computed: {
@@ -1424,24 +1425,23 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
-        const allKeysObject = {};
-        for (const obj of this.uploadedFile) {
-          const keys = Object.keys(obj);
-          Object.assign(
-            allKeysObject,
-            ...keys.map((key) => ({ [key]: obj[key] }))
-          );
-        }
-        this.dimensions = Object.keys(allKeysObject);
-        this.defaultCategory = this.dimensions[0];
-        this.dataUpload = this.uploadedFile.map((item) => {
-          return item[this.defaultCategory];
-        });
 
+        // Get dimensions
+        const allKeys = new Set();
+        for (const item of this.uploadedFile) {
+          const keys = Object.keys(item);
+          keys.forEach((key) => allKeys.add(key));
+        }
+        this.dimensions = Array.from(allKeys);
+        this.defaultCategory = this.dimensions[0];
         this.defaultMetric = this.dimensions[1];
-        this.seriesUpload = this.uploadedFile.map((item) => {
-          return item[this.defaultMetric];
-        });
+
+        this.getUniqueValues(
+          this.uploadedFile,
+          this.defaultCategory,
+          this.defaultMetric
+        );
+
         this.handleOptions();
         this.handleApexOptions();
         this.handleChartjsOptions();
@@ -1450,19 +1450,48 @@ export default {
       this.editDialog = false;
     },
 
-    selectedDimension(e) {
-      this.dataUpload = this.uploadedFile.map((item) => {
-        return item[e];
+    getUniqueValues(data, key, metric) {
+      // Get data from selected dimension
+      const uniqueValuesSet = new Set();
+      for (const item of data) {
+        uniqueValuesSet.add(item[key]);
+      }
+      this.dataUpload = Array.from(uniqueValuesSet);
+
+      // Get unique values
+      const uniqueValuesMap = new Map();
+
+      for (const item of data) {
+        const keyValue = item[key];
+        if (!uniqueValuesMap.has(keyValue)) {
+          uniqueValuesMap.set(keyValue, { ...item });
+        } else {
+          const existingItem = uniqueValuesMap.get(keyValue);
+          if ("value" in item) {
+            existingItem.value += item.value;
+          }
+          if ("uniqueValue" in item) {
+            existingItem.uniqueValue += item.uniqueValue;
+          }
+        }
+      }
+
+      this.uniqueValues = Array.from(uniqueValuesMap.values());
+
+      this.seriesUpload = this.uniqueValues.map((item) => {
+        return item[metric];
       });
+    },
+
+    selectedDimension(e) {
+      this.getUniqueValues(this.uploadedFile, e, this.defaultMetric);
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
     },
 
     selectedMetric(e) {
-      this.seriesUpload = this.uploadedFile.map((item) => {
-        return item[e];
-      });
+      this.getUniqueValues(this.uploadedFile, this.defaultCategory, e);
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
