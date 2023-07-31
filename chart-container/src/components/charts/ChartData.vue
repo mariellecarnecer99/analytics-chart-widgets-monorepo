@@ -1391,7 +1391,6 @@ export default {
           (row) => row["label"]
         );
         this.options.xAxis.data = this.selectedFile.map((row) => row["label"]);
-        console.log(this.selectedFile);
 
         const blendData = {
           name: this.seriesName,
@@ -1425,7 +1424,6 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
-        console.log(this.uploadedFile);
         const allKeysObject = {};
         for (const obj of this.uploadedFile) {
           const keys = Object.keys(obj);
@@ -1442,10 +1440,8 @@ export default {
 
         this.defaultMetric = this.dimensions[1];
         this.seriesUpload = this.uploadedFile.map((item) => {
-          console.log(item[this.defaultMetric]);
           return item[this.defaultMetric];
         });
-        console.log(this.seriesUpload);
         this.handleOptions();
         this.handleApexOptions();
         this.handleChartjsOptions();
