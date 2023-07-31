@@ -1467,11 +1467,8 @@ export default {
           uniqueValuesMap.set(keyValue, { ...item });
         } else {
           const existingItem = uniqueValuesMap.get(keyValue);
-          if ("value" in item) {
-            existingItem.value += item.value;
-          }
-          if ("uniqueValue" in item) {
-            existingItem.uniqueValue += item.uniqueValue;
+          if (metric in item) {
+            existingItem[metric] += item[metric];
           }
         }
       }
