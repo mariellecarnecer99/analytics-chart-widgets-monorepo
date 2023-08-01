@@ -1153,12 +1153,22 @@ export default {
             },
           },
         },
+        labels: this.dataUpload
+          ? this.dataUpload
+          : ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
       };
-      this.apexSeries = [
-        {
-          data: this.seriesUpload ? this.seriesUpload : [10, 41, 35, 51, 49],
-        },
-      ];
+      this.apexSeries =
+        this.chartType === "pie"
+          ? this.seriesUpload
+            ? this.seriesUpload
+            : [10, 41, 35, 51, 49]
+          : [
+              {
+                data: this.seriesUpload
+                  ? this.seriesUpload
+                  : [10, 41, 35, 51, 49],
+              },
+            ];
     },
 
     handleChartjsOptions() {
