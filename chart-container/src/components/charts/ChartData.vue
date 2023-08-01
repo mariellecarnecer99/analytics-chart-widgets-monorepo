@@ -1016,9 +1016,14 @@ export default {
           type:
             this.selectedOrientation === "horizontal" ? "value" : "category",
           // boundaryGap: false,
-          show: this.tickLabelsSwitch,
+          show:
+            this.chartType === "pie"
+              ? this.tickLabelsSwitch === false
+              : this.tickLabelsSwitch,
           data:
-            this.selectedOrientation === "horizontal"
+            this.chartType === "pie"
+              ? null
+              : this.selectedOrientation === "horizontal"
               ? ""
               : this.dataUpload
               ? this.dataUpload
@@ -1041,9 +1046,14 @@ export default {
         yAxis: {
           type:
             this.selectedOrientation === "horizontal" ? "category" : "value",
-          show: this.tickLabelsSwitch,
+          show:
+            this.chartType === "pie"
+              ? this.tickLabelsSwitch === false
+              : this.tickLabelsSwitch,
           data:
-            this.selectedOrientation === "horizontal"
+            this.chartType === "pie"
+              ? null
+              : this.selectedOrientation === "horizontal"
               ? this.dataUpload
                 ? this.dataUpload
                 : [
@@ -1066,16 +1076,25 @@ export default {
         series: [
           {
             name: this.seriesName,
-            color: this.color,
-            data: this.seriesUpload
-              ? this.seriesUpload
-              : [
-                  { value: 120 },
-                  { value: 200 },
-                  { value: 150 },
-                  { value: 80 },
-                  { value: 70 },
-                ],
+            color: this.chartType === "pie" ? null : this.color,
+            data:
+              this.chartType === "pie"
+                ? [
+                    { value: 1048, name: "Search Engine" },
+                    { value: 735, name: "Direct" },
+                    { value: 580, name: "Email" },
+                    { value: 484, name: "Union Ads" },
+                    { value: 300, name: "Video Ads" },
+                  ]
+                : this.seriesUpload
+                ? this.seriesUpload
+                : [
+                    { value: 120 },
+                    { value: 200 },
+                    { value: 150 },
+                    { value: 80 },
+                    { value: 70 },
+                  ],
             type: this.modifiedType ? this.modifiedType : this.chartType,
             // areaStyle: {}
           },
@@ -1208,7 +1227,7 @@ export default {
           responsive: true,
           lineTension: 1,
           plugins: {
-            legend: false,
+            legend: this.chartType === "pie" ? true : false,
             title: {
               display: false,
               text: this.mainTitle,
