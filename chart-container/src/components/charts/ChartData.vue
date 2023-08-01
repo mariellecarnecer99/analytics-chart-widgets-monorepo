@@ -245,6 +245,7 @@
                             >Source field: {{ defaultCategory }}</i
                           >
                           <v-select
+                            v-model="dimensionsemanticType"
                             :items="semanticTypes"
                             item-title="type"
                             item-value="value"
@@ -252,6 +253,7 @@
                             label="Type"
                             density="compact"
                             variant="outlined"
+                            @update:modelValue="getSemanticType"
                           >
                           </v-select>
                         </v-card-text>
@@ -300,7 +302,15 @@
                           <i v-if="newMetricName" class="mt-0"
                             >Source field: {{ defaultMetric }}</i
                           >
+
+                          <p>Aggregation</p>
+                          <v-checkbox
+                            v-model="aggregationType"
+                            label="Count"
+                          ></v-checkbox>
+
                           <v-select
+                            v-model="metricsemanticType"
                             :items="semanticTypes"
                             item-title="type"
                             item-value="value"
@@ -308,6 +318,7 @@
                             label="Type"
                             density="compact"
                             variant="outlined"
+                            @update:modelValue="getSemanticType"
                           >
                           </v-select>
                         </v-card-text>
@@ -931,37 +942,41 @@ export default {
       metricMenu: false,
       newCatName: null,
       newMetricName: null,
-      semanticTypes: [
-        {
-          type: "Numeric",
-          value: "numeric",
-        },
-        {
-          type: "Text",
-          value: "text",
-        },
-        {
-          type: "Date & Time",
-          value: "datetime",
-        },
-        {
-          type: "Boolean",
-          value: "boolean",
-        },
-        {
-          type: "Geo",
-          value: "geo",
-        },
-        {
-          type: "Currency",
-          value: "currency",
-        },
-        {
-          type: "URL",
-          value: "url",
-        },
-      ],
+      // semanticTypes: [
+      //   {
+      //     type: "Numeric",
+      //     value: "numeric",
+      //   },
+      //   {
+      //     type: "Text",
+      //     value: "text",
+      //   },
+      //   {
+      //     type: "Date & Time",
+      //     value: "datetime",
+      //   },
+      //   {
+      //     type: "Boolean",
+      //     value: "boolean",
+      //   },
+      //   {
+      //     type: "Geo",
+      //     value: "geo",
+      //   },
+      //   {
+      //     type: "Currency",
+      //     value: "currency",
+      //   },
+      //   {
+      //     type: "URL",
+      //     value: "url",
+      //   },
+      // ],
+      semanticTypes: ["Text", "Numeric"],
       uniqueValues: [],
+      dimensionsemanticType: null,
+      metricsemanticType: null,
+      aggregationType: true,
     };
   },
   computed: {
@@ -1480,6 +1495,7 @@ export default {
     },
 
     getUniqueValues(data, key, metric) {
+      this.getType(data, key, metric);
       // Get data from selected dimension
       const uniqueValuesSet = new Set();
       for (const item of data) {
@@ -1507,6 +1523,29 @@ export default {
       this.seriesUpload = this.uniqueValues.map((item) => {
         return item[metric];
       });
+    },
+
+    getType(data, key, metric) {
+      for (const record of data) {
+        const type = typeof record[key];
+        const metricType = typeof record[metric];
+        if (type === "string") {
+          this.dimensionsemanticType = "Text";
+        }
+        if (metricType === "string") {
+          this.metricsemanticType = "Text";
+        }
+        if (type === "number") {
+          this.dimensionsemanticType = "Numeric";
+        }
+        if (metricType === "number") {
+          this.metricsemanticType = "Numeric";
+        }
+      }
+    },
+
+    getSemanticType(e) {
+      this.dimensionsemanticType = e.value;
     },
 
     selectedDimension(e) {
