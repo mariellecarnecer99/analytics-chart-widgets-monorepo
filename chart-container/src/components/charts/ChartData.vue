@@ -138,28 +138,20 @@
               </v-col> -->
             </v-row>
 
-            <!-- <p class="mb-3">Date Range</p>
+            <p class="my-3">Date Range</p>
             <v-row>
               <v-col cols="4">
-                <v-text-field
-                  v-model="start"
-                  label="Start date"
-                  type="date"
-                  variant="outlined"
-                  density="compact"
-                ></v-text-field>
+                <VueDatePicker
+                  v-model="dates"
+                  class="mb-3"
+                  placeholder="Select Date"
+                  range
+                  text-input
+                  format="MM/dd/yyyy"
+                  @update:model-value="handleDates"
+                />
               </v-col>
-
-              <v-col cols="4">
-                <v-text-field
-                  v-model="end"
-                  label="End date"
-                  type="date"
-                  variant="outlined"
-                  density="compact"
-                ></v-text-field>
-              </v-col>
-            </v-row> -->
+            </v-row>
 
             <v-row justify="end">
               <v-col>
@@ -828,6 +820,10 @@ import line from "@/assets/line.png";
 import bar from "@/assets/bar.png";
 import pie from "@/assets/pie.png";
 import scatter from "@/assets/scatter.png";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import moment from "moment";
+
 const store = useSelectedChart();
 export default {
   components: {
@@ -835,6 +831,7 @@ export default {
     ApexCharts,
     ChartJS,
     VDatePicker,
+    VueDatePicker,
   },
   props: {
     chartType: String,
@@ -977,6 +974,8 @@ export default {
       dimensionsemanticType: null,
       metricsemanticType: null,
       aggregationType: true,
+      dates: [],
+      datepickerModal: false,
     };
   },
   computed: {
@@ -1560,6 +1559,15 @@ export default {
       this.handleOptions();
       this.handleApexOptions();
       this.handleChartjsOptions();
+    },
+
+    handleDates(date) {
+      if (date) {
+        this.dates = date.map((item) => {
+          return moment(item).format("L");
+        });
+        console.log(this.dates);
+      }
     },
   },
 };
