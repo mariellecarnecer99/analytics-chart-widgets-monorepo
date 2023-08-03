@@ -1579,6 +1579,7 @@ export default {
       const newDates = [];
       const currDate = moment(resultObject.startDate).startOf("day");
       const lastDate = moment(resultObject.endDate).startOf("day");
+      const randomNumbers = [];
 
       while (currDate.clone().isSameOrBefore(lastDate)) {
         newDates.push(currDate.format("L"));
@@ -1586,6 +1587,8 @@ export default {
         this.editDialog = false;
         this.dates = newDates;
         this.dataUpload = this.dates;
+        randomNumbers.push(Math.round(Math.random() * 100));
+        this.seriesUpload = randomNumbers;
         this.handleOptions();
         this.handleApexOptions();
         this.handleChartjsOptions();
