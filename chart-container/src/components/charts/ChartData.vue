@@ -1586,7 +1586,9 @@ export default {
         this.editDialog = false;
         this.dates = newDates;
         this.dataUpload = this.dates;
+        this.handleOptions();
         this.handleApexOptions();
+        this.handleChartjsOptions();
       }
       return newDates;
     },
