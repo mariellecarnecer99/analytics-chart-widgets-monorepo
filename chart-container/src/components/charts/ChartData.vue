@@ -1577,9 +1577,9 @@ export default {
       };
 
       const newDates = [];
+      const randomNumbers = [];
       const currDate = moment(resultObject.startDate).startOf("day");
       const lastDate = moment(resultObject.endDate).startOf("day");
-      const randomNumbers = [];
 
       while (currDate.clone().isSameOrBefore(lastDate)) {
         newDates.push(currDate.format("L"));
