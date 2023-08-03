@@ -145,9 +145,9 @@
                   v-model="dates"
                   class="mb-3"
                   placeholder="Select Date"
-                  range
-                  text-input
                   format="MM/dd/yyyy"
+                  range
+                  teleport-center
                   @update:model-value="handleDates"
                 />
               </v-col>
@@ -1563,11 +1563,32 @@ export default {
 
     handleDates(date) {
       if (date) {
-        this.dates = date.map((item) => {
+        const dateMapped = date.map((item) => {
           return moment(item).format("L");
         });
-        console.log(this.dates);
+        this.getDaysBetweenDates(dateMapped);
       }
+    },
+
+    getDaysBetweenDates(dates) {
+      const resultObject = {
+        startDate: dates[0],
+        endDate: dates[1],
+      };
+
+      const newDates = [];
+      const currDate = moment(resultObject.startDate).startOf("day");
+      const lastDate = moment(resultObject.endDate).startOf("day");
+
+      while (currDate.clone().isSameOrBefore(lastDate)) {
+        newDates.push(currDate.format("L"));
+        currDate.add(1, "days");
+        this.editDialog = false;
+        this.dates = newDates;
+        this.dataUpload = this.dates;
+        this.handleApexOptions();
+      }
+      return newDates;
     },
   },
 };
