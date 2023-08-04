@@ -1585,8 +1585,7 @@ export default {
         newDates.push(currDate.format("L"));
         currDate.add(1, "days");
         this.editDialog = false;
-        this.dates = newDates;
-        this.dataUpload = this.dates;
+        this.dataUpload = newDates;
         randomNumbers.push(Math.round(Math.random() * 100));
         this.seriesUpload = randomNumbers;
         this.handleOptions();
