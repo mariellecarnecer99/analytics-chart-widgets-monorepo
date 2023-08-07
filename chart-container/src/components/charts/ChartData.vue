@@ -1471,7 +1471,6 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
-        console.log(this.uploadedFile);
 
         // Get dimensions
         const allKeys = new Set();
@@ -1498,9 +1497,6 @@ export default {
     },
 
     getUniqueValues(data, key, metric) {
-      console.log("data", data);
-      console.log("key", key);
-      console.log("metric", metric);
       this.getType(data, key, metric);
       // Get data from selected dimension
       const uniqueValuesSet = new Set();
@@ -1604,7 +1600,7 @@ export default {
 
     getApiData() {
       axios
-        .get(`https://retoolapi.dev/TfHBo0/data`)
+        .get(`https://retoolapi.dev/NuWQVD/data`)
         .then((response) => {
           const responseData = response.data;
 
@@ -1616,7 +1612,7 @@ export default {
           }
           this.dimensions = Array.from(allKeys);
           this.defaultCategory = this.dimensions[3];
-          this.defaultMetric = this.dimensions[4];
+          this.defaultMetric = this.dimensions[5];
 
           this.getUniqueValues(
             responseData,
