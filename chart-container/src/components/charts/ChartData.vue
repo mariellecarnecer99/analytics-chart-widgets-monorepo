@@ -1232,8 +1232,8 @@ export default {
           datasets: [
             {
               label: this.titleSwitch === true ? this.mainTitle : null,
-              backgroundColor: "rgba(71, 183,132,.5)",
-              borderColor: "#47b784",
+              backgroundColor: this.color,
+              borderColor: this.color,
               borderWidth: 3,
               data: this.seriesUpload
                 ? this.seriesUpload
