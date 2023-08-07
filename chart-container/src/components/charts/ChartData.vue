@@ -823,6 +823,8 @@ import scatter from "@/assets/scatter.png";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
+import { axiosInstance } from "../../services/base";
+import axios from "axios";
 
 const store = useSelectedChart();
 export default {
@@ -987,6 +989,7 @@ export default {
     },
   },
   mounted() {
+    this.getApiData();
     this.handleOptions();
     this.handleApexOptions();
     this.handleChartjsOptions();
@@ -1468,6 +1471,7 @@ export default {
       const reader = new FileReader();
       reader.onload = (e) => {
         this.uploadedFile = JSON.parse(e.target.result);
+        console.log(this.uploadedFile);
 
         // Get dimensions
         const allKeys = new Set();
@@ -1494,6 +1498,9 @@ export default {
     },
 
     getUniqueValues(data, key, metric) {
+      console.log("data", data);
+      console.log("key", key);
+      console.log("metric", metric);
       this.getType(data, key, metric);
       // Get data from selected dimension
       const uniqueValuesSet = new Set();
@@ -1593,6 +1600,38 @@ export default {
         this.handleChartjsOptions();
       }
       return newDates;
+    },
+
+    getApiData() {
+      axios
+        .get(`https://retoolapi.dev/TfHBo0/data`)
+        .then((response) => {
+          const responseData = response.data;
+
+          // Get dimensions
+          const allKeys = new Set();
+          for (const item of responseData) {
+            const keys = Object.keys(item);
+            keys.forEach((key) => allKeys.add(key));
+          }
+          this.dimensions = Array.from(allKeys);
+          this.defaultCategory = this.dimensions[3];
+          this.defaultMetric = this.dimensions[4];
+
+          this.getUniqueValues(
+            responseData,
+            this.defaultCategory,
+            this.defaultMetric
+          );
+
+          this.handleOptions();
+          this.handleApexOptions();
+          this.handleChartjsOptions();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally();
     },
   },
 };

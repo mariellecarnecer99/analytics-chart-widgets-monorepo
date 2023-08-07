@@ -1,4 +1,18 @@
 <template>
+  <v-row justify="end" class="mr-3">
+    <v-col cols="2">
+      <VueDatePicker
+        v-model="dates"
+        class="mb-3"
+        placeholder="Select Date"
+        format="MM/dd/yyyy"
+        range
+        multi-calendars
+        teleport-center
+        @update:model-value="handleDates"
+      />
+    </v-col>
+  </v-row>
   <div>
     <grid-layout
       :layout="selectedCharts"
@@ -33,15 +47,52 @@
 <script setup>
 import ChartData from "./components/charts/ChartData";
 import { ref } from "vue";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
 const store = useStore();
 const { selectedCharts } = storeToRefs(store);
+const dates = ref();
 
 // functions
 function removeItem(i) {
   const index = this.selectedCharts.map((item) => item.i).indexOf(i);
   this.selectedCharts.splice(index, 1);
+}
+
+function handleDates(date) {
+  if (date) {
+    const dateMapped = date.map((item) => {
+      return moment(item).format("L");
+    });
+    getDaysBetweenDates(dateMapped);
+  }
+}
+
+function getDaysBetweenDates(dates) {
+  const resultObject = {
+    startDate: dates[0],
+    endDate: dates[1],
+  };
+
+  const newDates = [];
+  // const randomNumbers = [];
+  const currDate = moment(resultObject.startDate).startOf("day");
+  const lastDate = moment(resultObject.endDate).startOf("day");
+
+  while (currDate.clone().isSameOrBefore(lastDate)) {
+    newDates.push(currDate.format("L"));
+    currDate.add(1, "days");
+    console.log(newDates);
+    // this.editDialog = false;
+    // this.dataUpload = newDates;
+    // randomNumbers.push(Math.round(Math.random() * 100));
+    // this.seriesUpload = randomNumbers;
+    // this.handleChartjsOptions();
+  }
+  return newDates;
 }
 </script>
 

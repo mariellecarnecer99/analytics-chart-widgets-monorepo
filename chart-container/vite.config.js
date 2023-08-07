@@ -10,46 +10,50 @@ import federation from '@originjs/vite-plugin-federation'
 const APPLICATION_PORT = 3002;
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  server: {
-    port: APPLICATION_PORT,
-  },
-  preview: {
-    port: APPLICATION_PORT,
-  },
-  plugins: [
-    vue({ 
-      template: { transformAssetUrls }
-    }),
-    // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
-    vuetify({
-      autoImport: true,
-      styles: {
-        configFile: 'src/styles/settings.scss',
-      },
-    }),
-    federation({
-      name: "chart-container",
-      filename: "chartContainer.js",
-      exposes: {
-        "./App": "./src/App.vue",
-      },
-      shared: ["vue"],
-    }),
-  ],
-  define: { 'process.env': {} },
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
+export default defineConfig(({mode}) => {
+  const env = loadEnv(mode, process.cwd(), '');
+  
+  return {
+    server: {
+      port: env.APPLICATION_PORT,
     },
-    extensions: [
-      '.js',
-      '.json',
-      '.jsx',
-      '.mjs',
-      '.ts',
-      '.tsx',
-      '.vue',
+    preview: {
+      port: APPLICATION_PORT,
+    },
+    plugins: [
+      vue({ 
+        template: { transformAssetUrls }
+      }),
+      // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
+      vuetify({
+        autoImport: true,
+        styles: {
+          configFile: 'src/styles/settings.scss',
+        },
+      }),
+      federation({
+        name: "chart-container",
+        filename: "chartContainer.js",
+        exposes: {
+          "./App": "./src/App.vue",
+        },
+        shared: ["vue"],
+      }),
     ],
+    define: { 'process.env': {}},
+    resolve: {
+      alias: {
+        '@': fileURLToPath(new URL('./src', import.meta.url))
+      },
+      extensions: [
+        '.js',
+        '.json',
+        '.jsx',
+        '.mjs',
+        '.ts',
+        '.tsx',
+        '.vue',
+      ],
+    }
   }
 })
