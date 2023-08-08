@@ -1660,23 +1660,12 @@ export default {
               newFormat: newDateFormat,
             };
           });
-          // mappedData.map((date) =>
-          //   e.find((x) => {
-          //     console.log("x", x);
-          //     console.log("date", date.newFormat);
-          //   })
-          // );
-          console.log("mappedData", mappedData);
-          console.log("selected dates", e);
 
           let res = e.map((x) =>
             mappedData.find((date) => date.newFormat == x)
           );
-          console.log("res", res);
 
           const filteredData = res.filter((item) => item !== undefined);
-
-          console.log(filteredData);
 
           // Get dimensions
           const allKeys = new Set();
