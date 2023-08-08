@@ -823,10 +823,13 @@ import scatter from "@/assets/scatter.png";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
-import { axiosInstance } from "../../services/base";
 import axios from "axios";
+import { storeToRefs } from "pinia";
 
 const store = useSelectedChart();
+const { selectedDates } = storeToRefs(store);
+const datesSelected = selectedDates;
+
 export default {
   components: {
     EChart,
@@ -978,6 +981,8 @@ export default {
       aggregationType: true,
       dates: [],
       datepickerModal: false,
+      selectedDates: datesSelected,
+      apiData: null,
     };
   },
   computed: {
@@ -987,6 +992,13 @@ export default {
       this.handleApexOptions();
       return gridColor;
     },
+  },
+  watch: {
+    selectedDates: [
+      {
+        handler: "getDates",
+      },
+    ],
   },
   mounted() {
     this.getApiData();
@@ -1605,6 +1617,7 @@ export default {
         .get(`https://retoolapi.dev/NuWQVD/data`)
         .then((response) => {
           const responseData = response.data;
+          this.apiData = responseData;
 
           // Get dimensions
           const allKeys = new Set();
@@ -1618,6 +1631,65 @@ export default {
 
           this.getUniqueValues(
             responseData,
+            this.defaultCategory,
+            this.defaultMetric
+          );
+
+          this.handleOptions();
+          this.handleApexOptions();
+          this.handleChartjsOptions();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally();
+    },
+
+    getDates(e) {
+      axios
+        .get(
+          `https://retoolapi.dev/NuWQVD/data?createdAt_gte=${
+            e[0]
+          }&createdAt_lte=${e[e.length - 1]}`
+        )
+        .then((response) => {
+          let mappedData = this.apiData.map((date) => {
+            const newDateFormat = moment(date.createdAt).format("YYYY-MM-DD");
+            return {
+              ...date,
+              newFormat: newDateFormat,
+            };
+          });
+          // mappedData.map((date) =>
+          //   e.find((x) => {
+          //     console.log("x", x);
+          //     console.log("date", date.newFormat);
+          //   })
+          // );
+          console.log("mappedData", mappedData);
+          console.log("selected dates", e);
+
+          let res = e.map((x) =>
+            mappedData.find((date) => date.newFormat == x)
+          );
+          console.log("res", res);
+
+          const filteredData = res.filter((item) => item !== undefined);
+
+          console.log(filteredData);
+
+          // Get dimensions
+          const allKeys = new Set();
+          for (const item of filteredData) {
+            const keys = Object.keys(item);
+            keys.forEach((key) => allKeys.add(key));
+          }
+          this.dimensions = Array.from(allKeys);
+          this.defaultCategory = this.dimensions[3];
+          this.defaultMetric = this.dimensions[5];
+
+          this.getUniqueValues(
+            filteredData,
             this.defaultCategory,
             this.defaultMetric
           );

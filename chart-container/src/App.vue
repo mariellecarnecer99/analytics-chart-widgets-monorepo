@@ -52,9 +52,12 @@ import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
+import { useSelectedChart } from "../src/stores/fetchSelectedChart";
+const storeForDates = useSelectedChart();
 const store = useStore();
 const { selectedCharts } = storeToRefs(store);
 const dates = ref();
+let datesSelected = ref();
 
 // functions
 function removeItem(i) {
@@ -78,21 +81,16 @@ function getDaysBetweenDates(dates) {
   };
 
   const newDates = [];
-  // const randomNumbers = [];
   const currDate = moment(resultObject.startDate).startOf("day");
   const lastDate = moment(resultObject.endDate).startOf("day");
 
   while (currDate.clone().isSameOrBefore(lastDate)) {
-    newDates.push(currDate.format("L"));
+    newDates.push(currDate.format("YYYY-MM-DD"));
     currDate.add(1, "days");
-    console.log(newDates);
-    // this.editDialog = false;
-    // this.dataUpload = newDates;
-    // randomNumbers.push(Math.round(Math.random() * 100));
-    // this.seriesUpload = randomNumbers;
-    // this.handleChartjsOptions();
   }
-  return newDates;
+  datesSelected = newDates;
+  storeForDates.getSelectedDates(newDates);
+  return datesSelected;
 }
 </script>
 
