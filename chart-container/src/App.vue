@@ -1,6 +1,6 @@
 <template>
   <v-row justify="end" class="mr-3">
-    <v-col cols="2">
+    <v-col cols="3">
       <VueDatePicker
         v-model="dates"
         class="mb-3"
