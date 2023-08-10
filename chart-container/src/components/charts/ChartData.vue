@@ -15,6 +15,9 @@
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
     >
+    <v-icon color="#676767" @click="jsonConfigDialog = !jsonConfigDialog"
+      >mdi-code-json</v-icon
+    >
     <v-icon color="#676767" @click="appearanceDialog = !appearanceDialog"
       >mdi-palette</v-icon
     >
@@ -509,6 +512,35 @@
       </v-card>
     </v-dialog>
 
+    <v-dialog v-model="jsonConfigDialog" width="750px" style="z-index: 0">
+      <v-card>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col>
+              <v-sheet class="my-2"><h3>JSON Editor</h3></v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2 ml-4"
+                ><v-icon @click="jsonConfigDialog = !jsonConfigDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <v-container>
+            <Vue3JsonEditor
+              v-model="apiData"
+              :show-btns="true"
+              :expandedOnStart="true"
+              mode="code"
+              @json-change="onJsonChange"
+            />
+          </v-container>
+        </v-card-text>
+      </v-card>
+    </v-dialog>
+
     <v-dialog v-model="appearanceDialog" width="750px" style="z-index: 0">
       <v-card>
         <v-card-text>
@@ -824,6 +856,7 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import moment from "moment";
 import axios from "axios";
+import { Vue3JsonEditor } from "vue3-json-editor";
 import { storeToRefs } from "pinia";
 
 const store = useSelectedChart();
@@ -837,6 +870,7 @@ export default {
     ChartJS,
     VDatePicker,
     VueDatePicker,
+    Vue3JsonEditor,
   },
   props: {
     chartType: String,
@@ -852,6 +886,7 @@ export default {
       editDialog: false,
       embedDialog: false,
       appearanceDialog: false,
+      jsonConfigDialog: false,
       menu: false,
       gridColorMenu: false,
       menuLabelColor: false,
@@ -1692,6 +1727,8 @@ export default {
         })
         .finally();
     },
+
+    onJsonChange() {},
   },
 };
 </script>

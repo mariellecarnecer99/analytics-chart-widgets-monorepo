@@ -30,6 +30,7 @@
     "vue-grid-layout": "^3.0.0-beta1",
     "vue-router": "^4.0.0",
     "vue3-apexcharts": "^1.4.1",
+    "vue3-json-editor": "^1.1.5",
     "vuetify": "^3.3.4",
     "webfontloader": "^1.0.0"
   },
