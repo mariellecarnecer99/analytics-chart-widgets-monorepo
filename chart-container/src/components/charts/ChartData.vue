@@ -534,7 +534,7 @@
               :show-btns="true"
               :expandedOnStart="true"
               mode="code"
-              @json-change="onJsonChange"
+              @json-save="onJsonSave"
             />
           </v-container>
         </v-card-text>
@@ -1728,7 +1728,10 @@ export default {
         .finally();
     },
 
-    onJsonChange() {},
+    onJsonSave(e) {
+      this.options = e;
+      this.jsonConfigDialog = false;
+    },
   },
 };
 </script>
