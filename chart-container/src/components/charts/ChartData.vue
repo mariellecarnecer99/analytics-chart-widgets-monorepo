@@ -530,7 +530,7 @@
           <v-divider></v-divider>
           <v-container>
             <Vue3JsonEditor
-              v-model="apiData"
+              v-model="options"
               :show-btns="true"
               :expandedOnStart="true"
               mode="code"
