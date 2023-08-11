@@ -27,6 +27,9 @@
     <v-icon color="#676767" @click="embedDialog = !embedDialog"
       >mdi-import</v-icon
     >
+    <v-icon color="#676767" @click="previewDialog = !previewDialog"
+      >mdi-eye</v-icon
+    >
   </div>
   <div class="toolbox-dialog">
     <v-dialog v-model="editDialog" width="750px" style="z-index: 0">
@@ -512,7 +515,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="jsonConfigDialog" width="750px" style="z-index: 0">
+    <v-dialog v-model="jsonConfigDialog" style="z-index: 0">
       <v-card>
         <v-card-text>
           <v-row justify="space-between">
@@ -530,7 +533,7 @@
           <v-divider></v-divider>
           <v-container>
             <Vue3JsonEditor
-              v-model="options"
+              v-model="chartsConfig"
               :show-btns="true"
               :expandedOnStart="true"
               mode="code"
@@ -837,6 +840,27 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+
+    <v-dialog v-model="previewDialog" width="750px" style="z-index: 0">
+      <v-card>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col>
+              <v-sheet class="my-2"><h3>Preview</h3> </v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2 ml-4"
+                ><v-icon @click="previewDialog = !previewDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <ChartsWidget :option="options" />
+        </v-card-text>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -858,6 +882,7 @@ import moment from "moment";
 import axios from "axios";
 import { Vue3JsonEditor } from "vue3-json-editor";
 import { storeToRefs } from "pinia";
+import ChartsWidget from "../../../../charts-widget/src/App";
 
 const store = useSelectedChart();
 const { selectedDates } = storeToRefs(store);
@@ -871,6 +896,7 @@ export default {
     VDatePicker,
     VueDatePicker,
     Vue3JsonEditor,
+    ChartsWidget,
   },
   props: {
     chartType: String,
@@ -887,6 +913,7 @@ export default {
       embedDialog: false,
       appearanceDialog: false,
       jsonConfigDialog: false,
+      previewDialog: false,
       menu: false,
       gridColorMenu: false,
       menuLabelColor: false,
@@ -1018,6 +1045,7 @@ export default {
       datepickerModal: false,
       selectedDates: datesSelected,
       apiData: null,
+      chartsConfig: null,
     };
   },
   computed: {
@@ -1254,6 +1282,7 @@ export default {
                   : [10, 41, 35, 51, 49],
               },
             ];
+      console.log("apex charts", this.apexOptions);
     },
 
     handleChartjsOptions() {
@@ -1729,7 +1758,8 @@ export default {
     },
 
     onJsonSave(e) {
-      this.options = e;
+      console.log("item changed", e);
+      // this.chartsConfig = e;
       this.jsonConfigDialog = false;
     },
   },

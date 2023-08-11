@@ -1,7 +1,7 @@
 <template>
   <!-- <router-view /> -->
   <div id="app">
-    <v-chart class="chart" :option="option" autoresize />
+    <v-chart class="chart" :option="option" autoresize style="height: 400px" />
   </div>
 </template>
 
