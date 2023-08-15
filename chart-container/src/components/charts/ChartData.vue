@@ -1780,8 +1780,15 @@ export default {
     },
 
     onJsonSave(e) {
-      console.log("item changed", e);
-      // this.options = e;
+      if (this.chartLib === "eCharts") {
+        this.options = e;
+      }
+      if (this.chartLib === "apexCharts") {
+        this.apexOptions = e;
+      }
+      if (this.chartLib === "chartjs") {
+        this.datacollection = e;
+      }
       this.jsonConfigDialog = false;
     },
   },
