@@ -857,7 +857,11 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <ChartsWidget :option="options" />
+          <ChartsWidget
+            :chartLib="chartLib"
+            :option="chartsConfig"
+            :id="chartId"
+          />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -1782,12 +1786,15 @@ export default {
     onJsonSave(e) {
       if (this.chartLib === "eCharts") {
         this.options = e;
+        this.chartsConfig = e;
       }
       if (this.chartLib === "apexCharts") {
         this.apexOptions = e;
+        this.chartsConfig = e;
       }
       if (this.chartLib === "chartjs") {
         this.datacollection = e;
+        this.chartsConfig = e;
       }
       this.jsonConfigDialog = false;
     },
