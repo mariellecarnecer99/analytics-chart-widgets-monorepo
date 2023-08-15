@@ -515,7 +515,7 @@
       </v-card>
     </v-dialog>
 
-    <v-dialog v-model="jsonConfigDialog" style="z-index: 0">
+    <v-dialog v-model="jsonConfigDialog" width="750px" style="z-index: 0">
       <v-card>
         <v-card-text>
           <v-row justify="space-between">
@@ -1195,6 +1195,10 @@ export default {
         ],
       };
 
+      if (this.chartLib === "eCharts") {
+        this.chartsConfig = this.options;
+      }
+
       if (val) {
         this.options.series = val;
       }
@@ -1282,7 +1286,10 @@ export default {
                   : [10, 41, 35, 51, 49],
               },
             ];
-      console.log("apex charts", this.apexOptions);
+
+      if (this.chartLib === "apexCharts") {
+        this.chartsConfig = this.apexOptions;
+      }
     },
 
     handleChartjsOptions() {
@@ -1336,6 +1343,9 @@ export default {
         },
         plugins: [plugin],
       };
+      if (this.chartLib === "chartjs") {
+        this.chartsConfig = this.datacollection;
+      }
     },
 
     handleChartDom(id) {
@@ -1759,7 +1769,7 @@ export default {
 
     onJsonSave(e) {
       console.log("item changed", e);
-      // this.chartsConfig = e;
+      // this.options = e;
       this.jsonConfigDialog = false;
     },
   },
