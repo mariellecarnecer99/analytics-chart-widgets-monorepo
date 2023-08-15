@@ -3,7 +3,7 @@
   <ApexCharts
     v-if="chartLib === 'apexCharts' && isDataReady === true"
     :option="apexOptions"
-    :apexSeries="apexSeries"
+    :apexSeries="apexOptions.series"
     :id="chartId"
   />
   <ChartJS
@@ -1273,19 +1273,31 @@ export default {
         labels: this.dataUpload
           ? this.dataUpload
           : ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
-      };
-      this.apexSeries =
-        this.chartType === "pie"
-          ? this.seriesUpload
+        series:
+          this.chartType === "pie"
             ? this.seriesUpload
-            : [10, 41, 35, 51, 49]
-          : [
-              {
-                data: this.seriesUpload
-                  ? this.seriesUpload
-                  : [10, 41, 35, 51, 49],
-              },
-            ];
+              ? this.seriesUpload
+              : [10, 41, 35, 51, 49]
+            : [
+                {
+                  data: this.seriesUpload
+                    ? this.seriesUpload
+                    : [10, 41, 35, 51, 49],
+                },
+              ],
+      };
+      // this.apexSeries =
+      //   this.chartType === "pie"
+      //     ? this.seriesUpload
+      //       ? this.seriesUpload
+      //       : [10, 41, 35, 51, 49]
+      //     : [
+      //         {
+      //           data: this.seriesUpload
+      //             ? this.seriesUpload
+      //             : [10, 41, 35, 51, 49],
+      //         },
+      //       ];
 
       if (this.chartLib === "apexCharts") {
         this.chartsConfig = this.apexOptions;
@@ -1534,7 +1546,7 @@ export default {
           type: this.modifiedType ? this.modifiedType : this.chartType,
         };
         this.options.series.push(blendData);
-        this.apexSeries.push(blendData);
+        this.apexOptions.series.push(blendData);
       };
       reader.readAsText(e.target.files[0]);
       this.editDialog = false;
