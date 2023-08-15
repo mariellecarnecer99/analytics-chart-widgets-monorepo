@@ -857,7 +857,7 @@
             </v-col>
           </v-row>
           <v-divider></v-divider>
-          <ChartsWidget
+          <PluggableWidget
             :chartLib="chartLib"
             :option="chartsConfig"
             :id="chartId"
@@ -886,7 +886,6 @@ import moment from "moment";
 import axios from "axios";
 import { Vue3JsonEditor } from "vue3-json-editor";
 import { storeToRefs } from "pinia";
-import ChartsWidget from "../../../../charts-widget/src/App";
 
 const store = useSelectedChart();
 const { selectedDates } = storeToRefs(store);
@@ -900,7 +899,6 @@ export default {
     VDatePicker,
     VueDatePicker,
     Vue3JsonEditor,
-    ChartsWidget,
   },
   props: {
     chartType: String,

@@ -16,16 +16,31 @@
       :series="option.series"
     ></apexchart>
 
-    <ChartJS v-if="chartLib === 'chartjs'" :id="id" :option="option" />
+    <canvas v-if="chartLib === 'chartjs'" :id="'chart' + id"></canvas>
   </div>
 </template>
 
 <script setup>
-import ChartJS from "../../chart-container/src/components/charts/ChartJS.vue";
+import { Chart } from "chart.js";
 
 const props = defineProps({
   option: Object,
   chartLib: String,
   id: String,
 });
+
+if (props.chartLib === "chartjs") {
+  const ctx = document.getElementById("chart" + props.id);
+  console.log("ctx: ", ctx);
+
+  var chartExist = Chart.getChart("chart" + props.id);
+  if (chartExist != undefined) {
+    chartExist.destroy();
+    chartExist = new Chart(ctx, props.option);
+    console.log("props.option: ", props.option);
+  } else {
+    chartExist = new Chart(ctx, props.option);
+    console.log("props.option: ", props.option);
+  }
+}
 </script>
