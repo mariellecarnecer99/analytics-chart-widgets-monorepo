@@ -16,31 +16,47 @@
       :series="option.series"
     ></apexchart>
 
-    <canvas v-if="chartLib === 'chartjs'" :id="'chart' + id"></canvas>
+    <canvas
+      v-if="chartLib === 'chartjs'"
+      :id="'chart' + id"
+      ref="canvas"
+    ></canvas>
   </div>
 </template>
 
-<script setup>
+<script>
 import { Chart } from "chart.js";
 
-const props = defineProps({
-  option: Object,
-  chartLib: String,
-  id: String,
-});
-
-if (props.chartLib === "chartjs") {
-  const ctx = document.getElementById("chart" + props.id);
-  console.log("ctx: ", ctx);
-
-  var chartExist = Chart.getChart("chart" + props.id);
-  if (chartExist != undefined) {
-    chartExist.destroy();
-    chartExist = new Chart(ctx, props.option);
-    console.log("props.option: ", props.option);
-  } else {
-    chartExist = new Chart(ctx, props.option);
-    console.log("props.option: ", props.option);
-  }
-}
+export default {
+  props: {
+    id: String,
+    chartLib: String,
+    option: Object,
+  },
+  watch: {
+    option: {
+      handler(newOption) {
+        if (this.ctx) {
+          this.ctx.data = newOption.data;
+          this.ctx.options = newOption.options;
+          this.ctx.update();
+        }
+      },
+    },
+  },
+  data() {
+    return {
+      ctx: null,
+    };
+  },
+  mounted() {
+    this.initializeChart();
+  },
+  methods: {
+    initializeChart() {
+      const canvas = this.$refs.canvas;
+      this.ctx = new Chart(canvas, this.option);
+    },
+  },
+};
 </script>
