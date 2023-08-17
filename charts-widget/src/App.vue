@@ -20,6 +20,7 @@
       v-if="chartLib === 'chartjs'"
       :id="'chart' + id"
       ref="canvas"
+      height="400"
     ></canvas>
   </div>
 </template>

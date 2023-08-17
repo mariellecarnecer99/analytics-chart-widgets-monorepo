@@ -1341,6 +1341,7 @@ export default {
         options: {
           indexAxis: this.selectedOrientation === "horizontal" ? "y" : "x",
           responsive: true,
+          maintainAspectRatio: false,
           lineTension: 1,
           plugins: {
             legend: this.chartType === "pie" ? true : false,
