@@ -159,9 +159,9 @@
               </v-col>
             </v-row>
 
+            <p class="my-3">Data source</p>
             <v-row justify="end">
               <v-col>
-                <p class="mb-3">Data source</p>
                 <v-btn
                   class="mr-3"
                   color="primary"
@@ -199,6 +199,18 @@
                   accept="application/json,.csv"
                   @change="onFileChanged"
                 />
+              </v-col>
+              <v-col>
+                <v-select
+                  v-model="selectedApi"
+                  :items="apiList"
+                  item-title="url"
+                  item-value="url"
+                  label="Select API"
+                  variant="outlined"
+                  density="compact"
+                  @update:modelValue="getApiData"
+                ></v-select>
               </v-col>
             </v-row>
 
@@ -1048,6 +1060,18 @@ export default {
       selectedDates: datesSelected,
       apiData: null,
       chartsConfig: null,
+      selectedApi: null,
+      apiList: [
+        {
+          url: "https://retoolapi.dev/NuWQVD/data",
+        },
+        {
+          url: "https://retoolapi.dev/rpeXtx/players",
+        },
+        {
+          url: "https://retoolapi.dev/dFfefx/employees",
+        },
+      ],
     };
   },
   computed: {
@@ -1066,7 +1090,6 @@ export default {
     ],
   },
   mounted() {
-    this.getApiData();
     this.handleOptions();
     this.handleApexOptions();
     this.handleChartjsOptions();
@@ -1325,7 +1348,7 @@ export default {
         data: {
           labels: this.dataUpload
             ? this.dataUpload
-            : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+            : ["Direct", "Email", "Ad Networks", "Video Ads", "Search Engines"],
           datasets: [
             {
               label: this.titleSwitch === true ? this.mainTitle : null,
@@ -1701,9 +1724,9 @@ export default {
       return newDates;
     },
 
-    getApiData() {
+    getApiData(api) {
       axios
-        .get(`https://retoolapi.dev/NuWQVD/data`)
+        .get(api)
         .then((response) => {
           const responseData = response.data;
           this.apiData = responseData;
@@ -1715,8 +1738,11 @@ export default {
             keys.forEach((key) => allKeys.add(key));
           }
           this.dimensions = Array.from(allKeys);
-          this.defaultCategory = this.dimensions[3];
-          this.defaultMetric = this.dimensions[5];
+          const keyToFind = "createdAt";
+          const index = this.dimensions.indexOf(keyToFind);
+
+          this.defaultCategory = this.dimensions[index];
+          this.defaultMetric = this.dimensions[4];
 
           this.getUniqueValues(
             responseData,
