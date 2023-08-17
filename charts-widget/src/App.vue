@@ -55,7 +55,9 @@ export default {
   methods: {
     initializeChart() {
       const canvas = this.$refs.canvas;
-      this.ctx = new Chart(canvas, this.option);
+      if (this.chartLib === "chartjs") {
+        this.ctx = new Chart(canvas, this.option);
+      }
     },
   },
 };
