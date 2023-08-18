@@ -144,27 +144,13 @@
               </v-col> -->
             </v-row>
 
-            <p class="my-3">Date Range</p>
-            <v-row>
-              <v-col cols="4">
-                <VueDatePicker
-                  v-model="dates"
-                  class="mb-3"
-                  placeholder="Select Date"
-                  format="MM/dd/yyyy"
-                  range
-                  teleport-center
-                  @update:model-value="handleDates"
-                />
-              </v-col>
-            </v-row>
-
-            <p class="my-3">Data source</p>
+            <p class="mt-5 mb-3">Data source</p>
             <v-row justify="end">
               <v-col>
                 <v-btn
                   class="mr-3"
                   color="primary"
+                  size="large"
                   :loading="isLoading"
                   @click="handleUploadedFile"
                   ><v-icon>mdi-upload</v-icon> Upload Data</v-btn
@@ -186,6 +172,7 @@
                 > -->
                 <v-btn
                   color="primary"
+                  size="large"
                   :loading="isSelecting"
                   @click="handleFileImport"
                   ><v-icon>mdi-plus</v-icon> Blend Data</v-btn
@@ -200,7 +187,7 @@
                   @change="onFileChanged"
                 />
               </v-col>
-              <v-col>
+              <v-col cols="5">
                 <v-select
                   v-model="selectedApi"
                   :items="apiList"
