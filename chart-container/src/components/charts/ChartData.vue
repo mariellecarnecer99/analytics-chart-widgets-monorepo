@@ -1789,8 +1789,11 @@ export default {
             keys.forEach((key) => allKeys.add(key));
           }
           this.dimensions = Array.from(allKeys);
-          this.defaultCategory = this.dimensions[3];
-          this.defaultMetric = this.dimensions[5];
+          const keyToFind = "createdAt";
+          const index = this.dimensions.indexOf(keyToFind);
+
+          this.defaultCategory = this.dimensions[index];
+          this.defaultMetric = this.dimensions[4];
 
           this.getUniqueValues(
             filteredData,
