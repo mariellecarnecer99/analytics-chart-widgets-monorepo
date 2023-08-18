@@ -1254,6 +1254,16 @@ export default {
             show: false,
           },
         },
+        noData: {
+          text: "No data to display",
+          align: "center",
+          verticalAlign: "middle",
+          style: {
+            color: "#000",
+            fontSize: "22px",
+            fontFamily: "Arial",
+          },
+        },
         plotOptions: {
           bar: {
             horizontal:
@@ -1334,13 +1344,24 @@ export default {
       const plugin = {
         id: "customCanvasBackgroundColor",
         beforeDraw: (chart, args, options) => {
-          const { ctx } = chart;
-          ctx.save();
-          ctx.globalCompositeOperation = "destination-over";
-          ctx.fillStyle =
-            this.gridLinesSwitch === true ? this.gridColor : "#fff";
-          ctx.fillRect(0, 0, chart.width, chart.height);
-          ctx.restore();
+          if (chart.data.datasets[0].data.length === 0) {
+            const { ctx } = chart;
+            ctx.save();
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.font = "22px Arial";
+            ctx.fillStyle = "gray";
+            ctx.fillText(
+              "No data to display",
+              chart.width / 2,
+              chart.height / 2
+            );
+            ctx.globalCompositeOperation = "destination-over";
+            ctx.fillStyle =
+              this.gridLinesSwitch === true ? this.gridColor : "#fff";
+            ctx.fillRect(0, 0, chart.width, chart.height);
+            ctx.restore();
+          }
         },
       };
       this.datacollection = {
