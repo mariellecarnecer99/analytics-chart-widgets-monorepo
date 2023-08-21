@@ -21,7 +21,7 @@ export const useStore = defineStore("store", {
       this.index++;
       this.selectedCharts.push(item);
     },
-    addedControl(control: string) {
+    addedControl(control: boolean) {
       const item = {
         x: 0,
         y: 0,

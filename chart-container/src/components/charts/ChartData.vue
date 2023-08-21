@@ -11,7 +11,7 @@
     :id="chartId"
     :option="datacollection"
   />
-  <DateRange v-if="control === 'daterange'" />
+  <DateRange v-if="control === true" />
   <div v-if="!control" class="custom-toolbox">
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
@@ -903,7 +903,7 @@ export default {
     chartType: String,
     chartLib: String,
     chartId: Number,
-    control: String,
+    control: Boolean,
   },
   data: () => {
     return {

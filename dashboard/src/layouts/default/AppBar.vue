@@ -102,9 +102,17 @@
         </div>
       </div>
       <div class="sidebar-body">
-        <div class="data mx-4 mb-4">
+        <div class="data mx-5 mb-4">
           <h3 class="data-title mb-3">Add a control</h3>
-          <v-select
+          <v-card
+            v-model="selectedControl"
+            @click="controlSelected"
+            variant="outlined"
+            class="py-2 px-2"
+          >
+            <v-icon>mdi-calendar-range</v-icon> Date range control
+          </v-card>
+          <!-- <v-select
             v-model="selectedControl"
             :items="controls"
             item-title="name"
@@ -114,7 +122,7 @@
             density="compact"
             @update:modelValue="controlSelected"
           >
-          </v-select>
+          </v-select> -->
         </div>
       </div>
     </div>
@@ -191,7 +199,7 @@ export default {
       layout: [],
       index: 0,
       selectedChartLibrary: null,
-      selectedControl: null,
+      selectedControl: false,
       sideMenuItems: [
         {
           title: "Chart & Data",
@@ -266,11 +274,6 @@ export default {
       ],
       controls: [
         {
-          name: "Advanced filter",
-          value: "advfilter",
-          icon: "mdi-text-search-variant",
-        },
-        {
           name: "Date range control",
           value: "daterange",
           icon: "mdi-calendar-range",
@@ -285,8 +288,9 @@ export default {
       this.settingsDrawer = val === 2;
     },
 
-    controlSelected(val) {
-      store.addedControl(val);
+    controlSelected() {
+      this.selectedControl = true;
+      store.addedControl(this.selectedControl);
     },
 
     selectedChart(val) {

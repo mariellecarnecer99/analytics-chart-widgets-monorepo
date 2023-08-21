@@ -56,5 +56,6 @@ function getDaysBetweenDates(dates) {
 }
 .dp-custom-menu {
   box-shadow: 0 0 8px #463c6e;
+  z-index: 0 !important;
 }
 </style>
