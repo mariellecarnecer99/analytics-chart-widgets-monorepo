@@ -6,6 +6,7 @@
       format="MM/dd/yyyy"
       range
       menu-class-name="dp-custom-menu"
+      :teleport="true"
       @update:model-value="handleDates"
     />
   </div>
