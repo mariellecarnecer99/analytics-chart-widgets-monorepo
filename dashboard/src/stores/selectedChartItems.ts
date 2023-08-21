@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 
 export const useStore = defineStore("store", {
-  state: () => ({ selectedCharts: [], index: 0 }),
+  state: () => ({ selectedCharts: [], index: 0, selectedControl: [] }),
   getters: {
     getSelectedCharts(): [] {
       return this.selectedCharts;
@@ -14,13 +14,25 @@ export const useStore = defineStore("store", {
         y: 0,
         w: 6,
         h: 3,
-        i: this.index + "",
+        i: this.index,
         chart: i,
         selectedLib: selectedChartLibrary,
       };
       this.index++;
-      this.selectedCharts.push(item)
+      this.selectedCharts.push(item);
     },
+    addedControl(control: string) {
+      const item = {
+        x: 0,
+        y: 0,
+        w: 3,
+        h: 1,
+        i: this.index,
+        selectedControl: control,
+      };
+      this.index++;
+      this.selectedControl.push(item);
+    }
   },
 });
 

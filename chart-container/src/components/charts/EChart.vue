@@ -5,6 +5,6 @@
 <script setup>
 const props = defineProps({
   option: Object,
-  id: String,
+  id: Number,
 });
 </script>

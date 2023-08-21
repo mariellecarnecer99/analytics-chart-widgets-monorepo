@@ -55,12 +55,13 @@
           <h3 class="chartType-title mb-4 ml-6">Charts</h3>
           <v-select
             v-model="selectedChartLibrary"
+            :items="chartLibraries"
             label="Select Charting Libraries"
             variant="outlined"
             class="mx-6"
-            :items="chartLibraries"
             item-title="type"
             item-value="value"
+            density="compact"
           >
           </v-select>
           <div v-if="selectedChartLibrary" class="chartType">
@@ -85,10 +86,45 @@
   </v-navigation-drawer>
 
   <v-navigation-drawer
+    v-model="controlsDrawer"
+    color="rgba(211,220,230,1)"
+    app
+    width="300"
+  >
+    <div id="sidebar">
+      <div class="d-flex justify-end sidebar-toggle mx-4 mt-3">
+        <div
+          class="mb-2"
+          @click="controlsDrawer = !controlsDrawer"
+          id="btn-toggle"
+        >
+          <v-icon id="btn-toggle-icon" x-large>mdi-close</v-icon>
+        </div>
+      </div>
+      <div class="sidebar-body">
+        <div class="data mx-4 mb-4">
+          <h3 class="data-title mb-3">Add a control</h3>
+          <v-select
+            v-model="selectedControl"
+            :items="controls"
+            item-title="name"
+            item-value="value"
+            label="Choose a control"
+            variant="outlined"
+            density="compact"
+            @update:modelValue="controlSelected"
+          >
+          </v-select>
+        </div>
+      </div>
+    </div>
+  </v-navigation-drawer>
+
+  <v-navigation-drawer
     v-model="settingsDrawer"
     color="rgba(211,220,230,1)"
     app
-    width="400"
+    width="300"
   >
     <div id="sidebar">
       <div class="d-flex justify-end sidebar-toggle mx-4 mt-3">
@@ -107,12 +143,14 @@
           <v-text-field
             v-model="mainTitle"
             variant="outlined"
+            density="compact"
             @input="handleTitleChange"
           ></v-text-field>
           <p class="mt-3">Description</p>
           <v-textarea
             v-model="description"
             variant="outlined"
+            density="compact"
             @input="handleDescChange"
           ></v-textarea>
         </div>
@@ -123,7 +161,6 @@
   <v-main>
     <Home :title="mainTitle" :desc="description" />
     <ChartContainer />
-    <!-- <PluggableWidget /> -->
   </v-main>
 </template>
 
@@ -143,6 +180,7 @@ export default {
   data: () => {
     return {
       drawer: false,
+      controlsDrawer: false,
       settingsDrawer: false,
       tab: null,
       chartType: null,
@@ -153,11 +191,17 @@ export default {
       layout: [],
       index: 0,
       selectedChartLibrary: null,
+      selectedControl: null,
       sideMenuItems: [
         {
           title: "Chart & Data",
           value: "chartData",
           icon: "mdi-chart-box-outline",
+        },
+        {
+          title: "Controls",
+          value: "controls",
+          icon: "mdi-filter-variant-plus",
         },
         { title: "Settings", value: "settings", icon: "mdi-cog" },
         { title: "Analytics", value: "analytics", icon: "mdi-chart-bar" },
@@ -220,12 +264,29 @@ export default {
         //   value: "amCharts",
         // },
       ],
+      controls: [
+        {
+          name: "Advanced filter",
+          value: "advfilter",
+          icon: "mdi-text-search-variant",
+        },
+        {
+          name: "Date range control",
+          value: "daterange",
+          icon: "mdi-calendar-range",
+        },
+      ],
     };
   },
   methods: {
     onClickDrawer(val) {
       this.drawer = val === 0;
-      this.settingsDrawer = val === 1;
+      this.controlsDrawer = val === 1;
+      this.settingsDrawer = val === 2;
+    },
+
+    controlSelected(val) {
+      store.addedControl(val);
     },
 
     selectedChart(val) {

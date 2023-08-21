@@ -7,7 +7,7 @@ import { Chart } from "chart.js";
 export default {
   name: "ChartJS",
   props: {
-    id: String,
+    id: Number,
     option: Object,
   },
   watch: {

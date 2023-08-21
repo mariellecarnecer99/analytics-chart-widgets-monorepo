@@ -30,7 +30,7 @@ import { Chart } from "chart.js";
 
 export default {
   props: {
-    id: String,
+    id: Number,
     chartLib: String,
     option: Object,
   },

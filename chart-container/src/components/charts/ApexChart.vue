@@ -12,6 +12,6 @@
 const props = defineProps({
   option: Object,
   apexSeries: Array,
-  id: String,
+  id: Number,
 });
 </script>

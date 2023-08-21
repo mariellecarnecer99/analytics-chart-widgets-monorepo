@@ -899,7 +899,7 @@ export default {
   props: {
     chartType: String,
     chartLib: String,
-    chartId: String,
+    chartId: Number,
   },
   data: () => {
     return {
