@@ -2,12 +2,10 @@
   <div class="datepicker">
     <VueDatePicker
       v-model="dates"
-      class="mb-3"
       placeholder="Select Date"
       format="MM/dd/yyyy"
       range
-      multi-calendars
-      teleport-center
+      menu-class-name="dp-custom-menu"
       @update:model-value="handleDates"
     />
   </div>
@@ -51,3 +49,12 @@ function getDaysBetweenDates(dates) {
   return datesSelected;
 }
 </script>
+<style lang="scss">
+.datepicker {
+  z-index: 0 !important;
+  padding: 0 10px;
+}
+.dp-custom-menu {
+  box-shadow: 0 0 8px #463c6e;
+}
+</style>

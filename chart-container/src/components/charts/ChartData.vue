@@ -11,7 +11,8 @@
     :id="chartId"
     :option="datacollection"
   />
-  <div class="custom-toolbox">
+  <DateRange v-if="control === 'daterange'" />
+  <div v-if="!control" class="custom-toolbox">
     <v-icon color="#676767" @click="editDialog = !editDialog"
       >mdi-pencil-outline</v-icon
     >
@@ -868,6 +869,7 @@
 import EChart from "./EChart.vue";
 import ApexCharts from "./ApexChart.vue";
 import ChartJS from "./ChartJS.vue";
+import DateRange from "../controls/Daterange.vue";
 import { useSelectedChart } from "../../stores/fetchSelectedChart";
 import { VDatePicker } from "vuetify/labs/VDatePicker";
 import domtoimage from "dom-to-image";
@@ -892,6 +894,7 @@ export default {
     EChart,
     ApexCharts,
     ChartJS,
+    DateRange,
     VDatePicker,
     VueDatePicker,
     Vue3JsonEditor,
@@ -900,6 +903,7 @@ export default {
     chartType: String,
     chartLib: String,
     chartId: Number,
+    control: String,
   },
   data: () => {
     return {

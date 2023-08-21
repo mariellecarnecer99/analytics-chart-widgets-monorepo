@@ -18,35 +18,12 @@
         :i="item.i"
       >
         <ChartData
-          :chartType="item.chart.value"
+          :chartType="item.chart?.value"
           :chartLib="item.selectedLib"
           :chartId="item.i"
+          :control="item.selectedControl"
         />
         <span class="remove" @click="removeItem(item.i)"
-          ><v-icon size="small">mdi-close</v-icon></span
-        >
-      </grid-item>
-    </grid-layout>
-
-    <grid-layout
-      :layout="selectedControl"
-      :col-num="12"
-      :is-draggable="true"
-      :is-resizable="true"
-      :vertical-compact="true"
-      :use-css-transforms="true"
-    >
-      <grid-item
-        v-for="item in selectedControl"
-        :key="item.i"
-        :x="item.x"
-        :y="item.y"
-        :w="item.w"
-        :h="item.h"
-        :i="item.i"
-      >
-        <DateRange />
-        <span class="remove" @click="removeDateItem(item.i)"
           ><v-icon size="small">mdi-close</v-icon></span
         >
       </grid-item>
@@ -56,22 +33,16 @@
 
 <script setup>
 import ChartData from "./components/charts/ChartData";
-import DateRange from "./components/controls/Daterange";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
 
 const store = useStore();
-const { selectedCharts, selectedControl } = storeToRefs(store);
+const { selectedCharts } = storeToRefs(store);
 
 // functions
 function removeItem(i) {
   const index = this.selectedCharts.map((item) => item.i).indexOf(i);
   this.selectedCharts.splice(index, 1);
-}
-
-function removeDateItem(i) {
-  const index = this.selectedControl.map((item) => item.i).indexOf(i);
-  this.selectedControl.splice(index, 1);
 }
 </script>
 
