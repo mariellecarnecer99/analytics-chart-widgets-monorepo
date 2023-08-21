@@ -103,7 +103,7 @@
       </div>
       <div class="sidebar-body">
         <div class="data mx-5 mb-4">
-          <h3 class="data-title mb-3">Add a control</h3>
+          <h3 class="data-title mb-3">Controls</h3>
           <v-card
             v-model="selectedControl"
             @click="controlSelected"
