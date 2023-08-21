@@ -188,16 +188,13 @@
                 />
               </v-col>
               <v-col cols="5">
-                <v-select
+                <v-text-field
                   v-model="selectedApi"
-                  :items="apiList"
-                  item-title="url"
-                  item-value="url"
-                  label="Select API"
+                  label="Service URL"
                   variant="outlined"
                   density="compact"
                   @update:modelValue="getApiData"
-                ></v-select>
+                ></v-text-field>
               </v-col>
             </v-row>
 
@@ -1048,17 +1045,6 @@ export default {
       apiData: null,
       chartsConfig: null,
       selectedApi: null,
-      apiList: [
-        {
-          url: "https://retoolapi.dev/NuWQVD/data",
-        },
-        {
-          url: "https://retoolapi.dev/rpeXtx/players",
-        },
-        {
-          url: "https://retoolapi.dev/dFfefx/employees",
-        },
-      ],
     };
   },
   computed: {
@@ -1761,9 +1747,11 @@ export default {
           this.handleOptions();
           this.handleApexOptions();
           this.handleChartjsOptions();
+          this.editDialog = false;
         })
         .catch((error) => {
           console.log(error);
+          this.editDialog = false;
         })
         .finally();
     },
