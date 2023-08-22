@@ -13,7 +13,11 @@
     <v-btn class="mr-3" variant="outlined" size="small" color="primary"
       >Preview Changes</v-btn
     >
-    <v-btn variant="flat" size="small" color="primary" href="/"
+    <v-btn
+      variant="flat"
+      size="small"
+      color="primary"
+      @click="handleSaveChanges"
       >Save Changes</v-btn
     >
   </v-app-bar>
@@ -182,6 +186,7 @@ import pie from "@/assets/pie.png";
 import scatter from "@/assets/scatter.png";
 import { useStore } from "../../stores/selectedChartItems";
 const store = useStore();
+import axios from "axios";
 export default {
   name: "AppBar",
   components: {
@@ -305,6 +310,27 @@ export default {
 
     handleDescChange(event) {
       this.description = event.target.value;
+    },
+
+    handleSaveChanges() {
+      if (!this.$route.params.id) {
+        console.log("add");
+        axios
+          .post("https://retoolapi.dev/4RV8By/reports", {
+            name: this.mainTitle,
+            description: this.description,
+            widgetCount: 2,
+          })
+          .then((response) => {
+            this.$router.push({ path: "/" });
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally();
+      } else {
+        console.log("edit");
+      }
     },
   },
 };

@@ -27,24 +27,50 @@
         :h="item.h"
         :i="item.i"
       >
+        <div class="text-left ml-5 mb-3">
+          <h3>{{ item.name }}</h3>
+          <p>Description: {{ item.description }}</p>
+          <p>Widget Count: {{ item.widgetCount }}</p>
+        </div>
+        <v-divider></v-divider>
       </grid-item>
     </grid-layout>
   </div>
 </template>
 
 <script>
-const testLayout = [
-  { x: 0, y: 0, w: 4, h: 3, i: 0 },
-  { x: 2, y: 0, w: 4, h: 3, i: 1 },
-  { x: 4, y: 0, w: 4, h: 3, i: 2 },
-  { x: 6, y: 0, w: 4, h: 3, i: 3 },
-  { x: 8, y: 0, w: 4, h: 3, i: 4 },
-];
+import axios from "axios";
 export default {
   data: () => {
     return {
-      reports: JSON.parse(JSON.stringify(testLayout)),
+      reports: [],
+      index: 0,
     };
+  },
+  mounted() {
+    this.getReports();
+  },
+  methods: {
+    getReports() {
+      axios
+        .get("https://retoolapi.dev/4RV8By/reports")
+        .then((response) => {
+          const responseData = response.data;
+          responseData.forEach((obj) => {
+            obj.x = 0;
+            obj.y = 0;
+            obj.w = 4;
+            obj.h = 3;
+            obj.i = this.index;
+            this.index++;
+          });
+          this.reports = responseData;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally();
+    },
   },
 };
 </script>
@@ -58,7 +84,7 @@ export default {
 
 .vue-grid-item:not(.vue-grid-placeholder) {
   box-shadow: 0 0 4px #463c6e;
-  padding: 65px 0 15px 0;
+  padding: 25px 0 15px 0;
 }
 
 .vue-grid-item.resizing {
