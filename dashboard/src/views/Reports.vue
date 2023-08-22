@@ -28,9 +28,41 @@
         :i="item.i"
       >
         <div class="text-left ml-5 mb-3">
-          <h3 @click="handleEditReport(item.id)">{{ item.name }}</h3>
-          <p>Description: {{ item.description }}</p>
-          <p>Widget Count: {{ item.widgetCount }}</p>
+          <v-row justify="space-between">
+            <v-col>
+              <h3 @click="handleEditReport(item.id)" class="filter">
+                {{ item.name }}
+              </h3>
+              <p>Description: {{ item.description }}</p>
+              <p>Widget Count: {{ item.widgetCount }}</p>
+            </v-col>
+            <v-col class="actionsMenu">
+              <v-menu offset-y>
+                <template v-slot:activator="{ props }">
+                  <v-btn
+                    class="mr-5"
+                    variant="outlined"
+                    size="small"
+                    color="primary"
+                    v-bind="props"
+                    >Actions <v-icon>mdi-menu-down</v-icon></v-btn
+                  >
+                </template>
+                <v-list>
+                  <v-list-item
+                    v-for="(itm, index) in actionItems"
+                    :key="index"
+                    density="compact"
+                  >
+                    <v-list-item-title
+                      @click="handleActionItems(itm.title, item.id)"
+                      >{{ itm.title }}</v-list-item-title
+                    >
+                  </v-list-item>
+                </v-list>
+              </v-menu>
+            </v-col>
+          </v-row>
         </div>
         <v-divider></v-divider>
       </grid-item>
@@ -45,6 +77,7 @@ export default {
     return {
       reports: [],
       index: 0,
+      actionItems: [{ title: "Clone" }, { title: "Delete" }],
     };
   },
   mounted() {
@@ -75,6 +108,24 @@ export default {
     handleEditReport(e) {
       this.$router.push({ name: "Edit Report", params: { id: e } });
     },
+
+    handleActionItems(title, id) {
+      if (title === "Delete") {
+        axios
+          .delete(`https://retoolapi.dev/4RV8By/reports/${id}`)
+          .then((response) => {
+            this.getReports();
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally();
+      } else if (title === "Clone") {
+        //
+      } else {
+        //
+      }
+    },
   },
 };
 </script>
@@ -97,5 +148,10 @@ export default {
 
 .filter {
   color: #463c6e;
+}
+
+.actionsMenu {
+  display: flex;
+  justify-content: end;
 }
 </style>

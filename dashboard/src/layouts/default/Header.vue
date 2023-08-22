@@ -6,9 +6,9 @@
         <span class="ml-3" style="color: white">Dashboard</span>
       </v-app-bar-title>
       <v-spacer></v-spacer>
-      <v-btn class="mr-3" variant="outlined" size="small" color="primary"
+      <!-- <v-btn class="mr-3" variant="outlined" size="small" color="primary"
         >Actions <v-icon>mdi-menu-down</v-icon></v-btn
-      >
+      > -->
       <v-btn
         class="mr-5"
         variant="flat"
