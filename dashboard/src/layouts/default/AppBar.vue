@@ -13,7 +13,9 @@
     <v-btn class="mr-3" variant="outlined" size="small" color="primary"
       >Preview Changes</v-btn
     >
-    <v-btn variant="flat" size="small" color="primary">Save Changes</v-btn>
+    <v-btn variant="flat" size="small" color="primary" href="/"
+      >Save Changes</v-btn
+    >
   </v-app-bar>
 
   <v-navigation-drawer
