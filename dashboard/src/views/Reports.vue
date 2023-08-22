@@ -1,15 +1,15 @@
 <template>
-  <div class="my-5 text-center py-15">
-    <div>
-      <v-row justify="space-between">
-        <v-col cols="1">
+  <div class="my-5 text-center py-15 px-3">
+    <!-- <div class="mt-7">
+      <v-row justify="space-between" no-gutters>
+        <v-col cols="2">
           <v-icon>mdi-tune</v-icon> <span class="filter">Filters</span></v-col
         >
-        <v-col cols="2" offset="2">
+        <v-col cols="2">
           Assigned: <span class="filter">Everyone can edit</span>
         </v-col>
       </v-row>
-    </div>
+    </div> -->
     <grid-layout
       :layout="reports"
       :col-num="12"
@@ -39,12 +39,6 @@ const testLayout = [
   { x: 4, y: 0, w: 4, h: 3, i: 2 },
   { x: 6, y: 0, w: 4, h: 3, i: 3 },
   { x: 8, y: 0, w: 4, h: 3, i: 4 },
-  { x: 4, y: 0, w: 4, h: 3, i: 5 },
-  { x: 0, y: 5, w: 4, h: 3, i: 6 },
-  { x: 2, y: 5, w: 4, h: 3, i: 7 },
-  { x: 4, y: 5, w: 4, h: 3, i: 8 },
-  { x: 6, y: 4, w: 4, h: 3, i: 9 },
-  { x: 8, y: 4, w: 4, h: 3, i: 10 },
 ];
 export default {
   data: () => {

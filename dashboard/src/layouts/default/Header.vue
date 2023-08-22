@@ -9,7 +9,12 @@
       <v-btn class="mr-3" variant="outlined" size="small" color="primary"
         >Actions <v-icon>mdi-menu-down</v-icon></v-btn
       >
-      <v-btn variant="flat" size="small" color="primary" href="/widget"
+      <v-btn
+        class="mr-5"
+        variant="flat"
+        size="small"
+        color="primary"
+        href="/widget"
         >Add report</v-btn
       >
     </v-app-bar>
