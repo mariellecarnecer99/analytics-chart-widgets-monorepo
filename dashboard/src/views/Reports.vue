@@ -28,7 +28,7 @@
         :i="item.i"
       >
         <div class="text-left ml-5 mb-3">
-          <h3>{{ item.name }}</h3>
+          <h3 @click="handleEditReport(item.id)">{{ item.name }}</h3>
           <p>Description: {{ item.description }}</p>
           <p>Widget Count: {{ item.widgetCount }}</p>
         </div>
@@ -70,6 +70,10 @@ export default {
           console.log(error);
         })
         .finally();
+    },
+
+    handleEditReport(e) {
+      this.$router.push({ name: "Edit Report", params: { id: e } });
     },
   },
 };

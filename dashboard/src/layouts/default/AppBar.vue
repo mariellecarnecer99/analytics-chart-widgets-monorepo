@@ -10,6 +10,9 @@
       <v-icon size="small" color="white">mdi-pencil</v-icon>
     </p>
     <v-spacer></v-spacer>
+    <v-btn class="mr-3" variant="outlined" size="small" color="primary" href="/"
+      >Cancel</v-btn
+    >
     <v-btn class="mr-3" variant="outlined" size="small" color="primary"
       >Preview Changes</v-btn
     >
@@ -288,6 +291,11 @@ export default {
       ],
     };
   },
+  mounted() {
+    if (this.$route.params.id) {
+      this.handleGetReportsById(this.$route.params.id);
+    }
+  },
   methods: {
     onClickDrawer(val) {
       this.drawer = val === 0;
@@ -314,7 +322,6 @@ export default {
 
     handleSaveChanges() {
       if (!this.$route.params.id) {
-        console.log("add");
         axios
           .post("https://retoolapi.dev/4RV8By/reports", {
             name: this.mainTitle,
@@ -329,8 +336,36 @@ export default {
           })
           .finally();
       } else {
-        console.log("edit");
+        axios
+          .patch(
+            `https://retoolapi.dev/4RV8By/reports/${this.$route.params.id}`,
+            {
+              name: this.mainTitle,
+              description: this.description,
+              widgetCount: 2,
+            }
+          )
+          .then((response) => {
+            this.$router.push({ path: "/" });
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+          .finally();
       }
+    },
+
+    handleGetReportsById(e) {
+      axios
+        .get(`https://retoolapi.dev/4RV8By/reports/${e}`)
+        .then((response) => {
+          this.mainTitle = response.data.name;
+          this.description = response.data.description;
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally();
     },
   },
 };

@@ -14,7 +14,7 @@
         variant="flat"
         size="small"
         color="primary"
-        href="/widget"
+        href="/report"
         >Add report</v-btn
       >
     </v-app-bar>
