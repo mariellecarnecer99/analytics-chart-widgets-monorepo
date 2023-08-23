@@ -22,6 +22,7 @@
           :chartLib="item.selectedLib"
           :chartId="item.i"
           :control="item.selectedControl"
+          :selectedChartsLength="selectedChartsLength"
         />
         <span class="remove" @click="removeItem(item.i)"
           ><v-icon size="small">mdi-close</v-icon></span
@@ -33,11 +34,21 @@
 
 <script setup>
 import ChartData from "./components/charts/ChartData";
+import { ref, watch } from "vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
 
 const store = useStore();
 const { selectedCharts } = storeToRefs(store);
+let selectedChartsLength = ref();
+
+watch(
+  selectedCharts,
+  (state) => {
+    selectedChartsLength = state.length;
+  },
+  { deep: true }
+);
 
 // functions
 function removeItem(i) {
@@ -57,7 +68,7 @@ function removeItem(i) {
 .vue-grid-item:not(.vue-grid-placeholder) {
   /* background: #ccc; */
   border: 1px solid black;
-  padding: 65px 0 15px 0;
+  padding: 65px 0 35px 0;
 }
 
 .vue-grid-item.resizing {

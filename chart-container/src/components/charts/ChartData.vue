@@ -904,6 +904,7 @@ export default {
     chartLib: String,
     chartId: Number,
     control: Boolean,
+    selectedChartsLength: Number,
   },
   data: () => {
     return {
