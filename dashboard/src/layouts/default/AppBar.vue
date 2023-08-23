@@ -13,9 +13,35 @@
     <v-btn class="mr-3" variant="outlined" size="small" color="primary" href="/"
       >Cancel</v-btn
     >
-    <v-btn class="mr-3" variant="outlined" size="small" color="primary"
+    <v-btn
+      class="mr-3"
+      variant="outlined"
+      size="small"
+      color="primary"
+      @click="previewDialog = !previewDialog"
       >Preview Changes</v-btn
     >
+    <v-dialog v-model="previewDialog" width="750px">
+      <v-card>
+        <v-card-text>
+          <v-row justify="space-between">
+            <v-col>
+              <v-sheet class="my-2"><h3>Preview</h3> </v-sheet>
+            </v-col>
+            <v-col cols="1">
+              <v-sheet class="my-2 ml-4"
+                ><v-icon @click="previewDialog = !previewDialog"
+                  >mdi-close</v-icon
+                ></v-sheet
+              >
+            </v-col>
+          </v-row>
+          <v-divider></v-divider>
+          <Home :title="mainTitle" :desc="description" />
+          <!-- <ChartContainer /> -->
+        </v-card-text>
+      </v-card>
+    </v-dialog>
     <v-btn
       variant="flat"
       size="small"
@@ -289,6 +315,7 @@ export default {
           icon: "mdi-calendar-range",
         },
       ],
+      previewDialog: false,
     };
   },
   mounted() {
