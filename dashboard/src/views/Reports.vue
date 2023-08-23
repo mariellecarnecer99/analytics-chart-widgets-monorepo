@@ -1,5 +1,5 @@
 <template>
-  <div class="my-5 text-center py-15 px-3">
+  <div class="my-5 py-15 px-10">
     <!-- <div class="mt-7">
       <v-row justify="space-between" no-gutters>
         <v-col cols="2">
@@ -10,7 +10,7 @@
         </v-col>
       </v-row>
     </div> -->
-    <grid-layout
+    <!-- <grid-layout
       :layout="reports"
       :col-num="12"
       :is-draggable="true"
@@ -66,7 +66,70 @@
         </div>
         <v-divider></v-divider>
       </grid-item>
-    </grid-layout>
+    </grid-layout> -->
+
+    <v-list density="compact" lines="one">
+      <v-list-subheader color="primary">REPORTS</v-list-subheader>
+
+      <v-list-item
+        v-for="(item, i) in reports"
+        :key="i"
+        :value="item"
+        :title="item.name"
+        :subtitle="item.description"
+        prepend-icon="mdi-file"
+        color="primary"
+      >
+        <template v-slot:append>
+          <v-btn
+            color="primary"
+            icon="mdi-pencil"
+            variant="text"
+            @click="handleEditReport(item.id)"
+          ></v-btn>
+          <v-btn color="primary" icon="mdi-content-copy" variant="text"></v-btn>
+          <v-dialog transition="dialog-bottom-transition" width="auto">
+            <template v-slot:activator="{ props }">
+              <v-btn
+                variant="text"
+                color="primary"
+                icon="mdi-delete"
+                v-bind="props"
+              ></v-btn>
+            </template>
+            <template v-slot:default="{ isActive }">
+              <v-card class="text-center">
+                <v-icon size="80" color="red" class="iconDelete"
+                  >mdi-close-circle-outline</v-icon
+                >
+                <v-card-title class="text-h5"> Are you sure? </v-card-title>
+                <v-card-text
+                  >Do you really want to delete this report? This process cannot
+                  be undone.
+                </v-card-text>
+                <v-card-actions class="d-block mb-5">
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="primary"
+                    variant="outlined"
+                    @click="isActive.value = !isActive.value"
+                  >
+                    Cancel
+                  </v-btn>
+                  <v-btn
+                    color="red"
+                    variant="outlined"
+                    @click="handleDeleteItem(item.id)"
+                  >
+                    Delete
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </template>
+          </v-dialog>
+        </template>
+      </v-list-item>
+    </v-list>
   </div>
 </template>
 
@@ -109,22 +172,16 @@ export default {
       this.$router.push({ name: "Edit Report", params: { id: e } });
     },
 
-    handleActionItems(title, id) {
-      if (title === "Delete") {
-        axios
-          .delete(`https://retoolapi.dev/4RV8By/reports/${id}`)
-          .then((response) => {
-            this.getReports();
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-          .finally();
-      } else if (title === "Clone") {
-        //
-      } else {
-        //
-      }
+    handleDeleteItem(id) {
+      axios
+        .delete(`https://retoolapi.dev/4RV8By/reports/${id}`)
+        .then((response) => {
+          this.getReports();
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally();
     },
   },
 };
@@ -153,5 +210,10 @@ export default {
 .actionsMenu {
   display: flex;
   justify-content: end;
+}
+
+.iconDelete {
+  display: block;
+  margin: 20px auto;
 }
 </style>
