@@ -22,6 +22,8 @@ import VueApexCharts from "vue3-apexcharts";
 import { Chart, registerables } from 'chart.js';
 Chart.register(...registerables);
 
+import mitt from 'mitt';
+
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core"
 import {
@@ -56,6 +58,9 @@ use([
 ])
 
 const app = createApp(App)
+
+const eventBus = mitt();
+app.provide('eventBus',eventBus);
 
 registerPlugins(app)
 

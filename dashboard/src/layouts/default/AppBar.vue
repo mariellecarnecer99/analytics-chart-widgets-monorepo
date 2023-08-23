@@ -221,6 +221,7 @@ export default {
   components: {
     Home,
   },
+  inject: ["eventBus"],
   data: () => {
     return {
       drawer: false,
@@ -316,7 +317,11 @@ export default {
         },
       ],
       previewDialog: false,
+      widgetCount: 0,
     };
+  },
+  created() {
+    this.eventBus.on("widgetsCounter", this.receiveData);
   },
   mounted() {
     if (this.$route.params.id) {
@@ -324,6 +329,10 @@ export default {
     }
   },
   methods: {
+    receiveData(data) {
+      this.widgetCount = data;
+    },
+
     onClickDrawer(val) {
       this.drawer = val === 0;
       this.controlsDrawer = val === 1;
@@ -353,7 +362,7 @@ export default {
           .post("https://retoolapi.dev/4RV8By/reports", {
             name: this.mainTitle,
             description: this.description,
-            widgetCount: 2,
+            widgetCount: this.widgetCount,
           })
           .then((response) => {
             this.$router.push({ path: "/" });
@@ -369,7 +378,7 @@ export default {
             {
               name: this.mainTitle,
               description: this.description,
-              widgetCount: 2,
+              widgetCount: this.widgetCount,
             }
           )
           .then((response) => {
