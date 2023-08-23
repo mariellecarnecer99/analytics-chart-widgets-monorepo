@@ -34,18 +34,22 @@
 
 <script setup>
 import ChartData from "./components/charts/ChartData";
-import { ref, watch } from "vue";
+import { ref, watch, inject } from "vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
 
 const store = useStore();
 const { selectedCharts } = storeToRefs(store);
+
+const eventBus = inject("eventBus");
+
 let selectedChartsLength = ref();
 
 watch(
   selectedCharts,
   (state) => {
     selectedChartsLength = state.length;
+    eventBus.emit("widgetsCounter", selectedChartsLength);
   },
   { deep: true }
 );
