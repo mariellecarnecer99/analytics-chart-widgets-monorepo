@@ -203,7 +203,7 @@
 
   <v-main>
     <Home :title="mainTitle" :desc="description" />
-    <ChartContainer :widgets="widgets" />
+    <ChartContainer />
   </v-main>
 </template>
 
@@ -337,6 +337,7 @@ export default {
 
     selectedWidgets(data) {
       this.widgets = data;
+      store.savedWidgets(data);
     },
 
     onClickDrawer(val) {
@@ -406,6 +407,8 @@ export default {
           this.mainTitle = response.data.name;
           this.description = response.data.description;
           this.widgets = response.data.widgets;
+          console.log("this.widgets: ", this.widgets);
+          store.savedWidgets(this.widgets);
         })
         .catch((error) => {
           console.log(error);
