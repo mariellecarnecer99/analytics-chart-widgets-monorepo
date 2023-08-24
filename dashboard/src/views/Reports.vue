@@ -142,6 +142,6 @@ export default {
 }
 .reportsList {
   border-bottom: 1px solid #463c6e;
-  padding: 10px 0 !important;
+  padding: 10px !important;
 }
 </style>
