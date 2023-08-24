@@ -203,7 +203,7 @@
 
   <v-main>
     <Home :title="mainTitle" :desc="description" />
-    <ChartContainer />
+    <ChartContainer :widgets="widgets" />
   </v-main>
 </template>
 
@@ -318,10 +318,12 @@ export default {
       ],
       previewDialog: false,
       widgetCount: 0,
+      widgets: [],
     };
   },
   created() {
-    this.eventBus.on("widgetsCounter", this.receiveData);
+    this.eventBus.on("widgetsCounter", this.counter);
+    this.eventBus.on("selectedWidgets", this.selectedWidgets);
   },
   mounted() {
     if (this.$route.params.id) {
@@ -329,8 +331,12 @@ export default {
     }
   },
   methods: {
-    receiveData(data) {
+    counter(data) {
       this.widgetCount = data;
+    },
+
+    selectedWidgets(data) {
+      this.widgets = data;
     },
 
     onClickDrawer(val) {
@@ -363,6 +369,7 @@ export default {
             name: this.mainTitle,
             description: this.description,
             widgetCount: this.widgetCount,
+            widgets: this.widgets,
           })
           .then((response) => {
             this.$router.push({ path: "/" });
@@ -379,6 +386,7 @@ export default {
               name: this.mainTitle,
               description: this.description,
               widgetCount: this.widgetCount,
+              widgets: this.widgets,
             }
           )
           .then((response) => {
@@ -397,6 +405,7 @@ export default {
         .then((response) => {
           this.mainTitle = response.data.name;
           this.description = response.data.description;
+          this.widgets = response.data.widgets;
         })
         .catch((error) => {
           console.log(error);

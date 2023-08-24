@@ -1,7 +1,7 @@
 <template>
   <div>
     <grid-layout
-      :layout="selectedCharts"
+      :layout="widgets"
       :col-num="12"
       :is-draggable="true"
       :is-resizable="true"
@@ -9,7 +9,7 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="item in selectedCharts"
+        v-for="item in widgets"
         :key="item.i"
         :x="item.x"
         :y="item.y"
@@ -34,7 +34,7 @@
 
 <script setup>
 import ChartData from "./components/charts/ChartData";
-import { ref, watch, inject } from "vue";
+import { ref, watch, inject, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useStore } from "../../dashboard/src/stores/selectedChartItems";
 
@@ -45,11 +45,26 @@ const eventBus = inject("eventBus");
 
 let selectedChartsLength = ref();
 
+// let widgets = ref([]);
+
+const props = defineProps({
+  widgets: Array,
+});
+
+onMounted(() => {
+  // console.log(props.widgets);
+  // if (props.widgets) {
+  //   widgets = props.widgets;
+  //   console.log("widgets: ", widgets);
+  // }
+});
+
 watch(
   selectedCharts,
   (state) => {
     selectedChartsLength = state.length;
     eventBus.emit("widgetsCounter", selectedChartsLength);
+    eventBus.emit("selectedWidgets", state);
   },
   { deep: true }
 );
