@@ -203,7 +203,7 @@
 
   <v-main>
     <Home :title="mainTitle" :desc="description" />
-    <ChartContainer />
+    <ChartContainer :widgets="widgets" />
   </v-main>
 </template>
 
@@ -323,7 +323,7 @@ export default {
   },
   created() {
     this.eventBus.on("widgetsCounter", this.counter);
-    this.eventBus.on("selectedWidgets", this.selectedWidgets);
+    this.eventBus.on("savedWidgets", this.savedWidgets);
   },
   mounted() {
     if (this.$route.params.id) {
@@ -331,13 +331,12 @@ export default {
     }
   },
   methods: {
-    counter(data) {
-      this.widgetCount = data;
+    savedWidgets(data) {
+      this.widgets = data;
     },
 
-    selectedWidgets(data) {
-      this.widgets = data;
-      store.savedWidgets(data);
+    counter(data) {
+      this.widgetCount = data;
     },
 
     onClickDrawer(val) {
@@ -352,7 +351,18 @@ export default {
     },
 
     selectedChart(val) {
-      store.increment(val, this.selectedChartLibrary);
+      const hasExistingArray = this.widgets.length > 0;
+      const startingIndex = hasExistingArray ? this.widgets.length : 0;
+      const item = {
+        x: 0,
+        y: 0,
+        w: 6,
+        h: 3,
+        i: startingIndex + 1,
+        chart: val,
+        selectedLib: this.selectedChartLibrary,
+      };
+      this.widgets.push(item);
     },
 
     handleTitleChange(event) {
@@ -406,9 +416,6 @@ export default {
         .then((response) => {
           this.mainTitle = response.data.name;
           this.description = response.data.description;
-          this.widgets = response.data.widgets;
-          console.log("this.widgets: ", this.widgets);
-          store.savedWidgets(this.widgets);
         })
         .catch((error) => {
           console.log(error);

@@ -68,7 +68,10 @@
                   <v-btn
                     color="red"
                     variant="outlined"
-                    @click="handleDeleteItem(item.id)"
+                    @click="
+                      (isActive.value = !isActive.value),
+                        handleDeleteItem(item.id)
+                    "
                   >
                     Delete
                   </v-btn>

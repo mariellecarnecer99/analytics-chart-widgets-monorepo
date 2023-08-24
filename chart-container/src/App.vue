@@ -1,7 +1,7 @@
 <template>
   <div>
     <grid-layout
-      :layout="selectedCharts"
+      :layout="widgets"
       :col-num="12"
       :is-draggable="true"
       :is-resizable="true"
@@ -9,7 +9,7 @@
       :use-css-transforms="true"
     >
       <grid-item
-        v-for="item in selectedCharts"
+        v-for="item in widgets"
         :key="item.i"
         :x="item.x"
         :y="item.y"
@@ -22,7 +22,7 @@
           :chartLib="item.selectedLib"
           :chartId="item.i"
           :control="item.selectedControl"
-          :selectedChartsLength="selectedChartsLength"
+          :selectedChartsLength="widgets.length"
         />
         <span class="remove" @click="removeItem(item.i)"
           ><v-icon size="small">mdi-close</v-icon></span
@@ -32,35 +32,58 @@
   </div>
 </template>
 
-<script setup>
+<script>
 import ChartData from "./components/charts/ChartData";
-import { ref, watch, inject } from "vue";
-import { storeToRefs } from "pinia";
-import { useStore } from "../../dashboard/src/stores/selectedChartItems";
-
-const store = useStore();
-const { selectedCharts } = storeToRefs(store);
-
-const eventBus = inject("eventBus");
-
-let selectedChartsLength = ref();
-
-watch(
-  selectedCharts,
-  (state) => {
-    console.log("state: ", state);
-    selectedChartsLength = state.length;
-    eventBus.emit("widgetsCounter", selectedChartsLength);
-    eventBus.emit("selectedWidgets", state);
+import axios from "axios";
+export default {
+  components: {
+    ChartData,
   },
-  { deep: true }
-);
+  inject: ["eventBus"],
+  data: () => {
+    return {
+      savedWidget: [],
+    };
+  },
+  props: {
+    widgets: Array,
+    test: Array,
+  },
+  created() {
+    this.$watch(
+      "widgets",
+      (newState) => {
+        // console.log("newState: ", newState);
+      },
+      { deep: true }
+    );
+  },
+  mounted() {
+    if (this.$route.params.id) {
+      this.handleGetReportsById(this.$route.params.id);
+    }
+  },
+  methods: {
+    removeItem(i) {
+      const index = this.widgets.map((item) => item.i).indexOf(i);
+      this.widgets.splice(index, 1);
+    },
 
-// functions
-function removeItem(i) {
-  const index = this.selectedCharts.map((item) => item.i).indexOf(i);
-  this.selectedCharts.splice(index, 1);
-}
+    handleGetReportsById(e) {
+      axios
+        .get(`https://retoolapi.dev/4RV8By/reports/${e}`)
+        .then((response) => {
+          this.savedWidget = response.data.widgets;
+          this.eventBus.emit("savedWidgets", this.savedWidget);
+          this.eventBus.emit("widgetsCounter", this.savedWidget.length);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally();
+    },
+  },
+};
 </script>
 
 <style scoped>
