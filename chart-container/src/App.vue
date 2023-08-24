@@ -47,16 +47,6 @@ export default {
   },
   props: {
     widgets: Array,
-    test: Array,
-  },
-  created() {
-    this.$watch(
-      "widgets",
-      (newState) => {
-        // console.log("newState: ", newState);
-      },
-      { deep: true }
-    );
   },
   mounted() {
     if (this.$route.params.id) {
@@ -67,6 +57,9 @@ export default {
     removeItem(i) {
       const index = this.widgets.map((item) => item.i).indexOf(i);
       this.widgets.splice(index, 1);
+      this.widgets.forEach((item, index) => {
+        item.i = index;
+      });
     },
 
     handleGetReportsById(e) {
@@ -75,7 +68,6 @@ export default {
         .then((response) => {
           this.savedWidget = response.data.widgets;
           this.eventBus.emit("savedWidgets", this.savedWidget);
-          this.eventBus.emit("widgetsCounter", this.savedWidget.length);
         })
         .catch((error) => {
           console.log(error);

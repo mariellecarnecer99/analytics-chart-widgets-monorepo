@@ -1,5 +1,5 @@
 <template>
-  <div class="my-5 py-15 px-10">
+  <div class="mt-5 pt-15 px-10">
     <!-- <div class="mt-7">
       <v-row justify="space-between" no-gutters>
         <v-col cols="2">
@@ -11,7 +11,7 @@
       </v-row>
     </div> -->
     <v-list density="compact" lines="one">
-      <v-list-subheader color="primary">REPORTS</v-list-subheader>
+      <v-list-subheader color="primary" class="pa-0">REPORTS</v-list-subheader>
 
       <v-list-item
         v-for="(item, i) in reports"
@@ -21,6 +21,7 @@
         :subtitle="item.description"
         prepend-icon="mdi-file"
         color="primary"
+        class="reportsList"
       >
         <template v-slot:append>
           <v-btn
@@ -138,5 +139,9 @@ export default {
 .iconDelete {
   display: block;
   margin: 20px auto;
+}
+.reportsList {
+  border-bottom: 1px solid #463c6e;
+  padding: 10px 0 !important;
 }
 </style>

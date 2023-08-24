@@ -317,12 +317,10 @@ export default {
         },
       ],
       previewDialog: false,
-      widgetCount: 0,
       widgets: [],
     };
   },
   created() {
-    this.eventBus.on("widgetsCounter", this.counter);
     this.eventBus.on("savedWidgets", this.savedWidgets);
   },
   mounted() {
@@ -333,10 +331,6 @@ export default {
   methods: {
     savedWidgets(data) {
       this.widgets = data;
-    },
-
-    counter(data) {
-      this.widgetCount = data;
     },
 
     onClickDrawer(val) {
@@ -351,14 +345,12 @@ export default {
     },
 
     selectedChart(val) {
-      const hasExistingArray = this.widgets.length > 0;
-      const startingIndex = hasExistingArray ? this.widgets.length : 0;
       const item = {
         x: 0,
         y: 0,
         w: 6,
         h: 3,
-        i: startingIndex + 1,
+        i: this.widgets.length,
         chart: val,
         selectedLib: this.selectedChartLibrary,
       };
@@ -379,7 +371,7 @@ export default {
           .post("https://retoolapi.dev/4RV8By/reports", {
             name: this.mainTitle,
             description: this.description,
-            widgetCount: this.widgetCount,
+            widgetCount: this.widgets.length,
             widgets: this.widgets,
           })
           .then((response) => {
@@ -396,7 +388,7 @@ export default {
             {
               name: this.mainTitle,
               description: this.description,
-              widgetCount: this.widgetCount,
+              widgetCount: this.widgets.length,
               widgets: this.widgets,
             }
           )
