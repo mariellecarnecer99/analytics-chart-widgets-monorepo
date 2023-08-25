@@ -61,6 +61,7 @@
                 :chartId="item.i"
                 :control="item.selectedControl"
                 :selectedChartsLength="widgets.length"
+                :preview="previewDialog"
               />
             </grid-item>
           </grid-layout>
