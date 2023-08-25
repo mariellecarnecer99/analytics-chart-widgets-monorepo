@@ -38,7 +38,7 @@
           </v-row>
           <v-divider></v-divider>
           <Home :title="mainTitle" :desc="description" />
-          <!-- <ChartContainer /> -->
+          <ChartContainer :widgets="widgets" />
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -341,7 +341,15 @@ export default {
 
     controlSelected() {
       this.selectedControl = true;
-      store.addedControl(this.selectedControl);
+      const item = {
+        x: 0,
+        y: 0,
+        w: 3,
+        h: 1,
+        i: this.widgets.length,
+        selectedControl: this.selectedControl,
+      };
+      this.widgets.push(item);
     },
 
     selectedChart(val) {
