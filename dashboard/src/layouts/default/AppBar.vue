@@ -21,7 +21,7 @@
       @click="previewDialog = !previewDialog"
       >Preview Changes</v-btn
     >
-    <v-dialog v-model="previewDialog" width="750px">
+    <v-dialog v-model="previewDialog" width="1050px">
       <v-card>
         <v-card-text>
           <v-row justify="space-between">
@@ -29,7 +29,7 @@
               <v-sheet class="my-2"><h3>Preview</h3> </v-sheet>
             </v-col>
             <v-col cols="1">
-              <v-sheet class="my-2 ml-4"
+              <v-sheet class="my-2 ml-9"
                 ><v-icon @click="previewDialog = !previewDialog"
                   >mdi-close</v-icon
                 ></v-sheet
@@ -38,7 +38,32 @@
           </v-row>
           <v-divider></v-divider>
           <Home :title="mainTitle" :desc="description" />
-          <ChartContainer :widgets="widgets" />
+          <grid-layout
+            :layout="widgets"
+            :col-num="12"
+            :is-draggable="false"
+            :is-resizable="false"
+            :vertical-compact="true"
+            :use-css-transforms="true"
+          >
+            <grid-item
+              v-for="item in widgets"
+              :key="item.i"
+              :x="item.x"
+              :y="item.y"
+              :w="item.w"
+              :h="item.h"
+              :i="item.i"
+            >
+              <ChartData
+                :chartType="item.chart?.value"
+                :chartLib="item.selectedLib"
+                :chartId="item.i"
+                :control="item.selectedControl"
+                :selectedChartsLength="widgets.length"
+              />
+            </grid-item>
+          </grid-layout>
         </v-card-text>
       </v-card>
     </v-dialog>
@@ -209,6 +234,7 @@
 
 <script>
 import Home from "@/views/Home.vue";
+import ChartData from "../../../../chart-container/src/components/charts/ChartData";
 import line from "@/assets/line.png";
 import bar from "@/assets/bar.png";
 import pie from "@/assets/pie.png";
@@ -220,6 +246,7 @@ export default {
   name: "AppBar",
   components: {
     Home,
+    ChartData,
   },
   inject: ["eventBus"],
   data: () => {
@@ -425,3 +452,21 @@ export default {
   },
 };
 </script>
+<style scoped>
+.layoutJSON {
+  background: #ddd;
+  border: 1px solid black;
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.vue-grid-item:not(.vue-grid-placeholder) {
+  /* background: #ccc; */
+  border: 1px solid black;
+  padding: 65px 0 35px 0;
+}
+
+.vue-grid-item.resizing {
+  opacity: 0.9;
+}
+</style>

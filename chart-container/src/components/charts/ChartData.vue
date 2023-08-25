@@ -1134,7 +1134,7 @@ export default {
             color: this.labelColor,
             fontFamily: this.fontType,
             interval: 0,
-            rotate: 45, //If the label names are too long you can manage this by rotating the label.
+            rotate: 25, //If the label names are too long you can manage this by rotating the label.
           },
           axisTick: {
             show: this.tickMarkersSwitch,
