@@ -1,5 +1,5 @@
 <template>
-  <canvas :id="'chart' + id"></canvas>
+  <canvas :id="'chart' + id" ref="canvas"></canvas>
 </template>
 
 <script>
@@ -17,16 +17,24 @@ export default {
       },
     ],
   },
+  data() {
+    return {
+      ctx: null,
+    };
+  },
   methods: {
     getOptions(el) {
-      const ctx = document.getElementById("chart" + this.id);
+      console.log("el: ", el);
+      // const ctx = document.getElementById("chart" + this.id);
 
-      var chartExist = Chart.getChart("chart" + this.id);
-      if (chartExist != undefined) {
-        chartExist.destroy();
-        chartExist = new Chart(ctx, el);
+      const canvas = this.$refs.canvas;
+
+      // var chartExist = Chart.getChart("chart" + this.id);
+      if (this.ctx != undefined) {
+        this.ctx.destroy();
+        this.ctx = new Chart(canvas, el);
       } else {
-        chartExist = new Chart(ctx, el);
+        this.ctx = new Chart(canvas, el);
       }
     },
   },

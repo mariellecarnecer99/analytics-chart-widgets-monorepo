@@ -1069,6 +1069,7 @@ export default {
     ],
   },
   mounted() {
+    console.log(this.chartLib);
     this.handleOptions();
     this.handleApexOptions();
     this.handleChartjsOptions();
