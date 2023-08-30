@@ -24,7 +24,6 @@ export default {
   },
   methods: {
     getOptions(el) {
-      console.log("el: ", el);
       // const ctx = document.getElementById("chart" + this.id);
 
       const canvas = this.$refs.canvas;
