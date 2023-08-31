@@ -370,7 +370,6 @@ export default {
   },
   methods: {
     getOptions(data) {
-      console.log("data: ", data);
       this.modifiedOptions = data;
     },
 

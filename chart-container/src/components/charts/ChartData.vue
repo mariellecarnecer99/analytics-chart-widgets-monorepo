@@ -1207,7 +1207,6 @@ export default {
       if (val) {
         this.options.series = val;
       }
-      store.getChartOptions(this.options);
     },
 
     handleApexOptions() {
@@ -1301,18 +1300,6 @@ export default {
                 },
               ],
       };
-      // this.apexSeries =
-      //   this.chartType === "pie"
-      //     ? this.seriesUpload
-      //       ? this.seriesUpload
-      //       : [10, 41, 35, 51, 49]
-      //     : [
-      //         {
-      //           data: this.seriesUpload
-      //             ? this.seriesUpload
-      //             : [10, 41, 35, 51, 49],
-      //         },
-      //       ];
 
       if (this.chartLib === "apexCharts") {
         this.chartsConfig = this.apexOptions;
