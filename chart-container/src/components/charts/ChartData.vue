@@ -194,6 +194,7 @@
                   label="Service URL"
                   variant="outlined"
                   density="compact"
+                  clearable
                   @update:modelValue="getApiData"
                 ></v-text-field>
               </v-col>
@@ -1753,11 +1754,9 @@ export default {
           this.handleOptions();
           this.handleApexOptions();
           this.handleChartjsOptions();
-          this.editDialog = false;
         })
         .catch((error) => {
-          console.log(error);
-          this.editDialog = false;
+          console.log("error: ", error);
         })
         .finally();
     },

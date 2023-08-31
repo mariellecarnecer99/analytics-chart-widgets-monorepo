@@ -6,7 +6,7 @@ export const useSelectedChart = defineStore("selectedChart", {
     
   },
   actions: {
-    getChartOptions(val: {}){
+    getChartOptions(val: []){
       this.fetchChartOptions = val;
     },
     getSelectedDates(val: []) {

@@ -18,6 +18,8 @@ import VueGridLayout from 'vue-grid-layout'
 import { createPinia } from "pinia";
 import "./stores/fetchSelectedChart";
 
+import mitt from 'mitt';
+
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core"
 import {
@@ -52,6 +54,9 @@ use([
 ])
 
 const app = createApp(App)
+
+const eventBus = mitt();
+app.provide('eventBus',eventBus);
 
 registerPlugins(app)
 

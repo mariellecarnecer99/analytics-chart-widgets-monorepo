@@ -62,6 +62,7 @@
                 :control="item.selectedControl"
                 :selectedChartsLength="widgets.length"
                 :preview="previewDialog"
+                :modifiedOptions="modifiedOptions"
               />
             </grid-item>
           </grid-layout>
@@ -240,8 +241,11 @@ import line from "@/assets/line.png";
 import bar from "@/assets/bar.png";
 import pie from "@/assets/pie.png";
 import scatter from "@/assets/scatter.png";
-import { useStore } from "../../stores/selectedChartItems";
-const store = useStore();
+import { useSelectedChart } from "../../../../chart-container/src/stores/fetchSelectedChart";
+import { storeToRefs } from "pinia";
+const store = useSelectedChart();
+const { fetchChartOptions } = storeToRefs(store);
+const getChartOptions = fetchChartOptions;
 import axios from "axios";
 export default {
   name: "AppBar",
@@ -346,10 +350,19 @@ export default {
       ],
       previewDialog: false,
       widgets: [],
+      options: getChartOptions,
+      modifiedOptions: [],
     };
   },
   created() {
     this.eventBus.on("savedWidgets", this.savedWidgets);
+  },
+  watch: {
+    options: [
+      {
+        handler: "getOptions",
+      },
+    ],
   },
   mounted() {
     if (this.$route.params.id) {
@@ -357,6 +370,11 @@ export default {
     }
   },
   methods: {
+    getOptions(data) {
+      console.log("data: ", data);
+      this.modifiedOptions = data;
+    },
+
     savedWidgets(data) {
       this.widgets = data;
     },
