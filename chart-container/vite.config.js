@@ -11,11 +11,9 @@ const APPLICATION_PORT = 3002;
 
 // https://vitejs.dev/config/
 export default defineConfig(({mode}) => {
-  const env = loadEnv(mode, process.cwd(), '');
-  
   return {
     server: {
-      port: env.APPLICATION_PORT,
+      port: APPLICATION_PORT,
     },
     preview: {
       port: APPLICATION_PORT,
