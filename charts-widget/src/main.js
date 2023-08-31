@@ -15,6 +15,9 @@ import { registerPlugins } from '@/plugins'
 
 import { createPinia } from "pinia";
 
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
+
 import ECharts from 'vue-echarts'
 import { use } from "echarts/core"
 import {
