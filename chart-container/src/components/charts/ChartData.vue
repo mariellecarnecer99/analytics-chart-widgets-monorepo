@@ -829,6 +829,7 @@
             </v-col>
           </v-row>
           <v-textarea
+            :model-value="`<chart-widget id='${chartId}'></chart-widget>${embedScript}`"
             id="tocopy"
             variant="outlined"
             density="compact"
@@ -1052,6 +1053,7 @@ export default {
       apiData: null,
       chartsConfig: null,
       selectedApi: null,
+      embedScript: `<script type='module' crossorigin src='https://pluggable-chart-widget.vercel.app/assets/index-14a4399d.js'><\/script>`,
     };
   },
   computed: {
