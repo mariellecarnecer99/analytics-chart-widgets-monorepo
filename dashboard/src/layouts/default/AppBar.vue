@@ -62,7 +62,6 @@
                 :control="item.selectedControl"
                 :selectedChartsLength="widgets.length"
                 :preview="previewDialog"
-                :modifiedOptions="modifiedOptions"
               />
             </grid-item>
           </grid-layout>
