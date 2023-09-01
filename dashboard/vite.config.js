@@ -17,6 +17,8 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "axios",
+        "chart.js",
+        "vuetify"
       ],
     },
   },

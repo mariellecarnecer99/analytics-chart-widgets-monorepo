@@ -18,7 +18,13 @@ export default defineConfig({
     port: APPLICATION_PORT,
   },
   build: {
-    target: 'esnext'
+    target: 'esnext',
+    rollupOptions: {
+      external: [
+        "chart.js",
+        "vuetify"
+      ],
+    },
   },
   plugins: [
     vue({ 
