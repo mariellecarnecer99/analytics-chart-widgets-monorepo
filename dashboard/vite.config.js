@@ -16,7 +16,6 @@ export default defineConfig(({mode}) => {
         external: [
           "/node_modules/",
           "axios",
-          "chart.js",
           "vuetify/lib/components/VIcon/index.mjs",
           "vuetify/labs/VDatePicker",
           "dom-to-image",
@@ -62,7 +61,8 @@ export default defineConfig(({mode}) => {
         },
         shared: [
           "vue", 
-          "pinia", 
+          "pinia",
+          "chart.js"
         ],
       }),
     ],
