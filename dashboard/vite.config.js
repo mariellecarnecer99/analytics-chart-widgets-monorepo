@@ -21,7 +21,8 @@ export default defineConfig({
         "vuetify/lib/components/VIcon/index.mjs",
         "vuetify/labs/VDatePicker",
         "dom-to-image",
-        "file-saver"
+        "file-saver",
+        "@vuepic/vue-datepicker"
       ],
     },
   },
