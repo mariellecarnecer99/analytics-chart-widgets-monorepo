@@ -25,7 +25,8 @@ export default defineConfig(({mode}) => {
           "axios",
           "chart.js",
           "vuetify/lib/components/VIcon/index.mjs",
-          "vuetify/labs/VDatePicker"
+          "vuetify/labs/VDatePicker",
+          "dom-to-image"
         ],
       },
     },
