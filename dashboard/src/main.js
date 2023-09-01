@@ -15,12 +15,12 @@ import { registerPlugins } from '@/plugins'
 
 import VueGridLayout from 'vue-grid-layout'
 
-// import { createPinia } from "pinia";
-// import "./stores/selectedChartItems";
+import { createPinia } from "pinia";
+import "./stores/selectedChartItems";
 
 import VueApexCharts from "vue3-apexcharts";
-// import { Chart, registerables } from 'chart.js';
-// Chart.register(...registerables);
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 import mitt from 'mitt';
 
@@ -74,7 +74,7 @@ app.component("ChartContainer", ChartContainer);
 app.component('v-chart', ECharts)
 
 app
-// .use(createPinia())
+.use(createPinia())
 .use(VueGridLayout)
 .use(VueApexCharts)
 .mount('#app')
