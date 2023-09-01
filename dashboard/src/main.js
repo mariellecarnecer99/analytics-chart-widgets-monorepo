@@ -19,8 +19,8 @@ import VueGridLayout from 'vue-grid-layout'
 // import "./stores/selectedChartItems";
 
 import VueApexCharts from "vue3-apexcharts";
-import { Chart, registerables } from 'chart.js';
-Chart.register(...registerables);
+// import { Chart, registerables } from 'chart.js';
+// Chart.register(...registerables);
 
 import mitt from 'mitt';
 
