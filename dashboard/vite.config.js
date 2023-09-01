@@ -23,7 +23,10 @@ export default defineConfig({
         "dom-to-image",
         "file-saver",
         "@vuepic/vue-datepicker",
-        "@vuepic/vue-datepicker/dist/main.css"
+        "@vuepic/vue-datepicker/dist/main.css",
+        "moment",
+        "vue3-json-editor",
+        "pinia"
       ],
     },
   },
