@@ -22,23 +22,6 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "/node_modules/",
-        // "/node_modules/chart.js/dist/types",
-        // "vuetify/lib/components/VIcon/index.mjs",
-        // "vuetify/lib/components/VBtn/index.mjs",
-        // "vuetify/lib/components/VCard/index.mjs",
-        // "vuetify/lib/components/VCheckbox/index.mjs",
-        // "vuetify/lib/components/VColorPicker/index.mjs",
-        // "vuetify/lib/components/VDialog/index.mjs",
-        // "vuetify/lib/components/VDivider/index.mjs",
-        // "vuetify/lib/components/VGrid/index.mjs",
-        // "vuetify/lib/components/VMenu/index.mjs",
-        // "vuetify/lib/components/VSelect/index.mjs",
-        // "vuetify/lib/components/VSheet/index.mjs",
-        // "vuetify/lib/components/VSwitch/index.mjs",
-        // "vuetify/lib/components/VTabs/index.mjs",
-        // "vuetify/lib/components/VTextField/index.mjs",
-        // "vuetify/lib/components/VTextarea/index.mjs",
-        // "vuetify/lib/components/VToolbar/index.mjs"
       ],
     },
   },
