@@ -26,7 +26,8 @@ export default defineConfig(({mode}) => {
           "chart.js",
           "vuetify/lib/components/VIcon/index.mjs",
           "vuetify/labs/VDatePicker",
-          "dom-to-image"
+          "dom-to-image",
+          "file-saver"
         ],
       },
     },
