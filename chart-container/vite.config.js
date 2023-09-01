@@ -35,7 +35,8 @@ export default defineConfig(({mode}) => {
           "pinia",
           "vuetify/lib/components/VBtn/index.mjs",
           "vuetify/lib/components/VCard/index.mjs",
-          "vuetify/lib/components/VCheckbox/index.mjs"
+          "vuetify/lib/components/VCheckbox/index.mjs",
+          "vuetify/lib/components/VColorPicker/index.mjs"
         ],
       },
     },

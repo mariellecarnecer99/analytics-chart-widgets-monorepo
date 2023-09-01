@@ -25,7 +25,8 @@ export default defineConfig({
         "vuetify/lib/components/VIcon/index.mjs",
         "vuetify/lib/components/VBtn/index.mjs",
         "vuetify/lib/components/VCard/index.mjs",
-        "vuetify/lib/components/VCheckbox/index.mjs"
+        "vuetify/lib/components/VCheckbox/index.mjs",
+        "vuetify/lib/components/VColorPicker/index.mjs"
       ],
     },
   },
