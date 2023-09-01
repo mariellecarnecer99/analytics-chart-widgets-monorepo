@@ -18,7 +18,7 @@ export default defineConfig({
       external: [
         "axios",
         "chart.js",
-        "vuetify/lib/components"
+        "vuetify/lib/components/VIcon/index.mjs"
       ],
     },
   },

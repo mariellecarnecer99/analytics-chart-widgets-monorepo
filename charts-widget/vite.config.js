@@ -22,7 +22,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "chart.js",
-        "vuetify/lib/components"
+        "vuetify/lib/components/VIcon/index.mjs"
       ],
     },
   },
