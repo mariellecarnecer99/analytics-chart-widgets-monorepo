@@ -44,7 +44,8 @@ export default defineConfig(({mode}) => {
           "vuetify/lib/components/VSelect/index.mjs",
           "vuetify/lib/components/VSheet/index.mjs",
           "vuetify/lib/components/VSwitch/index.mjs",
-          "vuetify/lib/components/VTabs/index.mjs"
+          "vuetify/lib/components/VTabs/index.mjs",
+          "vuetify/lib/components/VTextField/index.mjs"
         ],
       },
     },
