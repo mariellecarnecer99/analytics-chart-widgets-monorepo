@@ -19,7 +19,12 @@ export default defineConfig(({mode}) => {
       port: APPLICATION_PORT,
     },
     build: {
-      target: 'esnext'
+      target: 'esnext',
+      rollupOptions: {
+        external: [
+          "axios",
+        ],
+      },
     },
     plugins: [
       vue({ 
