@@ -28,7 +28,8 @@ export default defineConfig(({mode}) => {
           "vuetify/labs/VDatePicker",
           "dom-to-image",
           "file-saver",
-          "@vuepic/vue-datepicker"
+          "@vuepic/vue-datepicker",
+          "@vuepic/vue-datepicker/dist/main.css"
         ],
       },
     },
