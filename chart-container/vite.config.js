@@ -43,7 +43,7 @@ export default defineConfig(({mode}) => {
         exposes: {
           "./App": "./src/App.vue",
         },
-        shared: ["vue", "pinia"],
+        shared: ["vue", "pinia", "chart.js"],
       }),
     ],
     define: { 'process.env': {}},

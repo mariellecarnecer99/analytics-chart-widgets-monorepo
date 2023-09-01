@@ -14,6 +14,7 @@ export default defineConfig(({mode}) => {
       target: 'esnext',
       rollupOptions: {
         external: [
+          "/node_modules/",
           "axios",
           "chart.js",
           "vuetify/lib/components/VIcon/index.mjs",
@@ -62,7 +63,6 @@ export default defineConfig(({mode}) => {
         shared: [
           "vue", 
           "pinia", 
-          "axios",
           "chart.js",
         ],
       }),
