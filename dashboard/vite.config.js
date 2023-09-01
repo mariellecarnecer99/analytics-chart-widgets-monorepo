@@ -31,7 +31,8 @@ export default defineConfig({
         "vuetify/lib/components/VCard/index.mjs",
         "vuetify/lib/components/VCheckbox/index.mjs",
         "vuetify/lib/components/VColorPicker/index.mjs",
-        "vuetify/lib/components/VDialog/index.mjs"
+        "vuetify/lib/components/VDialog/index.mjs",
+        "vuetify/lib/components/VDivider/index.mjs"
       ],
     },
   },
