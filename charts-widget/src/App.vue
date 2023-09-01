@@ -26,8 +26,6 @@
 </template>
 
 <script>
-import { Chart } from "chart.js";
-
 export default {
   props: {
     id: Number,
