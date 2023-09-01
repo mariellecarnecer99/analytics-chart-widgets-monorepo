@@ -24,7 +24,8 @@ export default defineConfig({
         "chart.js",
         "vuetify/lib/components/VIcon/index.mjs",
         "vuetify/lib/components/VBtn/index.mjs",
-        "vuetify/lib/components/VCard/index.mjs"
+        "vuetify/lib/components/VCard/index.mjs",
+        "vuetify/lib/components/VCheckbox/index.mjs"
       ],
     },
   },
