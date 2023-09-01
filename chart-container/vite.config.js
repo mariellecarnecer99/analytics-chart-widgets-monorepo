@@ -41,7 +41,8 @@ export default defineConfig(({mode}) => {
           "vuetify/lib/components/VDivider/index.mjs",
           "vuetify/lib/components/VGrid/index.mjs",
           "vuetify/lib/components/VMenu/index.mjs",
-          "vuetify/lib/components/VSelect/index.mjs"
+          "vuetify/lib/components/VSelect/index.mjs",
+          "vuetify/lib/components/VSheet/index.mjs"
         ],
       },
     },
