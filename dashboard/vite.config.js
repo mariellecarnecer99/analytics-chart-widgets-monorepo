@@ -61,7 +61,7 @@ export default defineConfig(({mode}) => {
           pluggable_widget: "http://localhost:3001/assets/pluggableWidget.js",
           chart_container: "http://localhost:3002/assets/chartContainer.js",
         },
-        shared: ["vue"],
+        shared: ["vue", "pinia"],
       }),
     ],
     define: { 'process.env': {} },
