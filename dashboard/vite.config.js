@@ -26,7 +26,8 @@ export default defineConfig({
         "@vuepic/vue-datepicker/dist/main.css",
         "moment",
         "vue3-json-editor",
-        "pinia"
+        "pinia",
+        "vuetify/lib/components/VBtn/index.mjs"
       ],
     },
   },
