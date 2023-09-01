@@ -37,7 +37,8 @@ export default defineConfig({
         "vuetify/lib/components/VMenu/index.mjs",
         "vuetify/lib/components/VSelect/index.mjs",
         "vuetify/lib/components/VSheet/index.mjs",
-        "vuetify/lib/components/VSwitch/index.mjs"
+        "vuetify/lib/components/VSwitch/index.mjs",
+        "vuetify/lib/components/VTabs/index.mjs"
       ],
     },
   },
