@@ -38,7 +38,8 @@ export default defineConfig(({mode}) => {
           "vuetify/lib/components/VCheckbox/index.mjs",
           "vuetify/lib/components/VColorPicker/index.mjs",
           "vuetify/lib/components/VDialog/index.mjs",
-          "vuetify/lib/components/VDivider/index.mjs"
+          "vuetify/lib/components/VDivider/index.mjs",
+          "vuetify/lib/components/VGrid/index.mjs"
         ],
       },
     },
