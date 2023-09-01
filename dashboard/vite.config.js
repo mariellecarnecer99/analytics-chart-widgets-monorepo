@@ -63,7 +63,6 @@ export default defineConfig(({mode}) => {
         shared: [
           "vue", 
           "pinia", 
-          "chart.js",
         ],
       }),
     ],
