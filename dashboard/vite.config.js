@@ -12,10 +12,13 @@ export default defineConfig(({mode}) => {
   return {
     build: {
       target: 'esnext',
+      minify:false,
+      cssCodeSplit: false,
       rollupOptions: {
         external: [
           "/node_modules/",
           "axios",
+          "chart.js",
           "vuetify/lib/components/VIcon/index.mjs",
           "vuetify/labs/VDatePicker",
           "dom-to-image",
@@ -62,7 +65,6 @@ export default defineConfig(({mode}) => {
         shared: [
           "vue", 
           "pinia",
-          "chart.js"
         ],
       }),
     ],

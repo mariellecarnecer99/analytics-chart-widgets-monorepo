@@ -1053,7 +1053,7 @@ export default {
       apiData: null,
       chartsConfig: null,
       selectedApi: null,
-      embedScript: `<script type='module' crossorigin src='https://pluggable-chart-widget.vercel.app/assets/index-14a4399d.js'><\/script>`,
+      embedScript: `<script type='module' crossorigin src='https://charts-widget-mfe-widget.vercel.app/assets/index-c6e5bbf6.js'><\/script>`,
     };
   },
   computed: {
