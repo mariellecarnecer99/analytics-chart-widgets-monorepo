@@ -21,7 +21,8 @@ export default defineConfig({
     target: 'esnext',
     rollupOptions: {
       external: [
-        "./node_modules/",
+        "./node_modules",
+        "./node_modules/chart.js",
       ],
     },
   },
