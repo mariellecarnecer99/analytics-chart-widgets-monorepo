@@ -19,9 +19,6 @@ export default defineConfig(({mode}) => {
       cssCodeSplit: false,
       rollupOptions: {
         external: [
-          "./node_modules",
-          // "axios",
-          "chart.js",
           // "vuetify/lib/components/VIcon/index.mjs",
           // "vuetify/labs/VDatePicker",
           // "dom-to-image",
