@@ -17,8 +17,8 @@ export default defineConfig(({mode}) => {
       rollupOptions: {
         external: [
           "./node_modules",
-          "./node_modules/axios",
-          "./node_modules/chart.js",
+          "axios",
+          "chart.js",
           "vuetify/lib/components/VIcon/index.mjs",
           "vuetify/labs/VDatePicker",
           "dom-to-image",

@@ -22,7 +22,6 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "./node_modules",
-        "./node_modules/chart.js",
       ],
     },
   },
