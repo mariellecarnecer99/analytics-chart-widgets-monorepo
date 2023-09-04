@@ -7,7 +7,7 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import federation from '@originjs/vite-plugin-federation'
 
-const APPLICATION_PORT = 3001;
+const APPLICATION_PORT = 8082;
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,13 +18,7 @@ export default defineConfig({
     port: APPLICATION_PORT,
   },
   build: {
-    target: 'esnext',
-    rollupOptions: {
-      external: [
-        "./node_modules",
-        "chart.js"
-      ],
-    },
+    target: 'esnext'
   },
   plugins: [
     vue({ 

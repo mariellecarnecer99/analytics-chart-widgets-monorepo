@@ -7,11 +7,10 @@ import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 import federation from '@originjs/vite-plugin-federation'
 
-const APPLICATION_PORT = 3002;
+const APPLICATION_PORT = 8081;
 
 // https://vitejs.dev/config/
-export default defineConfig(({mode}) => {
-  return {
+export default defineConfig({
     server: {
       port: APPLICATION_PORT,
     },
@@ -19,12 +18,7 @@ export default defineConfig(({mode}) => {
       port: APPLICATION_PORT,
     },
     build: {
-      target: 'esnext',
-      rollupOptions: {
-        external: [
-          "./node_modules",
-        ],
-      },
+      target: 'esnext'
     },
     plugins: [
       vue({ 
@@ -61,5 +55,4 @@ export default defineConfig(({mode}) => {
         '.vue',
       ],
     }
-  }
 })

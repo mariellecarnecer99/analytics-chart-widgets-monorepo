@@ -8,42 +8,12 @@ import { fileURLToPath, URL } from 'node:url'
 import federation from '@originjs/vite-plugin-federation'
 
 // https://vitejs.dev/config/
-export default defineConfig(({mode}) => {
-  return {
+export default defineConfig({
     server: {
       port: 8080,
     },
     build: {
-      target: 'esnext',
-      minify:false,
-      cssCodeSplit: false,
-      rollupOptions: {
-        external: [
-          // "vuetify/lib/components/VIcon/index.mjs",
-          // "vuetify/labs/VDatePicker",
-          // "dom-to-image",
-          // "file-saver",
-          // "@vuepic/vue-datepicker",
-          // "@vuepic/vue-datepicker/dist/main.css",
-          // "moment",
-          // "vue3-json-editor",
-          // "vuetify/lib/components/VBtn/index.mjs",
-          // "vuetify/lib/components/VCard/index.mjs",
-          // "vuetify/lib/components/VCheckbox/index.mjs",
-          // "vuetify/lib/components/VColorPicker/index.mjs",
-          // "vuetify/lib/components/VDialog/index.mjs",
-          // "vuetify/lib/components/VDivider/index.mjs",
-          // "vuetify/lib/components/VGrid/index.mjs",
-          // "vuetify/lib/components/VMenu/index.mjs",
-          // "vuetify/lib/components/VSelect/index.mjs",
-          // "vuetify/lib/components/VSheet/index.mjs",
-          // "vuetify/lib/components/VSwitch/index.mjs",
-          // "vuetify/lib/components/VTabs/index.mjs",
-          // "vuetify/lib/components/VTextField/index.mjs",
-          // "vuetify/lib/components/VTextarea/index.mjs",
-          // "vuetify/lib/components/VToolbar/index.mjs"
-        ],
-      },
+      target: 'esnext'
     },
     plugins: [
       vue({ 
@@ -83,5 +53,4 @@ export default defineConfig(({mode}) => {
         '.vue',
       ],
     }
-  }
 })
