@@ -21,7 +21,7 @@ export default defineConfig(({mode}) => {
         external: [
           "./node_modules",
           // "axios",
-          "./node_modules/chart.js",
+          "chart.js",
           // "vuetify/lib/components/VIcon/index.mjs",
           // "vuetify/labs/VDatePicker",
           // "dom-to-image",
